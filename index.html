@@ -1392,24 +1392,59 @@
 
         // --- SISTEMA DE CORREO FORMAL MULTIDESTINATARIO ---
         function dispatchFormalEmail(report) {
-            const subject = `OFICIO OFICIAL: Canalización Psicopedagógica - ${report.alumno_nombre} (${report.estudiante_especificacion})`;
-            
-            const body = `CENTRO UNIVERSITARIO TEHUACÁN (CEUT)\nDEPARTAMENTO DE PSICOPEDAGOGÍA Y DIRECCIÓN ACADÉMICA\n\nASUNTO: FICHA DE CANALIZACIÓN DOCENTE OFICIAL\nFECHA DE REGISTRO: ${report.timestamp}\nID EXPEDIENTE: ${report.id}\n\nEstimado Departamento de Psicopedagogía,\n\nPor medio del presente oficio institucional, comparto el expediente de canalización detallado de conformidad con la Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP). A continuación se asientan los datos oficiales:\n\n1. DATOS DEL DOCENTE REMITENTE\n---------------------------------------------\nDocente: ${report.docente_nombre}\nMateria / Asignatura: ${report.materia}\nEmail de Contacto: ${report.docente_email}\n\n2. DATOS DEL ALUMNO Y EXPEDIENTE\n---------------------------------------------\nNombre Completo: ${report.alumno_nombre}\nCarrera / Área: ${report.estudiante_especificacion}\nNivel Educativo: ${report.nivel_educativo}\nSemestre/Cuatrimestre: ${report.estudiante_grado} | Grupo: ${report.estudiante_grupo}\nModalidad de Estudio: ${report.estudiante_modalidad}\n\n3. DETALLES DE LA INCIDENCIA\n---------------------------------------------\nMotivo Principal: ${report.motivo}\nPrioridad de Atención: ${report.prioridad}\n\nDescripción Detallada de los Hechos:\n"${report.descripcion}"\n\n4. ACCIONES DOCENTES PREVIAS IMPLEMENTADAS\n---------------------------------------------\nMedidas Registradas: ${report.acciones.join(', ') || 'Ninguna'}\nObservaciones Adicionales: ${report.observaciones_acciones || 'Sin observaciones registradas.'}\n\n---------------------------------------------\nDECLARACIÓN DE VERACIDAD:\nEl docente firmante bajo protesta de decir verdad valida que la información asentada en esta ficha electrónica es verídica, objetiva y respaldada por registros oficiales de desempeño.\n\nAtentamente,\n\n${report.docente_nombre}\nCátedra Docente - Centro Universitario Tehuacán (CEUT)`;
+            try {
+                const subject = `OFICIO OFICIAL: Canalización Psicopedagógica - ${report.alumno_nombre || 'Alumno'} (${report.estudiante_especificacion || 'General'})`;
+                
+                // Asegurar formato seguro para las acciones previas
+                const accionesList = Array.isArray(report.acciones) ? report.acciones : [];
+                const accionesTexto = accionesList.join(', ') || 'Ninguna acción registrada con antelación.';
+                
+                const body = `CENTRO UNIVERSITARIO TEHUACÁN (CEUT)\nDEPARTAMENTO DE PSICOPEDAGOGÍA Y DIRECCIÓN ACADÉMICA\n\nASUNTO: FICHA DE CANALIZACIÓN DOCENTE OFICIAL\nFECHA DE REGISTRO: ${report.timestamp || new Date().toLocaleString()}\nID EXPEDIENTE: ${report.id || 'N/A'}\n\nEstimado Departamento de Psicopedagogía,\n\nPor medio del presente oficio institucional, comparto el expediente de canalización detallado de conformidad con la Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP). A continuación se asientan los datos oficiales:\n\n1. DATOS DEL DOCENTE REMITENTE\n---------------------------------------------\nDocente: ${report.docente_nombre || ''}\nMateria / Asignatura: ${report.materia || ''}\nEmail de Contacto: ${report.docente_email || ''}\n\n2. DATOS DEL ALUMNO Y EXPEDIENTE\n---------------------------------------------\nNombre Completo: ${report.alumno_nombre || ''}\nCarrera / Área: ${report.estudiante_especificacion || ''}\nNivel Educativo: ${report.nivel_educativo || ''}\nSemestre/Cuatrimestre: ${report.estudiante_grado || ''} | Grupo: ${report.estudiante_grupo || ''}\nModalidad de Estudio: ${report.estudiante_modalidad || ''}\n\n3. DETALLES DE LA INCIDENCIA\n---------------------------------------------\nMotivo Principal: ${report.motivo || ''}\nPrioridad de Atención: ${report.prioridad || ''}\n\nDescripción Detallada de los Hechos:\n"${report.descripcion || ''}"\n\n4. ACCIONES DOCENTES PREVIAS IMPLEMENTADAS\n---------------------------------------------\nMedidas Registradas: ${accionesTexto}\nObservaciones Adicionales: ${report.observaciones_acciones || 'Sin observaciones registradas.'}\n\n---------------------------------------------\nDECLARACIÓN DE VERACIDAD:\nEl docente firmante bajo protesta de decir verdad valida que la información asentada en esta ficha electrónica es verídica, objetiva y respaldada por registros oficiales de desempeño.\n\nAtentamente,\n\n${report.docente_nombre || ''}\nCátedra Docente - Centro Universitario Tehuacán (CEUT)`;
 
-            document.getElementById('email-preview-subject').textContent = subject;
-            document.getElementById('email-preview-body').value = body;
+                document.getElementById('email-preview-subject').textContent = subject;
+                document.getElementById('email-preview-body').value = body;
 
-            const toEmail = "deptopsicopedagogico@ceut.edu.mx";
-            const ccEmails = "luz.ortega@ceut.edu.mx,samuel.roldan@ceut.edu.mx,miroslava.hoyos@ceut.edu.mx";
-            const mailtoUrl = `mailto:${toEmail}?cc=${ccEmails}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                const toEmail = "deptopsicopedagogico@ceut.edu.mx";
+                const ccEmails = "luz.ortega@ceut.edu.mx,samuel.roldan@ceut.edu.mx,miroslava.hoyos@ceut.edu.mx";
+                const mailtoUrl = `mailto:${toEmail}?cc=${ccEmails}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
-            const triggerButton = document.getElementById('btn-trigger-client-email');
-            triggerButton.onclick = () => {
-                window.location.href = mailtoUrl;
-                showToast("Abriendo cliente de correo institucional...", "success");
-            };
+                const triggerButton = document.getElementById('btn-trigger-client-email');
+                triggerButton.onclick = (e) => {
+                    e.preventDefault();
+                    
+                    // Copiar automáticamente al portapapeles como respaldo seguro por si el navegador bloquea el mailto
+                    try {
+                        const textarea = document.getElementById('email-preview-body');
+                        textarea.select();
+                        document.execCommand('copy');
+                        showToast("Contenido copiado al portapapeles como respaldo", "info");
+                    } catch (err) {
+                        console.warn("No se pudo copiar automáticamente:", err);
+                    }
 
-            document.getElementById('modal-email-dispatch').classList.remove('hidden');
+                    // Creación y simulación de un elemento de anclaje físico (evita bloqueos de seguridad de iframe/sandbox)
+                    try {
+                        const mailAnchor = document.createElement('a');
+                        mailAnchor.href = mailtoUrl;
+                        mailAnchor.target = '_blank';
+                        mailAnchor.style.display = 'none';
+                        document.body.appendChild(mailAnchor);
+                        mailAnchor.click();
+                        setTimeout(() => {
+                            document.body.removeChild(mailAnchor);
+                        }, 100);
+                        showToast("Abriendo cliente de correo institucional...", "success");
+                    } catch (errorMail) {
+                        console.error("Fallo al ejecutar mailto:", errorMail);
+                        window.location.href = mailtoUrl;
+                    }
+                };
+
+                document.getElementById('modal-email-dispatch').classList.remove('hidden');
+            } catch (error) {
+                console.error("Error en dispatchFormalEmail:", error);
+                showToast("Error al compilar el correo formal", "error");
+            }
         }
 
         function closeEmailModal() {
