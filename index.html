@@ -203,7 +203,7 @@
             <div class="text-left">
                 <div class="inline-flex items-center gap-1 px-2 py-0.5 bg-white/10 rounded-full border border-white/20 text-white text-[8px] font-bold uppercase tracking-widest">
                     <span class="w-1 h-1 bg-emerald-400 rounded-full animate-pulse"></span>
-                    Servicio Cloud v4.0
+                    Servicio Cloud v4.5
                 </div>
                 <h1 class="font-serif text-2xl sm:text-3xl md:text-4xl text-white leading-tight tracking-tight font-bold">
                     Canalización <span class="italic text-gold-400 drop-shadow-sm">Psicopedagógica</span>
@@ -216,7 +216,7 @@
                 <i data-lucide="info" class="text-navy-500 w-4 h-4"></i>
             </div>
             <div class="flex-grow flex flex-col md:flex-row justify-between items-start md:items-center gap-3 w-full">
-                <p class="text-navy-900 font-semibold text-xs leading-relaxed max-w-xl">
+                <p class="text-navy-900 font-semibold text-xs leading-relaxed max-w-xl text-justify">
                     Plataforma institucional conectada a base de datos de alta velocidad en la nube para el reporte docente de incidencias de alumnos.
                 </p>
                 <button type="button" onclick="loadDemoData()" class="w-full md:w-auto text-center justify-center shrink-0 px-2.5 py-2 bg-gold-400/20 hover:bg-gold-400/35 border border-gold-600/30 text-gold-600 font-black text-[9px] uppercase tracking-wider rounded-lg transition-colors flex items-center gap-1">
@@ -460,8 +460,8 @@
 
                         <div class="w-full">
                             <label class="block text-[9px] font-black uppercase tracking-[0.15em] text-navy-500 mb-1 ml-1">Descripción Detallada de la Situación</label>
-                            <textarea id="descripcion" name="descripcion" required rows="5" placeholder="Describa de forma objetiva los hechos observados, fechas clave o cualquier acción o diálogo previo..." class="input-premium resize-none leading-relaxed w-full font-medium text-sm sm:text-base" oninput="saveDraft()"></textarea>
-                            <p class="text-[9px] text-navy-500/50 mt-1 italic ml-1">Evite registrar opiniones, juicios de valor o suposiciones sin sustento pedagógico.</p>
+                            <textarea id="descripcion" name="descripcion" required rows="5" placeholder="Describa de forma objetiva los hechos observados, fechas clave o cualquier acción o diálogo previo..." class="input-premium resize-none leading-relaxed w-full font-medium text-sm sm:text-base text-justify" oninput="saveDraft()"></textarea>
+                            <p class="text-[9px] text-navy-500/50 mt-1 italic ml-1 text-justify">Evite registrar opiniones, juicios de valor o suposiciones sin sustento pedagógico.</p>
                         </div>
                     </div>
                 </section>
@@ -481,29 +481,29 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-50 p-4 rounded-xl border border-slate-200">
                             <label class="flex items-start gap-2.5 p-1 cursor-pointer select-none">
                                 <input type="checkbox" name="acciones" value="Entrevista individual con el alumno" class="mt-1 rounded text-navy-500 focus:ring-navy-500 w-4.5 h-4.5" onchange="saveDraft()">
-                                <span class="text-xs font-bold text-navy-900/80">Entrevista/Diálogo individual con el alumno</span>
+                                <span class="text-xs font-bold text-navy-900/80 text-justify">Entrevista/Diálogo individual con el alumno</span>
                             </label>
                             <label class="flex items-start gap-2.5 p-1 cursor-pointer select-none">
                                 <input type="checkbox" name="acciones" value="Llamado de atención verbal formal" class="mt-1 rounded text-navy-500 focus:ring-navy-500 w-4.5 h-4.5" onchange="saveDraft()">
-                                <span class="text-xs font-bold text-navy-900/80">Llamado de atención verbal formal</span>
+                                <span class="text-xs font-bold text-navy-900/80 text-justify">Llamado de atención verbal formal</span>
                             </label>
                             <label class="flex items-start gap-2.5 p-1 cursor-pointer select-none">
                                 <input type="checkbox" name="acciones" value="Contacto o entrevista con tutores/padres" class="mt-1 rounded text-navy-500 focus:ring-navy-500 w-4.5 h-4.5" onchange="saveDraft()">
-                                <span class="text-xs font-bold text-navy-900/80">Contacto o reunión con tutores/padres</span>
+                                <span class="text-xs font-bold text-navy-900/80 text-justify">Contacto o reunión con tutores/padres</span>
                             </label>
                             <label class="flex items-start gap-2.5 p-1 cursor-pointer select-none">
                                 <input type="checkbox" name="acciones" value="Adecuaciones didácticas/metodológicas" class="mt-1 rounded text-navy-500 focus:ring-navy-500 w-4.5 h-4.5" onchange="saveDraft()">
-                                <span class="text-xs font-bold text-navy-900/80">Adecuaciones didácticas o de evaluación</span>
+                                <span class="text-xs font-bold text-navy-900/80 text-justify">Adecuaciones didácticas o de evaluación</span>
                             </label>
                             <label class="flex items-start gap-2.5 p-1 cursor-pointer select-none col-span-1 sm:col-span-2 border-t border-slate-200/60 pt-2.5 mt-1">
                                 <input type="checkbox" name="acciones" value="Ninguna acción previa documentada" class="mt-1 rounded text-navy-500 focus:ring-navy-500 w-4.5 h-4.5" onchange="saveDraft()">
-                                <span class="text-xs font-bold text-rose-600">Ninguna de las anteriores (Primera incidencia)</span>
+                                <span class="text-xs font-bold text-rose-600 text-justify">Ninguna de las anteriores (Primera incidencia)</span>
                             </label>
                         </div>
 
                         <div>
                             <label class="block text-[9px] font-black uppercase tracking-[0.15em] text-navy-500 mb-1 ml-1">Observaciones de las acciones tomadas (Opcional)</label>
-                            <textarea id="observaciones_acciones" name="observaciones_acciones" rows="3" placeholder="Ej. El alumno se comprometió a regularizarse pero no ha entregado actividades; el tutor no atendió al llamado..." class="input-premium resize-none text-sm sm:text-base" oninput="saveDraft()"></textarea>
+                            <textarea id="observaciones_acciones" name="observaciones_acciones" rows="3" placeholder="Ej. El alumno se comprometió a regularizarse pero no ha entregado actividades; el tutor no atendió al llamado..." class="input-premium resize-none text-sm sm:text-base text-justify" oninput="saveDraft()"></textarea>
                         </div>
                     </div>
                 </section>
@@ -523,10 +523,10 @@
                             <label class="flex items-start gap-3 cursor-pointer select-none">
                                 <input type="checkbox" id="compromiso_firma" name="compromiso_firma" required class="mt-1 rounded text-navy-500 focus:ring-navy-500 w-5 h-5" onchange="saveDraft()">
                                 <div class="text-left">
-                                    <span class="block text-xs font-bold text-navy-900 leading-snug">
+                                    <span class="block text-xs font-bold text-navy-900 leading-snug text-justify">
                                         Declaro bajo protesta de decir verdad que los hechos descritos en esta canalización son verídicos, objetivos y constan en el registro auxiliar del docente.
                                     </span>
-                                    <span class="block text-[10px] text-navy-400 font-semibold mt-1">
+                                    <span class="block text-[10px] text-navy-400 font-semibold mt-1 text-justify">
                                         Al enviar esta canalización digital, se firmará electrónicamente con su correo y nombre institucional asentados en la sección 1.
                                     </span>
                                 </div>
@@ -555,11 +555,16 @@
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-200 pb-4 mb-4">
                     <div class="text-left">
                         <h2 class="text-lg sm:text-xl font-bold uppercase tracking-tight text-navy-900">Historial de Reportes en la Nube</h2>
-                        <p class="text-xs font-semibold text-navy-400 mt-0.5">Control y resguardo seguro de expedientes centralizados en Firebase.</p>
+                        <p class="text-xs font-semibold text-navy-400 mt-0.5 text-justify">Control y resguardo seguro de expedientes centralizados en Firebase.</p>
                     </div>
-                    <button onclick="lockHistory()" class="w-full sm:w-auto px-4 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-[10px] font-extrabold uppercase tracking-wider rounded-lg flex items-center justify-center gap-1.5 transition-colors">
-                        <i data-lucide="lock" class="w-3.5 h-3.5"></i> Bloquear Historial
-                    </button>
+                    <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+                        <button onclick="openChangePinModal()" class="w-full sm:w-auto px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 text-[10px] font-extrabold uppercase tracking-wider rounded-lg flex items-center justify-center gap-1.5 transition-colors">
+                            <i data-lucide="key-round" class="w-3.5 h-3.5 text-navy-500"></i> Modificar PIN
+                        </button>
+                        <button onclick="lockHistory()" class="w-full sm:w-auto px-4 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-[10px] font-extrabold uppercase tracking-wider rounded-lg flex items-center justify-center gap-1.5 transition-colors">
+                            <i data-lucide="lock" class="w-3.5 h-3.5"></i> Bloquear Historial
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Buscador e Indicadores -->
@@ -591,7 +596,7 @@
                         <i data-lucide="folder-open" class="text-navy-300 w-8 h-8"></i>
                     </div>
                     <h3 class="text-sm font-bold text-navy-900 uppercase tracking-wide">No se encontraron canalizaciones</h3>
-                    <p class="text-xs text-navy-400 mt-1 max-w-sm mx-auto font-medium">Registra una nueva canalización en la pestaña anterior para sincronizar con la base de datos.</p>
+                    <p class="text-xs text-navy-400 mt-1 max-w-sm mx-auto font-medium text-justify">Registra una nueva canalización en la pestaña anterior para sincronizar con la base de datos.</p>
                 </div>
             </div>
         </div>
@@ -604,130 +609,138 @@
         <p class="text-[9px] font-semibold mt-1">Conectado de forma segura a Firebase. Todos los derechos reservados de acuerdo con la LFPDPPP.</p>
     </footer>
 
-    <!-- ==============================================
-         COMPONENTE IMPRIMIBLE OCULTO (ALTA FIDELIDAD)
-         ============================================== -->
-    <div id="printable-template" class="hidden w-[215.9mm] p-[15mm] bg-white text-black font-sans leading-relaxed text-xs">
-        <!-- Encabezado Membretado Oficial -->
-        <div class="flex items-center justify-between border-b-2 border-[#141b3d] pb-4 mb-5">
-            <div class="flex items-center gap-3">
-                <img src="https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2" alt="CEUT" class="w-14 h-14 object-contain">
-                <div>
-                    <h1 class="text-lg font-black tracking-tight text-[#141b3d] leading-none uppercase">Centro Universitario Tehuacán</h1>
-                    <p class="text-[8px] tracking-[0.25em] font-extrabold uppercase text-amber-500 mt-1">Incorporado a la S.E.P.</p>
-                    <p class="text-[8px] font-bold text-gray-500 uppercase mt-0.5">Clave de Centro de Trabajo (CCT) Oficial</p>
-                </div>
-            </div>
-            <div class="text-right">
-                <div class="bg-[#141b3d] text-white text-[9px] font-black px-2.5 py-1 rounded">
-                    REPORTE PSICOPEDAGÓGICO
-                </div>
-                <p class="text-[9px] text-gray-500 font-bold mt-1.5" id="print-date">Fecha de Emisión: 13/07/2026</p>
-                <p class="text-[8px] font-extrabold text-amber-600 mt-0.5" id="print-id">ID: CEUT-000</p>
-            </div>
-        </div>
+    <!-- ====================================================
+         PLANTILLA DE IMPRESIÓN OFICIAL (OCULTA POR DEFECTO)
+         Garantiza que el PDF se descargue correctamente sin interferir en pantalla.
+         No tiene la clase 'no-print' para evitar que las hojas salgan en blanco.
+         Ocupa exactamente 1 hoja membretada de lujo tamaño Carta.
+         ==================================================== -->
+    <div id="printable-template" class="hidden w-[215.9mm] h-[279.4mm] p-[10mm] bg-white text-black font-sans relative flex flex-col justify-between" style="box-sizing: border-box; overflow: hidden;">
+        <!-- Fondo Decorativo de Lujo Sutil -->
+        <div class="absolute inset-0 border-[6px] border-[#141b3d] m-3 pointer-events-none"></div>
+        <div class="absolute inset-0 border-[1px] border-amber-500 m-[16px] pointer-events-none"></div>
 
-        <h2 class="text-center font-serif italic text-lg font-bold text-[#141b3d] mb-4">Ficha de Canalización de Alumnos</h2>
-
-        <div class="space-y-4">
-            <!-- BLOQUE 1: DATOS DOCENTE -->
-            <div>
-                <h3 class="bg-gray-100 text-[#141b3d] font-bold px-2.5 py-1 text-[10px] uppercase tracking-wide border-l-4 border-amber-500 mb-2">1. Datos del Docente Remitente</h3>
-                <div class="grid grid-cols-2 gap-y-2 gap-x-4 px-1.5">
-                    <div>
-                        <p class="text-[8px] uppercase tracking-wider text-gray-400 font-extrabold">Docente:</p>
-                        <p class="font-bold text-sm text-[#141b3d]" id="p-docente"></p>
+        <div class="space-y-3 z-10">
+            <!-- Encabezado Membretado Oficial -->
+            <div class="flex items-center justify-between border-b-2 border-[#141b3d] pb-2.5 mx-3 mt-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 shrink-0">
+                        <img src="https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2" alt="Logo CEUT" class="w-full h-full object-contain" onerror="this.src='https://placehold.co/150x150/ffffff/3b4995?text=CEUT'">
                     </div>
                     <div>
-                        <p class="text-[8px] uppercase tracking-wider text-gray-400 font-extrabold">Materia / Asignatura:</p>
-                        <p class="font-bold text-sm" id="p-materia"></p>
+                        <h1 class="text-sm font-black tracking-tight text-[#141b3d] leading-none uppercase">Centro Universitario Tehuacán</h1>
+                        <p class="text-[7.5px] tracking-[0.25em] font-extrabold uppercase text-amber-500 mt-0.5">Incorporado a la S.E.P.</p>
+                        <p class="text-[7.5px] font-bold text-gray-500 uppercase mt-0.5">Departamento de Psicopedagogía y Dirección Académica</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <div class="bg-[#141b3d] text-white text-[8px] font-black px-2 py-0.5 rounded tracking-wider">
+                        OFICIO DE CANALIZACIÓN
+                    </div>
+                    <p class="text-[8px] text-gray-500 font-bold mt-1" id="print-date">Fecha de Emisión: 13/07/2026</p>
+                    <p class="text-[8px] font-extrabold text-amber-600 mt-0.5" id="print-id">Ref: CEUT-000</p>
+                </div>
+            </div>
+
+            <h2 class="text-center font-serif italic text-base font-bold text-[#141b3d] -mt-1">Ficha de Canalización de Alumnos</h2>
+
+            <!-- BLOQUE 1: DATOS DOCENTE -->
+            <div class="mx-3">
+                <h3 class="bg-gray-100 text-[#141b3d] font-bold px-2 py-0.5 text-[8.5px] uppercase tracking-wider border-l-4 border-amber-500 mb-1.5">1. Datos del Docente Remitente</h3>
+                <div class="grid grid-cols-2 gap-y-1 gap-x-4 px-1.5">
+                    <div>
+                        <p class="text-[7px] uppercase tracking-wider text-gray-400 font-extrabold">Docente Remitente:</p>
+                        <p class="font-bold text-xs text-[#141b3d] leading-none" id="p-docente"></p>
+                    </div>
+                    <div>
+                        <p class="text-[7px] uppercase tracking-wider text-gray-400 font-extrabold">Materia / Asignatura:</p>
+                        <p class="font-bold text-xs text-gray-800 leading-none" id="p-materia"></p>
                     </div>
                     <div class="col-span-2">
-                        <p class="text-[8px] uppercase tracking-wider text-gray-400 font-extrabold">Email Institucional:</p>
-                        <p class="font-bold" id="p-email"></p>
+                        <p class="text-[7px] uppercase tracking-wider text-gray-400 font-extrabold mt-0.5">Email Institucional:</p>
+                        <p class="font-bold text-xs text-gray-700 leading-none" id="p-email"></p>
                     </div>
                 </div>
             </div>
 
             <!-- BLOQUE 2: DATOS ESTUDIANTE -->
-            <div>
-                <h3 class="bg-gray-100 text-[#141b3d] font-bold px-2.5 py-1 text-[10px] uppercase tracking-wide border-l-4 border-amber-500 mb-2">2. Datos de Alumno y Expediente</h3>
-                <div class="grid grid-cols-3 gap-y-2 gap-x-4 px-1.5">
+            <div class="mx-3">
+                <h3 class="bg-gray-100 text-[#141b3d] font-bold px-2 py-0.5 text-[8.5px] uppercase tracking-wider border-l-4 border-amber-500 mb-1.5">2. Datos de Alumno y Expediente</h3>
+                <div class="grid grid-cols-3 gap-y-1.5 gap-x-3 px-1.5">
                     <div class="col-span-3">
-                        <p class="text-[8px] uppercase tracking-wider text-gray-400 font-extrabold">Nombre Completo:</p>
-                        <p class="font-bold text-sm text-[#141b3d]" id="p-alumno"></p>
+                        <p class="text-[7px] uppercase tracking-wider text-gray-400 font-extrabold">Nombre Completo del Estudiante:</p>
+                        <p class="font-bold text-xs text-[#141b3d] leading-none" id="p-alumno"></p>
                     </div>
                     <div>
-                        <p class="text-[8px] uppercase tracking-wider text-gray-400 font-extrabold">Nivel Educativo:</p>
-                        <p class="font-bold" id="p-nivel"></p>
+                        <p class="text-[7px] uppercase tracking-wider text-gray-400 font-extrabold">Nivel Educativo:</p>
+                        <p class="font-bold text-[11px] text-gray-800 leading-none" id="p-nivel"></p>
                     </div>
                     <div>
-                        <p class="text-[8px] uppercase tracking-wider text-gray-400 font-extrabold">Semestre / Cuatrimestre:</p>
-                        <p class="font-bold" id="p-grado"></p>
+                        <p class="text-[7px] uppercase tracking-wider text-gray-400 font-extrabold">Semestre / Cuatrimestre:</p>
+                        <p class="font-bold text-[11px] text-gray-800 leading-none" id="p-grado"></p>
                     </div>
                     <div>
-                        <p class="text-[8px] uppercase tracking-wider text-gray-400 font-extrabold">Grupo:</p>
-                        <p class="font-bold" id="p-grupo"></p>
+                        <p class="text-[7px] uppercase tracking-wider text-gray-400 font-extrabold">Grupo:</p>
+                        <p class="font-bold text-[11px] text-gray-800 leading-none" id="p-grupo"></p>
                     </div>
                     <div class="col-span-2">
-                        <p class="text-[8px] uppercase tracking-wider text-gray-400 font-extrabold">Carrera / Especialidad:</p>
-                        <p class="font-bold" id="p-especificacion"></p>
+                        <p class="text-[7px] uppercase tracking-wider text-gray-400 font-extrabold">Carrera / Area de Especialización:</p>
+                        <p class="font-bold text-[11px] text-gray-800 leading-none" id="p-especificacion"></p>
                     </div>
                     <div>
-                        <p class="text-[8px] uppercase tracking-wider text-gray-400 font-extrabold">Modalidad:</p>
-                        <p class="font-bold" id="p-modalidad"></p>
+                        <p class="text-[7px] uppercase tracking-wider text-gray-400 font-extrabold">Modalidad:</p>
+                        <p class="font-bold text-[11px] text-gray-800 leading-none" id="p-modalidad"></p>
                     </div>
                 </div>
             </div>
 
             <!-- BLOQUE 3: MOTIVOS -->
-            <div>
-                <h3 class="bg-gray-100 text-[#141b3d] font-bold px-2.5 py-1 text-[10px] uppercase tracking-wide border-l-4 border-amber-500 mb-2">3. Detalles de la Incidencia</h3>
-                <div class="grid grid-cols-2 gap-y-2 gap-x-4 px-1.5 mb-2.5">
+            <div class="mx-3">
+                <h3 class="bg-gray-100 text-[#141b3d] font-bold px-2 py-0.5 text-[8.5px] uppercase tracking-wider border-l-4 border-amber-500 mb-1.5">3. Detalles de la Incidencia</h3>
+                <div class="grid grid-cols-2 gap-y-1 gap-x-4 px-1.5 mb-1.5">
                     <div>
-                        <p class="text-[8px] uppercase tracking-wider text-gray-400 font-extrabold">Motivo de Canalización:</p>
-                        <p class="font-bold text-sm text-red-700" id="p-motivo"></p>
+                        <p class="text-[7px] uppercase tracking-wider text-gray-400 font-extrabold">Motivo de Canalización:</p>
+                        <p class="font-bold text-[11px] text-red-700 leading-none" id="p-motivo"></p>
                     </div>
                     <div>
-                        <p class="text-[8px] uppercase tracking-wider text-gray-400 font-extrabold">Prioridad Establecida:</p>
-                        <p class="font-bold text-sm" id="p-prioridad"></p>
+                        <p class="text-[7px] uppercase tracking-wider text-gray-400 font-extrabold">Prioridad de Atencion:</p>
+                        <p class="font-bold text-[11px] text-gray-800 leading-none" id="p-prioridad"></p>
                     </div>
                 </div>
                 <div class="px-1.5">
-                    <p class="text-[8px] uppercase tracking-wider text-gray-400 font-extrabold mb-1">Descripción Narrada de la Problemática:</p>
-                    <div class="p-3 bg-gray-50 rounded border border-gray-200 text-xs text-justify text-gray-700 min-h-[100px]" id="p-descripcion"></div>
+                    <p class="text-[7px] uppercase tracking-wider text-gray-400 font-extrabold mb-0.5">Descripción Narrada de la Problemática:</p>
+                    <div class="p-2 bg-gray-50 rounded border border-gray-200 text-[10px] text-justify text-gray-700 leading-relaxed min-h-[65px] max-h-[85px] overflow-hidden" id="p-descripcion"></div>
                 </div>
             </div>
 
             <!-- BLOQUE 4: ACCIONES TOMADAS -->
-            <div>
-                <h3 class="bg-gray-100 text-[#141b3d] font-bold px-2.5 py-1 text-[10px] uppercase tracking-wide border-l-4 border-amber-500 mb-2">4. Acciones Previas Implementadas</h3>
-                <div class="px-1.5 space-y-2">
-                    <p class="text-[8px] uppercase tracking-wider text-gray-400 font-extrabold">Medidas Registradas por el Docente:</p>
-                    <div class="p-2 bg-gray-50 border border-gray-200 rounded text-xs" id="p-acciones-list"></div>
+            <div class="mx-3">
+                <h3 class="bg-gray-100 text-[#141b3d] font-bold px-2 py-0.5 text-[8.5px] uppercase tracking-wider border-l-4 border-amber-500 mb-1.5">4. Acciones Previas Implementadas</h3>
+                <div class="px-1.5 space-y-1">
+                    <div class="p-1.5 bg-gray-50 border border-gray-200 rounded text-[9.5px] flex flex-wrap gap-x-4 gap-y-1" id="p-acciones-list"></div>
                     <div>
-                        <p class="text-[8px] uppercase tracking-wider text-gray-400 font-extrabold">Observaciones Adicionales de Medidas:</p>
-                        <p class="font-medium text-gray-700" id="p-acciones-obs">Ninguna observación adicional provista.</p>
+                        <p class="text-[7px] uppercase tracking-wider text-gray-400 font-extrabold mt-1">Observaciones de Medidas:</p>
+                        <p class="font-medium text-[10px] text-gray-700 leading-tight text-justify" id="p-acciones-obs">Ninguna observación adicional provista.</p>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- FIRMAS Y VALIDACIONES -->
-            <div class="pt-8 mt-6 border-t border-gray-200">
-                <p class="text-[8.5px] font-semibold text-center text-gray-500 max-w-xl mx-auto italic mb-10">
-                    "Documento oficial de carácter institucional. El resguardo y acceso a este expediente se restringe a las áreas de Dirección Académica y Psicopedagogía de conformidad con la LFPDPPP mexicana."
-                </p>
-                <div class="grid grid-cols-2 gap-12 text-center max-w-md mx-auto">
-                    <div>
-                        <div class="border-t border-black w-40 mx-auto mt-6"></div>
-                        <p class="font-extrabold mt-1 text-[#141b3d] text-[10px]" id="p-firma-docente">Dr. Armando Lozano</p>
-                        <p class="text-[7.5px] font-bold text-gray-400 uppercase tracking-widest">Firma del Docente Remitente</p>
-                    </div>
-                    <div>
-                        <div class="border-t border-black w-40 mx-auto mt-6"></div>
-                        <p class="font-extrabold mt-1 text-gray-700 text-[10px]">Departamento de Psicopedagogía</p>
-                        <p class="text-[7.5px] font-bold text-gray-400 uppercase tracking-widest">Sello y Firma de Recepción</p>
-                    </div>
+        <!-- FIRMAS Y VALIDACIONES -->
+        <div class="pb-6 mx-3 z-10">
+            <p class="text-[8px] font-semibold text-justify text-gray-400 max-w-xl mx-auto italic mb-4">
+                "Documento oficial de carácter institucional. El resguardo y acceso a este expediente se restringe a las áreas de Dirección Académica y Psicopedagogía de conformidad con la LFPDPPP mexicana."
+            </p>
+            <div class="grid grid-cols-2 gap-12 text-center max-w-md mx-auto">
+                <div>
+                    <div class="border-t border-black w-36 mx-auto mt-4"></div>
+                    <p class="font-extrabold mt-1 text-[#141b3d] text-[9.5px]" id="p-firma-docente">Dr. Armando Lozano</p>
+                    <p class="text-[7px] font-bold text-gray-400 uppercase tracking-wider">Firma del Docente Remitente</p>
+                </div>
+                <div>
+                    <div class="border-t border-black w-36 mx-auto mt-4"></div>
+                    <p class="font-extrabold mt-1 text-gray-700 text-[9.5px]">Departamento de Psicopedagogía</p>
+                    <p class="text-[7px] font-bold text-gray-400 uppercase tracking-wider">Firma de Recepción</p>
                 </div>
             </div>
         </div>
@@ -739,17 +752,16 @@
     
     <!-- Modal de Acceso Seguro al Historial -->
     <div id="modal-passcode" class="hidden fixed inset-0 bg-navy-900/80 backdrop-blur-md z-[200] flex items-center justify-center p-4">
-        <div class="glass-card max-w-sm w-full rounded-3xl p-6 shadow-2xl border border-white/20 text-center animate-pulse-once">
+        <div class="glass-card max-w-sm w-full rounded-3xl p-6 shadow-2xl border border-white/20 text-center">
             <div class="w-12 h-12 bg-amber-100 rounded-2xl flex items-center justify-center mx-auto mb-4 text-amber-600">
                 <i data-lucide="lock" class="w-6 h-6"></i>
             </div>
             <h3 class="font-bold text-navy-900 text-lg uppercase tracking-tight">Acceso Confidencial</h3>
-            <p class="text-xs text-navy-500 mt-1 font-semibold">Este módulo contiene datos personales sensibles. Ingrese la contraseña institucional para continuar.</p>
+            <p class="text-xs text-navy-500 mt-1 font-semibold text-justify">Este módulo contiene datos personales sensibles. Ingrese el PIN institucional para continuar.</p>
             
             <div class="my-4 relative">
-                <input type="password" id="passcode-input" placeholder="Contraseña institucional" class="input-premium text-center tracking-widest text-base font-black">
-                <p id="passcode-error" class="hidden text-rose-600 text-[10px] font-extrabold uppercase mt-1.5">Contraseña incorrecta, intente de nuevo.</p>
-                <p class="text-[9px] text-slate-400 mt-2 font-bold uppercase tracking-wider">Demo Tip: <span class="text-[#3B4995]">CEUT2026</span></p>
+                <input type="password" id="passcode-input" placeholder="••••" maxlength="6" class="input-premium text-center tracking-widest text-lg font-black focus:border-[#3B4995] focus:ring-4 focus:ring-[#3B4995]/12">
+                <p id="passcode-error" class="hidden text-rose-600 text-[10px] font-extrabold uppercase mt-1.5">PIN incorrecto, intente de nuevo.</p>
             </div>
 
             <div class="flex gap-2">
@@ -759,41 +771,78 @@
         </div>
     </div>
 
-    <!-- Modal de Vista Previa del Correo Oficial (Oficio Formal) -->
-    <div id="modal-email-preview" class="hidden fixed inset-0 bg-navy-900/80 backdrop-blur-md z-[250] flex items-center justify-center p-4">
-        <div class="glass-card max-w-2xl w-full rounded-3xl p-6 shadow-2xl border border-white/20 text-left flex flex-col max-h-[90vh]">
-            <div class="flex justify-between items-center border-b border-slate-200 pb-3 mb-4 shrink-0">
-                <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center text-[#3B4995]">
-                        <i data-lucide="mail" class="w-5 h-5"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-navy-900 text-sm uppercase tracking-wider leading-none">Oficio y Despacho de Correo Formal</h3>
-                        <span class="text-[10px] text-emerald-600 font-extrabold uppercase">Listo para enviar</span>
-                    </div>
-                </div>
-                <button onclick="closeEmailPreview()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+    <!-- Modal para Modificar PIN de Acceso -->
+    <div id="modal-change-pin" class="hidden fixed inset-0 bg-navy-900/80 backdrop-blur-md z-[210] flex items-center justify-center p-4">
+        <div class="glass-card max-w-sm w-full rounded-3xl p-6 shadow-2xl border border-white/20 text-center">
+            <div class="w-12 h-12 bg-indigo-100 rounded-2xl flex items-center justify-center mx-auto mb-4 text-[#3B4995]">
+                <i data-lucide="key-round" class="w-6 h-6"></i>
             </div>
+            <h3 class="font-bold text-navy-900 text-lg uppercase tracking-tight">Modificar PIN</h3>
+            <p class="text-xs text-navy-500 mt-1 font-semibold text-justify">Define una nueva clave numérica de acceso seguro para el módulo de coordinación psicopedagógica.</p>
             
-            <div class="space-y-3 text-xs text-slate-600 overflow-y-auto pr-1 flex-grow mb-4">
-                <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5 font-semibold text-[11px]">
-                    <p><span class="text-navy-900 font-bold uppercase text-[9.5px] block">Para:</span> deptopsicopedagogico@ceut.edu.mx</p>
-                    <p><span class="text-navy-900 font-bold uppercase text-[9.5px] block">CC:</span> luz.ortega@ceut.edu.mx, samuel.roldan@ceut.edu.mx, miroslava.hoyos@ceut.edu.mx</p>
-                    <p id="email-preview-subject" class="truncate"><span class="text-navy-900 font-bold uppercase text-[9.5px] block">Asunto:</span> </p>
+            <div class="my-4 space-y-3 text-left">
+                <div>
+                    <label class="block text-[8px] font-black uppercase tracking-[0.15em] text-navy-500 mb-1 ml-1">PIN Actual</label>
+                    <input type="password" id="change-pin-current" placeholder="••••" maxlength="6" class="input-premium text-center tracking-widest text-base font-black">
                 </div>
+                <div>
+                    <label class="block text-[8px] font-black uppercase tracking-[0.15em] text-navy-500 mb-1 ml-1">Nuevo PIN (Mínimo 4 dígitos)</label>
+                    <input type="password" id="change-pin-new" placeholder="••••" maxlength="6" class="input-premium text-center tracking-widest text-base font-black">
+                </div>
+                <div>
+                    <label class="block text-[8px] font-black uppercase tracking-[0.15em] text-navy-500 mb-1 ml-1">Confirmar Nuevo PIN</label>
+                    <input type="password" id="change-pin-confirm" placeholder="••••" maxlength="6" class="input-premium text-center tracking-widest text-base font-black">
+                </div>
+                <p id="change-pin-error" class="hidden text-rose-600 text-[10px] font-extrabold uppercase mt-1 text-center"></p>
+            </div>
 
-                <div class="relative">
-                    <span class="absolute top-2 right-2 text-[8.5px] bg-white border border-slate-200 px-2 py-0.5 rounded text-navy-500 font-bold">Cuerpo del Oficio</span>
-                    <textarea id="email-preview-body" readonly class="w-full h-72 p-4 bg-slate-50 font-mono text-[10.5px] text-slate-800 border border-slate-200 rounded-xl leading-relaxed resize-none focus:outline-none focus:ring-0"></textarea>
+            <div class="flex gap-2">
+                <button onclick="closeChangePinModal()" class="flex-1 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-black uppercase tracking-wider rounded-xl transition-colors">Cancelar</button>
+                <button onclick="submitChangePin()" class="flex-1 py-2.5 bg-[#3B4995] hover:bg-[#141b3d] text-white text-xs font-black uppercase tracking-wider rounded-xl transition-all shadow-md">Actualizar Cloud</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Envío de Correo Formal -->
+    <div id="modal-email-dispatch" class="hidden fixed inset-0 bg-navy-900/80 backdrop-blur-md z-[200] flex items-center justify-center p-4">
+        <div class="glass-card max-w-xl w-full rounded-3xl p-6 shadow-2xl border border-white/20 text-left">
+            <div class="flex justify-between items-center border-b border-slate-200 pb-3 mb-4">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-emerald-100 text-emerald-700 rounded-lg flex items-center justify-center">
+                        <i data-lucide="mail" class="w-4.5 h-4.5"></i>
+                    </div>
+                    <h3 class="font-bold text-navy-900 text-base uppercase tracking-tight">Enviar Oficio Formal</h3>
+                </div>
+                <button onclick="closeEmailModal()" class="text-slate-400 hover:text-slate-600 transition-colors">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <div class="space-y-3.5 text-xs">
+                <div>
+                    <span class="block text-[8px] font-black uppercase tracking-wider text-navy-400 mb-0.5">Destinatario Principal:</span>
+                    <p class="font-bold text-navy-900 bg-slate-50 p-1.5 rounded-lg border border-slate-200">deptopsicopedagogico@ceut.edu.mx</p>
+                </div>
+                <div>
+                    <span class="block text-[8px] font-black uppercase tracking-wider text-navy-400 mb-0.5">Copia de Conocimiento (CC):</span>
+                    <p class="font-bold text-slate-600 bg-slate-50 p-1.5 rounded-lg border border-slate-200">luz.ortega@ceut.edu.mx, samuel.roldan@ceut.edu.mx, miroslava.hoyos@ceut.edu.mx</p>
+                </div>
+                <div>
+                    <span class="block text-[8px] font-black uppercase tracking-wider text-navy-400 mb-0.5">Asunto Preconfigurado:</span>
+                    <p id="email-preview-subject" class="font-bold text-navy-900 bg-slate-50 p-1.5 rounded-lg border border-slate-200 text-justify"></p>
+                </div>
+                <div>
+                    <span class="block text-[8px] font-black uppercase tracking-wider text-navy-400 mb-0.5">Vista Previa de Oficio Escrito:</span>
+                    <textarea id="email-preview-body" readonly class="w-full h-40 bg-slate-50 p-3 rounded-xl border border-slate-200 font-mono text-[10px] leading-relaxed resize-none text-navy-900 text-justify"></textarea>
                 </div>
             </div>
 
-            <div class="flex flex-col sm:flex-row gap-2 shrink-0 pt-2 border-t border-slate-200">
-                <button onclick="copyEmailBody()" class="flex-1 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-black uppercase tracking-wider rounded-xl transition-colors flex items-center justify-center gap-1.5">
-                    <i data-lucide="copy" class="w-4 h-4"></i> Copiar Cuerpo del Oficio
+            <div class="flex gap-2 mt-5">
+                <button onclick="copyEmailBody()" class="flex-1 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-black uppercase tracking-wider rounded-xl transition-colors flex items-center justify-center gap-1.5">
+                    <i data-lucide="copy" class="w-4.5 h-4.5"></i> Copiar Cuerpo
                 </button>
-                <button id="btn-trigger-mailto" class="flex-1 py-3 bg-[#3B4995] hover:bg-[#141b3d] text-white text-xs font-black uppercase tracking-wider rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5">
-                    <i data-lucide="external-link" class="w-4 h-4 text-gold-400"></i> Abrir Gestor de Correo (Mailto)
+                <button id="btn-trigger-client-email" class="flex-1 py-2.5 bg-[#3B4995] hover:bg-[#141b3d] text-white text-xs font-black uppercase tracking-wider rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5">
+                    <i data-lucide="external-link" class="w-4.5 h-4.5 text-gold-400"></i> Abrir Outlook / Mail
                 </button>
             </div>
         </div>
@@ -806,11 +855,65 @@
                 <i data-lucide="alert-circle" class="w-6 h-6"></i>
             </div>
             <h3 class="font-bold text-navy-900 text-lg uppercase tracking-tight" id="confirm-title">¿Estás seguro?</h3>
-            <p class="text-xs text-navy-500 mt-1 font-semibold" id="confirm-desc">Esta acción borrará permanentemente todos tus cambios actuales.</p>
+            <p class="text-xs text-navy-500 mt-1 font-semibold text-justify" id="confirm-desc">Esta acción borrará permanentemente todos tus cambios actuales.</p>
             
             <div class="flex gap-2 mt-5">
                 <button id="btn-confirm-cancel" class="flex-1 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-black uppercase tracking-wider rounded-xl transition-colors">Cancelar</button>
                 <button id="btn-confirm-action" class="flex-1 py-2.5 bg-rose-600 hover:bg-rose-700 text-white text-xs font-black uppercase tracking-wider rounded-xl transition-all shadow-md">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Agradecimiento, Seguimiento y Vista Previa del PDF -->
+    <div id="modal-post-submission" class="hidden fixed inset-0 bg-navy-900/90 backdrop-blur-md z-[220] flex items-center justify-center p-2 sm:p-4">
+        <div class="glass-card max-w-4xl w-full rounded-3xl p-4 sm:p-6 shadow-2xl border border-white/20 flex flex-col md:flex-row gap-6 max-h-[95vh] overflow-hidden">
+            <!-- Left Pane: Agradecimiento, Garantía y Acciones -->
+            <div class="flex-1 flex flex-col justify-between text-left space-y-4 md:max-w-md">
+                <div class="space-y-3">
+                    <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center shadow-md shrink-0">
+                        <i data-lucide="shield-check" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="font-serif italic text-2xl sm:text-3xl text-[#141b3d] font-bold leading-tight">¡Agradecemos su Reporte Docente!</h3>
+                    <div class="space-y-3 text-xs text-navy-900/80 font-medium leading-relaxed">
+                        <p class="text-justify">
+                            Su canalización ha sido registrada y resguardada de forma segura en nuestro servidor en la nube de Firebase.
+                        </p>
+                        <p class="border-l-4 border-emerald-500 pl-3 bg-emerald-50/50 py-2.5 rounded-r-xl text-justify">
+                            <strong>Garantía de Seguimiento y Confidencialidad:</strong><br>
+                            El Departamento de Psicopedagogía y la Dirección Académica del Centro Universitario Tehuacán le garantizan que este reporte será procesado bajo el más estricto protocolo de confidencialidad institucional, respetando plenamente los lineamientos de la LFPDPPP. Se asignará un asesor psicopedagógico de inmediato para estructurar el plan de acompañamiento del alumno.
+                        </p>
+                        <p class="text-justify">
+                            Puede descargar la ficha de canalización oficial para su registro personal o enviarla por correo de inmediato a las cuentas correspondientes utilizando las opciones de abajo.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Botones de Acción -->
+                <div class="space-y-2 pt-2 border-t border-slate-100">
+                    <button id="btn-post-download" class="w-full py-3 bg-[#3B4995] hover:bg-[#141b3d] text-white text-xs font-black uppercase tracking-wider rounded-xl transition-all shadow-md flex items-center justify-center gap-2">
+                        <i data-lucide="download-cloud" class="w-4.5 h-4.5 text-gold-400"></i> Descargar PDF Oficial
+                    </button>
+                    <button id="btn-post-email" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black uppercase tracking-wider rounded-xl transition-all shadow-md flex items-center justify-center gap-2">
+                        <i data-lucide="mail-plus" class="w-4.5 h-4.5"></i> Enviar Correo CC
+                    </button>
+                    <button onclick="closePostSubmissionModal()" class="w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-black uppercase tracking-wider rounded-xl transition-colors text-center font-bold">
+                        Finalizar y Volver al Inicio
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Right Pane: Vista Previa Real del Oficio -->
+            <div class="flex-1 bg-slate-100 rounded-2xl p-3 border border-slate-200 flex flex-col max-h-[40vh] md:max-h-[80vh] overflow-hidden shadow-inner">
+                <div class="flex justify-between items-center pb-2 mb-2 border-b border-slate-200">
+                    <span class="text-[9px] font-black uppercase tracking-wider text-slate-400 flex items-center gap-1">
+                        <i data-lucide="eye" class="w-3.5 h-3.5 text-navy-500"></i> Vista Previa Digital del Oficio
+                    </span>
+                    <span class="bg-navy-900 text-[8px] font-bold text-white px-2 py-0.5 rounded tracking-wide uppercase font-mono">1 Hoja Carta</span>
+                </div>
+                <!-- Contenedor scrollable de la miniatura de la hoja -->
+                <div class="flex-grow overflow-y-auto bg-white p-4 rounded-xl border border-slate-300 shadow-lg text-[9.5px] text-black text-left space-y-3 font-sans" id="mini-preview-sheet">
+                    <!-- Rellenado dinámicamente con JS -->
+                </div>
             </div>
         </div>
     </div>
@@ -827,7 +930,6 @@
         import { getFirestore, collection, doc, setDoc, onSnapshot, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // --- CONFIGURACIÓN DE FIREBASE ---
-        // Variables proveídas por el entorno o con tus credenciales oficiales de producción
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'reportedocente-ceut-app';
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
             apiKey: "AIzaSyCVgbSlImT02t1SMJ6RljHpzpDDJPBKMxk",
@@ -847,8 +949,10 @@
         let editModeId = null;
         let currentUser = null;
         let unsubscribeReports = null;
+        let unsubscribePin = null;
+        let currentSecurityPin = "1015"; // PIN de seguridad predeterminado en producción (1015)
 
-        // --- REGLA 3: AUTENTICACIÓN CON PRIORIDAD ---
+        // --- AUTENTICACIÓN CON PRIORIDAD ---
         const initAuth = async () => {
             try {
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
@@ -868,15 +972,14 @@
         onAuthStateChanged(auth, (user) => {
             currentUser = user;
             if (user) {
-                // Muestra el ID de usuario completo en la barra de navegación para auditoría
                 const idLabel = document.getElementById('firebase-user-id');
                 const statusDot = document.getElementById('db-status-dot');
                 if (idLabel) idLabel.textContent = user.uid;
                 if (statusDot) {
                     statusDot.className = "w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0";
                 }
-                // Escucha en tiempo real la colección de Firestore
                 subscribeToReports();
+                subscribeToPin();
             } else {
                 const statusDot = document.getElementById('db-status-dot');
                 if (statusDot) {
@@ -886,22 +989,19 @@
             }
         });
 
-        // --- REGLA 1 Y 2: SUSCRIPCIÓN ESTRICTA DE FIRESTORE ---
+        // --- SUSCRIPCIÓN ESTRICTA DE FIRESTORE ---
         function subscribeToReports() {
             if (!currentUser) return;
             if (unsubscribeReports) unsubscribeReports();
 
-            // RUTA ESTRICTA (REGLA 1): /artifacts/{appId}/public/data/{collectionName}
             const reportsCollection = collection(db, 'artifacts', appId, 'public', 'data', 'reportes');
 
-            // REGLA 2: No utilizar filtros complejos en consulta directa para evitar necesidad de índices
             unsubscribeReports = onSnapshot(reportsCollection, (snapshot) => {
                 database = [];
                 snapshot.forEach((doc) => {
                     database.push({ id: doc.id, ...doc.data() });
                 });
 
-                // Ordenación en memoria del cliente para evitar errores de índices compuestos en consultas complejas
                 database.sort((a, b) => {
                     const dateA = new Date(a.rawDate || 0);
                     const dateB = new Date(b.rawDate || 0);
@@ -910,13 +1010,52 @@
 
                 updateHistoryBadge();
                 
-                // Si la vista de historial está activa, re-renderiza
                 if (!document.getElementById('view-history').classList.contains('hidden')) {
                     renderHistory();
                 }
             }, (error) => {
                 console.error("Fallo en suscripción Firestore: ", error);
-                showToast("Fallo al descargar actualizaciones remota", "error");
+                showToast("Fallo al descargar actualizaciones de la nube", "error");
+            });
+        }
+
+        // --- LISTENERS DE TECLADO (TECLA ENTER) ---
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('passcode-input').addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    validatePasscode();
+                }
+            });
+
+            const changeInputs = ['change-pin-current', 'change-pin-new', 'change-pin-confirm'];
+            changeInputs.forEach(id => {
+                document.getElementById(id).addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        submitChangePin();
+                    }
+                });
+            });
+            checkAutosaveDraft();
+        });
+
+        // --- SISTEMA DE CONTROL DE PIN EN LA NUBE ---
+        function subscribeToPin() {
+            if (!currentUser) return;
+            if (unsubscribePin) unsubscribePin();
+
+            const pinDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'config', 'security_pin');
+
+            unsubscribePin = onSnapshot(pinDocRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    currentSecurityPin = docSnap.data().pin || "1015";
+                } else {
+                    currentSecurityPin = "1015";
+                    setDoc(pinDocRef, { pin: "1015" }).catch(e => console.warn("Inicializando PIN en la nube:", e));
+                }
+            }, (error) => {
+                console.error("Fallo al conectarse al servicio de PIN:", error);
             });
         }
 
@@ -961,10 +1100,10 @@
         }
 
         function validatePasscode() {
-            const password = document.getElementById('passcode-input').value;
+            const pinValue = document.getElementById('passcode-input').value;
             const errorText = document.getElementById('passcode-error');
             
-            if (password === 'CEUT2026') {
+            if (pinValue === currentSecurityPin) {
                 historyUnlocked = true;
                 const lockIcon = document.getElementById('nav-lock-icon');
                 lockIcon.setAttribute('data-lucide', 'unlock');
@@ -990,6 +1129,58 @@
             lucide.createIcons();
             showToast('Historial bloqueado y encriptado', 'info');
             switchTab('form');
+        }
+
+        // --- SISTEMA DE MODIFICACIÓN DE PIN ---
+        function openChangePinModal() {
+            document.getElementById('modal-change-pin').classList.remove('hidden');
+            document.getElementById('change-pin-current').focus();
+        }
+
+        function closeChangePinModal() {
+            document.getElementById('modal-change-pin').classList.add('hidden');
+            document.getElementById('change-pin-current').value = '';
+            document.getElementById('change-pin-new').value = '';
+            document.getElementById('change-pin-confirm').value = '';
+            document.getElementById('change-pin-error').classList.add('hidden');
+        }
+
+        async function submitChangePin() {
+            const currentVal = document.getElementById('change-pin-current').value;
+            const newVal = document.getElementById('change-pin-new').value;
+            const confirmVal = document.getElementById('change-pin-confirm').value;
+            const errorText = document.getElementById('change-pin-error');
+
+            errorText.classList.add('hidden');
+
+            if (currentVal !== currentSecurityPin) {
+                errorText.textContent = "El PIN actual introducido es incorrecto.";
+                errorText.classList.remove('hidden');
+                return;
+            }
+
+            if (newVal.length < 4) {
+                errorText.textContent = "El nuevo PIN debe tener al menos 4 dígitos.";
+                errorText.classList.remove('hidden');
+                return;
+            }
+
+            if (newVal !== confirmVal) {
+                errorText.textContent = "La confirmación no coincide con el nuevo PIN.";
+                errorText.classList.remove('hidden');
+                return;
+            }
+
+            try {
+                const pinDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'config', 'security_pin');
+                await setDoc(pinDocRef, { pin: newVal });
+                
+                showToast('PIN de seguridad modificado exitosamente en la nube', 'success');
+                closeChangePinModal();
+            } catch (error) {
+                console.error("Fallo al reescribir PIN:", error);
+                showToast("Error de conexión. No se pudo actualizar el PIN.", "error");
+            }
         }
 
         // --- TOAST NOTIFICATIONS ---
@@ -1019,7 +1210,7 @@
             toast.className += ` ${borderStyle}`;
             toast.innerHTML = `
                 <div class="shrink-0 ${iconColor}"><i data-lucide="${icon}" class="w-4.5 h-4.5"></i></div>
-                <div class="text-navy-900 leading-snug flex-grow">${message}</div>
+                <div class="text-navy-900 leading-snug flex-grow text-justify">${message}</div>
                 <button class="text-slate-400 hover:text-slate-600 transition-colors" onclick="this.parentElement.remove()"><i data-lucide="x" class="w-3.5 h-3.5"></i></button>
             `;
 
@@ -1199,7 +1390,40 @@
             showToast('Formulario autocompletado con éxito en modo simulador', 'success');
         }
 
-        // --- FORM SUBMIT DISPATCHER ---
+        // --- SISTEMA DE CORREO FORMAL MULTIDESTINATARIO ---
+        function dispatchFormalEmail(report) {
+            const subject = `OFICIO OFICIAL: Canalización Psicopedagógica - ${report.alumno_nombre} (${report.estudiante_especificacion})`;
+            
+            const body = `CENTRO UNIVERSITARIO TEHUACÁN (CEUT)\nDEPARTAMENTO DE PSICOPEDAGOGÍA Y DIRECCIÓN ACADÉMICA\n\nASUNTO: FICHA DE CANALIZACIÓN DOCENTE OFICIAL\nFECHA DE REGISTRO: ${report.timestamp}\nID EXPEDIENTE: ${report.id}\n\nEstimado Departamento de Psicopedagogía,\n\nPor medio del presente oficio institucional, comparto el expediente de canalización detallado de conformidad con la Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP). A continuación se asientan los datos oficiales:\n\n1. DATOS DEL DOCENTE REMITENTE\n---------------------------------------------\nDocente: ${report.docente_nombre}\nMateria / Asignatura: ${report.materia}\nEmail de Contacto: ${report.docente_email}\n\n2. DATOS DEL ALUMNO Y EXPEDIENTE\n---------------------------------------------\nNombre Completo: ${report.alumno_nombre}\nCarrera / Área: ${report.estudiante_especificacion}\nNivel Educativo: ${report.nivel_educativo}\nSemestre/Cuatrimestre: ${report.estudiante_grado} | Grupo: ${report.estudiante_grupo}\nModalidad de Estudio: ${report.estudiante_modalidad}\n\n3. DETALLES DE LA INCIDENCIA\n---------------------------------------------\nMotivo Principal: ${report.motivo}\nPrioridad de Atención: ${report.prioridad}\n\nDescripción Detallada de los Hechos:\n"${report.descripcion}"\n\n4. ACCIONES DOCENTES PREVIAS IMPLEMENTADAS\n---------------------------------------------\nMedidas Registradas: ${report.acciones.join(', ') || 'Ninguna'}\nObservaciones Adicionales: ${report.observaciones_acciones || 'Sin observaciones registradas.'}\n\n---------------------------------------------\nDECLARACIÓN DE VERACIDAD:\nEl docente firmante bajo protesta de decir verdad valida que la información asentada en esta ficha electrónica es verídica, objetiva y respaldada por registros oficiales de desempeño.\n\nAtentamente,\n\n${report.docente_nombre}\nCátedra Docente - Centro Universitario Tehuacán (CEUT)`;
+
+            document.getElementById('email-preview-subject').textContent = subject;
+            document.getElementById('email-preview-body').value = body;
+
+            const toEmail = "deptopsicopedagogico@ceut.edu.mx";
+            const ccEmails = "luz.ortega@ceut.edu.mx,samuel.roldan@ceut.edu.mx,miroslava.hoyos@ceut.edu.mx";
+            const mailtoUrl = `mailto:${toEmail}?cc=${ccEmails}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+            const triggerButton = document.getElementById('btn-trigger-client-email');
+            triggerButton.onclick = () => {
+                window.location.href = mailtoUrl;
+                showToast("Abriendo cliente de correo institucional...", "success");
+            };
+
+            document.getElementById('modal-email-dispatch').classList.remove('hidden');
+        }
+
+        function closeEmailModal() {
+            document.getElementById('modal-email-dispatch').classList.add('hidden');
+        }
+
+        function copyEmailBody() {
+            const textarea = document.getElementById('email-preview-body');
+            textarea.select();
+            document.execCommand('copy');
+            showToast("Oficio de correo copiado al portapapeles", "success");
+        }
+
+        // --- ENVÍO DEL FORMULARIO PRINCIPAL ---
         async function handleFormSubmit(event) {
             event.preventDefault();
 
@@ -1231,7 +1455,6 @@
             });
 
             try {
-                // RUTA ESTRICTA (REGLA 1): doc(db, 'artifacts', appId, 'public', 'data', 'reportes', reportId)
                 const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'reportes', reportId);
                 await setDoc(docRef, reportData);
 
@@ -1241,7 +1464,7 @@
                 } else {
                     clearDraft();
                     showToast('Canalización registrada y guardada en Firebase', 'success');
-                    offerAfterActions(reportData);
+                    openPostSubmissionModal(reportData);
                 }
                 
                 form.reset();
@@ -1252,119 +1475,9 @@
             }
         }
 
-        // --- MODAL POST-ENVÍO OFRECER CORREO O PDF ---
-        async function offerAfterActions(report) {
-            const choice = await openConfirmModal(
-                '¿Cómo deseas proceder con el reporte?', 
-                `La canalización de ${report.alumno_nombre} ha sido guardada de manera segura. Para completar el protocolo institucional, puedes descargar el PDF membretado o abrir la plantilla de correo formal dirigida a Psicopedagogía con copia a todos los contactos de Dirección Académica.`, 
-                'Notificar por Correo Oficial', 
-                'navy'
-            );
-            
-            if (choice) {
-                openEmailPreview(report);
-            } else {
-                triggerPDFExport(report);
-            }
-        }
-
-        // --- SISTEMA DE CORREO ELECTRÓNICO INSTITUCIONAL FORMAL ---
-        function generateFormalEmailBody(report) {
-            const accionesText = report.acciones.length > 0 
-                ? report.acciones.map(a => `   - ${a}`).join('\n') 
-                : '   - Ninguna acción previa registrada.';
-
-            const obsAct = report.observaciones_acciones 
-                ? `OBSERVACIONES DE LAS ACCIONES TOMADAS:\n${report.observaciones_acciones}` 
-                : 'OBSERVACIONES DE LAS ACCIONES TOMADAS:\nSin observaciones adicionales registradas.';
-
-            return `CENTRO UNIVERSITARIO TEHUACÁN (CEUT)
-DIRECCIÓN ACADÉMICA / DEPARTAMENTO DE PSICOPEDAGOGÍA
-OFICIO DIGITAL DE CANALIZACIÓN DOCENTE - ID: ${report.id}
-
-Estimado personal del Departamento de Psicopedagogía,
-
-Por medio de la presente, y en estricto cumplimiento de los protocolos de acompañamiento estudiantil del Centro Universitario Tehuacán (CEUT), me dirijo a ustedes para realizar la CANALIZACIÓN FORMAL del siguiente alumno, habiendo detectado incidencias que requieren de su valiosa intervención especializada:
-
-DATOS DEL ALUMNO:
-----------------------------------------------------------------------
-Nombre Completo:      ${report.alumno_nombre}
-Nivel Educativo:      ${report.nivel_educativo}
-Grado y Grupo:        ${report.estudiante_grado} - Grupo: ${report.estudiante_grupo}
-Carrera/Especialidad: ${report.estudiante_especificacion}
-Modalidad de Estudio: ${report.estudiante_modalidad}
-
-DETALLES DE LA INCIDENCIA:
-----------------------------------------------------------------------
-Motivo de Canalización: ${report.motivo}
-Nivel de Prioridad:     ${report.prioridad}
-Fecha de Registro:      ${report.timestamp}
-
-DESCRIPCIÓN DE LA SITUACIÓN OBSERVADA:
-${report.descripcion}
-
-ACCIONES DOCENTES IMPLEMENTADAS PREVIAMENTE:
-${accionesText}
-
-${obsAct}
-
-----------------------------------------------------------------------
-AVISO DE CONFIDENCIALIDAD (LFPDPPP):
-Toda la información contenida en el presente oficio es de carácter confidencial y de uso exclusivo institucional. Su divulgación no autorizada está sancionada por la Ley Federal de Protección de Datos Personales en Posesión de los Particulares.
-
-Quedo a su entera disposición y colaboración para la estructuración de la ruta pedagógica o terapéutica que consideren pertinente para el bienestar integral de nuestro estudiante.
-
-Atentamente,
-
-${report.docente_nombre}
-${report.docente_email}
-Docente Remitente - Centro Universitario Tehuacán (CEUT)
-`;
-        }
-
-        function openEmailPreview(report) {
-            const modal = document.getElementById('modal-email-preview');
-            const subjectInput = `OFICIO FORMAL DE CANALIZACIÓN - Estudiante: ${report.alumno_nombre} [${report.id}]`;
-            const bodyContent = generateFormalEmailBody(report);
-
-            document.getElementById('email-preview-subject').innerHTML = `<span class="text-navy-900 font-bold uppercase text-[9.5px] block">Asunto:</span> ${subjectInput}`;
-            document.getElementById('email-preview-body').value = bodyContent;
-
-            // Configurar mailto integrado
-            const to = 'deptopsicopedagogico@ceut.edu.mx';
-            const cc = 'luz.ortega@ceut.edu.mx,samuel.roldan@ceut.edu.mx,miroslava.hoyos@ceut.edu.mx';
-            
-            const btnMailto = document.getElementById('btn-trigger-mailto');
-            btnMailto.onclick = () => {
-                const mailtoUrl = `mailto:${to}?cc=${cc}&subject=${encodeURIComponent(subjectInput)}&body=${encodeURIComponent(bodyContent)}`;
-                window.location.href = mailtoUrl;
-                showToast('Abriendo gestor de correo...', 'success');
-            };
-
-            modal.classList.remove('hidden');
-        }
-
-        function closeEmailPreview() {
-            document.getElementById('modal-email-preview').classList.add('hidden');
-        }
-
-        function copyEmailBody() {
-            const textarea = document.getElementById('email-preview-body');
-            textarea.select();
-            textarea.setSelectionRange(0, 99999); // Para móviles
-            
-            try {
-                document.execCommand('copy');
-                showToast('Oficio formal copiado al portapapeles', 'success');
-            } catch (err) {
-                showToast('No se pudo copiar el texto', 'error');
-            }
-        }
-
-        // --- SISTEMA DE IMPRESIÓN Y PDF (HTML2PDF) ---
+        // --- CORRECCIÓN DEFINITIVA DE PDF EN BLANCO: MÉTODO ON-STAGE CON TIMEOUT ---
         function triggerPDFExport(report) {
-            const printTemplate = document.getElementById('printable-template');
-            
+            // 1. Popular todos los campos dinámicos reales en la plantilla de impresión
             document.getElementById('p-docente').textContent = report.docente_nombre;
             document.getElementById('p-materia').textContent = report.materia;
             document.getElementById('p-email').textContent = report.docente_email;
@@ -1378,40 +1491,155 @@ Docente Remitente - Centro Universitario Tehuacán (CEUT)
             document.getElementById('p-prioridad').textContent = report.prioridad;
             document.getElementById('p-descripcion').textContent = report.descripcion;
             document.getElementById('print-date').textContent = `Fecha de Registro: ${report.timestamp.split(',')[0]}`;
-            document.getElementById('print-id').textContent = `ID: ${report.id}`;
+            document.getElementById('print-id').textContent = `Ref: ${report.id}`;
             document.getElementById('p-firma-docente').textContent = report.docente_nombre;
 
             const accionesContainer = document.getElementById('p-acciones-list');
             accionesContainer.innerHTML = '';
             if (report.acciones && report.acciones.length > 0) {
                 report.acciones.forEach(acc => {
-                    const el = document.createElement('p');
-                    el.className = 'font-bold flex items-center gap-1 text-[#141b3d]';
-                    el.innerHTML = `✓ <span class="text-black font-semibold">${acc}</span>`;
+                    const el = document.createElement('span');
+                    el.className = 'font-bold flex items-center gap-1 text-[#141b3d] shrink-0';
+                    el.innerHTML = `✓ <span class="text-black font-semibold text-[9px]">${acc}</span>`;
                     accionesContainer.appendChild(el);
                 });
             } else {
-                accionesContainer.innerHTML = `<p class="italic text-gray-400 font-bold">Sin acciones registradas con antelación.</p>`;
+                accionesContainer.innerHTML = `<span class="italic text-gray-400 font-bold text-[9px]">Sin acciones registradas con antelación.</span>`;
             }
 
-            document.getElementById('p-acciones-obs').textContent = report.observaciones_acciones || 'Sin observaciones adicionales registradas.';
+            document.getElementById('p-acciones-obs').textContent = report.observaciones_acciones || 'Ninguna observación adicional provista.';
 
-            const opt = {
-                margin:       10,
-                filename:     `Canalizacion_CEUT_${report.alumno_nombre.replace(/\s+/g, '_')}.pdf`,
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2.5, useCORS: true, logging: false },
-                jsPDF:        { unit: 'mm', format: 'letter', orientation: 'portrait' }
-            };
+            // 2. Clonación, posicionamiento seguro on-stage e impresión asíncrona garantizada
+            const originalTemplate = document.getElementById('printable-template');
+            const clone = originalTemplate.cloneNode(true);
+            clone.id = 'temp-printable-pdf-document';
+            clone.classList.remove('hidden');
 
-            printTemplate.classList.remove('hidden');
-            html2pdf().set(opt).from(printTemplate).save().then(() => {
-                printTemplate.classList.add('hidden');
-                showToast('Archivo PDF descargado con éxito', 'success');
-            }).catch(err => {
-                printTemplate.classList.add('hidden');
-                showToast('Error al estructurar el PDF', 'error');
-            });
+            const wrapper = document.createElement('div');
+            wrapper.style.position = 'fixed';
+            wrapper.style.top = '0';
+            wrapper.style.left = '0';
+            wrapper.style.width = '215.9mm';
+            wrapper.style.height = '279.4mm';
+            wrapper.style.zIndex = '-99999';
+            wrapper.style.opacity = '1';
+            wrapper.style.pointerEvents = 'none';
+            wrapper.style.backgroundColor = '#ffffff';
+
+            wrapper.appendChild(clone);
+            document.body.appendChild(wrapper);
+
+            // Permitimos al navegador renderizar y calcular las dimensiones reales del viewport de la hoja Carta
+            setTimeout(() => {
+                const opt = {
+                    margin:       0,
+                    filename:     `Canalizacion_CEUT_${report.alumno_nombre.replace(/\s+/g, '_')}.pdf`,
+                    image:        { type: 'jpeg', quality: 0.98 },
+                    html2canvas:  { 
+                        scale: 2, 
+                        useCORS: true, 
+                        allowTaint: false,
+                        logging: false,
+                        scrollX: 0,
+                        scrollY: 0
+                    },
+                    jsPDF:        { unit: 'mm', format: 'letter', orientation: 'portrait' }
+                };
+
+                html2pdf().set(opt).from(clone).save().then(() => {
+                    document.body.removeChild(wrapper);
+                    showToast('Ficha oficial membretada descargada con éxito', 'success');
+                }).catch(err => {
+                    console.error("Error al exportar:", err);
+                    document.body.removeChild(wrapper);
+                    showToast('Error al estructurar el PDF', 'error');
+                });
+            }, 150);
+        }
+
+        // --- MODAL PREMIUM POST-ENVÍO (VISTA PREVIA Y AGRADECIMIENTO) ---
+        function openPostSubmissionModal(report) {
+            const previewContainer = document.getElementById('mini-preview-sheet');
+            
+            const accionesHTML = report.acciones && report.acciones.length > 0 
+                ? report.acciones.map(acc => `<p class="font-bold flex items-center gap-1 text-[#141b3d]">✓ <span class="text-black font-semibold text-[8.5px]">${acc}</span></p>`).join('')
+                : `<p class="italic text-gray-400 font-bold text-[8.5px]">Sin acciones registradas con antelación.</p>`;
+
+            previewContainer.innerHTML = `
+                <div class="border-b border-[#141b3d] pb-2 flex items-center justify-between">
+                    <div class="flex items-center gap-1.5">
+                        <div class="w-6 h-6 shrink-0">
+                            <img src="https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2" alt="Logo" class="w-full h-full object-contain">
+                        </div>
+                        <div>
+                            <h4 class="text-[7.5px] font-black text-[#141b3d] uppercase leading-none">Centro Universitario Tehuacán</h4>
+                            <p class="text-[5px] text-amber-500 font-bold uppercase mt-0.5">Departamento de Psicopedagogía</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <span class="bg-[#141b3d] text-white text-[5px] font-black px-1 py-0.5 rounded uppercase font-mono">Ficha Oficial</span>
+                        <p class="text-[5px] text-gray-500 mt-0.5">ID: ${report.id}</p>
+                    </div>
+                </div>
+                
+                <h5 class="text-center italic font-bold text-[#141b3d] text-[9px] mt-1">Ficha de Canalización de Alumnos</h5>
+
+                <div class="space-y-2 text-[8px] leading-tight">
+                    <div>
+                        <span class="bg-gray-100 text-[#141b3d] font-bold px-1.5 py-0.5 text-[6.5px] uppercase block border-l-2 border-amber-500">1. Datos del Docente Remitente</span>
+                        <div class="grid grid-cols-2 gap-1 mt-1 pl-1">
+                            <p><strong>Docente:</strong> ${report.docente_nombre}</p>
+                            <p><strong>Materia:</strong> ${report.materia}</p>
+                            <p class="col-span-2"><strong>Email:</strong> ${report.docente_email}</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <span class="bg-gray-100 text-[#141b3d] font-bold px-1.5 py-0.5 text-[6.5px] uppercase block border-l-2 border-amber-500">2. Datos de Alumno y Expediente</span>
+                        <div class="grid grid-cols-3 gap-1 mt-1 pl-1">
+                            <p class="col-span-3"><strong>Nombre Alumno:</strong> ${report.alumno_nombre}</p>
+                            <p><strong>Nivel:</strong> ${report.nivel_educativo}</p>
+                            <p><strong>Grado:</strong> ${report.estudiante_grado}</p>
+                            <p><strong>Grupo:</strong> ${report.estudiante_grupo}</p>
+                            <p class="col-span-2"><strong>Carrera:</strong> ${report.estudiante_especificacion}</p>
+                            <p><strong>Modalidad:</strong> ${report.estudiante_modalidad}</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <span class="bg-gray-100 text-[#141b3d] font-bold px-1.5 py-0.5 text-[6.5px] uppercase block border-l-2 border-amber-500">3. Detalles de la Incidencia</span>
+                        <div class="grid grid-cols-2 gap-1 mt-1 pl-1">
+                            <p><strong>Motivo:</strong> <span class="text-red-700 font-bold">${report.motivo}</span></p>
+                            <p><strong>Prioridad:</strong> ${report.prioridad}</p>
+                        </div>
+                        <div class="mt-1 p-1.5 bg-gray-50 rounded border border-gray-200 text-justify text-gray-700 text-[7px] leading-relaxed max-h-[80px] overflow-y-auto font-medium">
+                            ${report.descripcion}
+                        </div>
+                    </div>
+
+                    <div>
+                        <span class="bg-gray-100 text-[#141b3d] font-bold px-1.5 py-0.5 text-[6.5px] uppercase block border-l-2 border-amber-500">4. Acciones Previas Implementadas</span>
+                        <div class="mt-1 pl-1 space-y-1">
+                            <div class="space-y-0.5">${accionesHTML}</div>
+                            <p class="text-justify"><strong>Observaciones de Medidas:</strong> ${report.observaciones_acciones || 'Sin observaciones adicionales.'}</p>
+                        </div>
+                    </div>
+
+                    <div class="pt-2 border-t border-gray-100 text-center text-gray-400 text-[5.5px] font-bold text-justify">
+                        Documento de uso confidencial institucional protegido bajo la LFPDPPP. Dirección Académica CEUT.
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('btn-post-download').onclick = () => triggerPDFExport(report);
+            document.getElementById('btn-post-email').onclick = () => dispatchFormalEmail(report);
+
+            document.getElementById('modal-post-submission').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closePostSubmissionModal() {
+            document.getElementById('modal-post-submission').classList.add('hidden');
         }
 
         // --- HISTORIAL: RENDER Y FILTRADO ---
@@ -1448,15 +1676,14 @@ Docente Remitente - Centro Universitario Tehuacán (CEUT)
                     dotClass = 'bg-rose-600';
                 }
 
-                card.className = "p-4 rounded-2xl border border-slate-100 bg-white shadow-sm hover:shadow-md transition-all duration-300 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-left group";
+                card.className = "p-4 rounded-2xl border border-slate-100 bg-white shadow-sm hover:shadow-md transition-all duration-300 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-left group w-full";
                 card.setAttribute('data-student', report.alumno_nombre.toLowerCase());
                 card.setAttribute('data-teacher', report.docente_nombre.toLowerCase());
                 card.setAttribute('data-career', report.estudiante_especificacion.toLowerCase());
                 card.setAttribute('data-priority', report.prioridad);
 
-                // Exponemos de forma global el ID del reporte mediante strings literales
                 card.innerHTML = `
-                    <div class="space-y-1.5 flex-grow">
+                    <div class="space-y-1.5 flex-grow w-full md:w-auto">
                         <div class="flex flex-wrap items-center gap-2">
                             <span class="inline-flex items-center gap-1.5 text-[9px] font-black uppercase px-2.5 py-0.5 rounded-full border ${priorityClass}">
                                 <span class="w-1.5 h-1.5 rounded-full ${dotClass} animate-pulse"></span>
@@ -1472,13 +1699,13 @@ Docente Remitente - Centro Universitario Tehuacán (CEUT)
                         <p class="text-[9px] font-mono text-slate-400 mt-1 truncate">UID Autor: ${report.createdBy || 'Sistema'}</p>
                     </div>
                     <div class="flex flex-wrap items-center gap-2 w-full md:w-auto shrink-0 pt-3 md:pt-0 border-t border-slate-100 md:border-none">
-                        <button onclick="window.openEmailPreviewFromHistory('${report.id}')" class="flex-1 sm:flex-initial px-3.5 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 text-[10px] font-black uppercase tracking-wider rounded-lg flex items-center justify-center gap-1.5 transition-colors">
+                        <button onclick="window.dispatchFormalEmailFromHistory('${report.id}')" class="flex-grow sm:flex-initial px-3 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 text-[10px] font-black uppercase tracking-wider rounded-lg flex items-center justify-center gap-1.5 transition-colors">
                             <i data-lucide="mail" class="w-3.5 h-3.5"></i> Correo
                         </button>
-                        <button onclick="window.downloadReportFromHistory('${report.id}')" class="flex-1 sm:flex-initial px-3.5 py-2 bg-[#3B4995] hover:bg-[#141b3d] text-white text-[10px] font-black uppercase tracking-wider rounded-lg flex items-center justify-center gap-1.5 transition-colors">
+                        <button onclick="window.downloadReportFromHistory('${report.id}')" class="flex-grow sm:flex-initial px-3.5 py-2 bg-[#3B4995] hover:bg-[#141b3d] text-white text-[10px] font-black uppercase tracking-wider rounded-lg flex items-center justify-center gap-1.5 transition-colors">
                             <i data-lucide="download-cloud" class="w-3.5 h-3.5"></i> PDF
                         </button>
-                        <button onclick="window.startEditReport('${report.id}')" class="flex-1 sm:flex-initial px-3.5 py-2 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 text-[10px] font-black uppercase tracking-wider rounded-lg flex items-center justify-center gap-1.5 transition-colors">
+                        <button onclick="window.startEditReport('${report.id}')" class="flex-grow sm:flex-initial px-3.5 py-2 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 text-[10px] font-black uppercase tracking-wider rounded-lg flex items-center justify-center gap-1.5 transition-colors">
                             <i data-lucide="edit-3" class="w-3.5 h-3.5"></i> Editar
                         </button>
                         <button onclick="window.deleteReport('${report.id}')" class="p-2 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-lg flex items-center justify-center transition-colors">
@@ -1532,10 +1759,10 @@ Docente Remitente - Centro Universitario Tehuacán (CEUT)
             }
         }
 
-        function openEmailPreviewFromHistory(id) {
+        function dispatchFormalEmailFromHistory(id) {
             const report = database.find(r => r.id === id);
             if (report) {
-                openEmailPreview(report);
+                dispatchFormalEmail(report);
             }
         }
 
@@ -1571,7 +1798,6 @@ Docente Remitente - Centro Universitario Tehuacán (CEUT)
             const confirm = await openConfirmModal('Eliminar Canalización', `¿Estás seguro de eliminar de forma permanente de la nube el reporte del estudiante ${report.alumno_nombre}?`, 'Eliminar de Firebase', 'rose');
             if (confirm) {
                 try {
-                    // ELIMINAR DE FIRESTORE (REGLA 1): doc(db, 'artifacts', appId, 'public', 'data', 'reportes', id)
                     const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'reportes', id);
                     await deleteDoc(docRef);
                     showToast('Expediente eliminado de la nube con éxito', 'success');
@@ -1592,7 +1818,7 @@ Docente Remitente - Centro Universitario Tehuacán (CEUT)
             }
         }
 
-        // --- EXPOSICIÓN GLOBAL DE FUNCIONES PARA EVENTOS EN LÍNEA ---
+        // --- EXPOSICIÓN GLOBAL DE FUNCIONES ---
         window.switchTab = switchTab;
         window.requestHistoryAccess = requestHistoryAccess;
         window.closePasscodeModal = closePasscodeModal;
@@ -1605,14 +1831,19 @@ Docente Remitente - Centro Universitario Tehuacán (CEUT)
         window.handleFormSubmit = handleFormSubmit;
         window.resetFormWithConfirmation = resetFormWithConfirmation;
         window.downloadReportFromHistory = downloadReportFromHistory;
-        window.openEmailPreviewFromHistory = openEmailPreviewFromHistory;
+        window.dispatchFormalEmailFromHistory = dispatchFormalEmailFromHistory;
         window.startEditReport = startEditReport;
         window.cancelEditMode = cancelEditMode;
         window.deleteReport = deleteReport;
         window.filterHistory = filterHistory;
         window.updatePriorityVisuals = updatePriorityVisuals;
-        window.closeEmailPreview = closeEmailPreview;
+        window.closeEmailModal = closeEmailModal;
         window.copyEmailBody = copyEmailBody;
+        window.closePostSubmissionModal = closePostSubmissionModal;
+        
+        window.openChangePinModal = openChangePinModal;
+        window.closeChangePinModal = closeChangePinModal;
+        window.submitChangePin = submitChangePin;
     </script>
 
 </body>
