@@ -6,9 +6,9 @@
     <title>Canalización Docente | Centro Universitario Tehuacán</title>
     
     <!-- Enlace declarativo estático con el logotipo oficial de respaldo en la nube -->
-    <link rel="icon" id="favicon-static" href="https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2" type="image/png">
+    <link rel="icon" id="favicon-static" href="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview.png" type="image/png">
     
-    <!-- Script de inicialización de Favicon de Alta Fidelidad para forzar el logo local de la pestaña -->
+    <!-- Script de inicialización de Favicon de Alta Fidelidad para asegurar que el logo se vea en cada pestaña -->
     <script>
         (function() {
             const setFavicon = (url) => {
@@ -836,7 +836,7 @@
                 <div>
                     <label class="block text-[8px] font-black uppercase tracking-[0.15em] text-navy-500 mb-1 ml-1">Web3Forms Access Key</label>
                     <input type="text" id="email-access-key" placeholder="Pega tu Access Key aquí" class="input-premium text-sm font-mono">
-                    <p class="text-[9px] text-navy-400 mt-1">Consigue una gratis y al instante ingresando tu correo en <a href="https://web3forms.com/" target="_blank" class="text-gold-500 underline">web3forms.com</a>.</p>
+                    <p class="text-[9px] text-navy-400 mt-1">Consigue una gratis y al instante ingresando tu correo en <a href="https://web3forms.com/" target="_blank" class="text-gold-500 underline font-extrabold">web3forms.com</a>.</p>
                 </div>
                 <div>
                     <label class="block text-[8px] font-black uppercase tracking-[0.15em] text-navy-500 mb-1 ml-1">Correo Receptor Principal</label>
@@ -939,7 +939,7 @@
                         </p>
                         <p class="border-l-4 border-emerald-500 pl-3 bg-emerald-50/50 py-2.5 rounded-r-xl text-justify">
                             <strong>Garantía de Seguimiento y Confidencialidad:</strong><br>
-                            El Departamento de Psicopedagogía y la Dirección Académica del Centro Universitario Tehuacán le garantizan que este reporte será procesado bajo el más estricto protocolo de confidencialidad institucional, respetando plenamente los lineamientos de la LFPDPPP. Se asignará un asesor psicopedagógico de inmediato para para estructurar el plan de acompañamiento del alumno.
+                            El Departamento de Psicopedagogía y la Dirección Académica del Centro Universitario Tehuacán le garantizan que este reporte será procesado bajo el más estricto protocolo de confidencialidad institucional, respetando plenamente los lineamientos de la LFPDPPP. Se asignará un asesor psicopedagógico de inmediato para estructurar el plan de acompañamiento del alumno.
                         </p>
                         <p class="text-justify">
                             Puede descargar la ficha de canalización oficial para su registro personal o enviarla de forma 100% automatizada a Psicopedagogía sin necesidad de abrir clientes de correo externos.
@@ -1077,7 +1077,57 @@
             });
         }
 
-        // --- LISTENERS DE TECLADO (TECLA ENTER) Y STARTUP ---
+        // --- SISTEMA ASÍNCRONO DEL MODAL DE CONFIRMACIÓN (REEMPLAZA CONFIRM) ---
+        function openConfirmModal(title, desc, confirmText = 'Confirmar', theme = 'rose') {
+            return new Promise((resolve) => {
+                const modal = document.getElementById('modal-confirm');
+                const titleEl = document.getElementById('confirm-title');
+                const descEl = document.getElementById('confirm-desc');
+                const btnCancel = document.getElementById('btn-confirm-cancel');
+                const btnAction = document.getElementById('btn-confirm-action');
+                const iconBox = document.getElementById('confirm-icon-box');
+
+                titleEl.textContent = title;
+                descEl.textContent = desc;
+                btnAction.textContent = confirmText;
+
+                // Aplicar estilo de tema al modal
+                if (theme === 'rose') {
+                    iconBox.className = "w-12 h-12 bg-rose-100 rounded-2xl flex items-center justify-center mx-auto mb-4 text-rose-600";
+                    iconBox.innerHTML = '<i data-lucide="alert-triangle" class="w-6 h-6"></i>';
+                    btnAction.className = "flex-1 py-2.5 bg-rose-600 hover:bg-rose-700 text-white text-xs font-black uppercase tracking-wider rounded-xl transition-all shadow-md";
+                } else { 
+                    iconBox.className = "w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4 text-[#3B4995]";
+                    iconBox.innerHTML = '<i data-lucide="sparkles" class="w-6 h-6"></i>';
+                    btnAction.className = "flex-1 py-2.5 bg-[#3B4995] hover:bg-[#141b3d] text-white text-xs font-black uppercase tracking-wider rounded-xl transition-all shadow-md";
+                }
+                lucide.createIcons();
+
+                modal.classList.remove('hidden');
+
+                const handleCancel = () => {
+                    modal.classList.add('hidden');
+                    cleanup();
+                    resolve(false);
+                };
+
+                const handleConfirm = () => {
+                    modal.classList.add('hidden');
+                    cleanup();
+                    resolve(true);
+                };
+
+                const cleanup = () => {
+                    btnCancel.removeEventListener('click', handleCancel);
+                    btnAction.removeEventListener('click', handleConfirm);
+                };
+
+                btnCancel.addEventListener('click', handleCancel);
+                btnAction.addEventListener('click', handleConfirm);
+            });
+        }
+
+        // --- LISTENERS DE TECLADO Y STARTUP ---
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('passcode-input').addEventListener('keydown', (e) => {
                 if (e.key === 'Enter') {
@@ -1191,7 +1241,7 @@
             lockIcon.setAttribute('data-lucide', 'lock');
             lockIcon.className = "w-3 h-3 text-gold-400 opacity-90 transition-transform shrink-0";
             lucide.createIcons();
-            showToast('Historial bloqueado y encriptado', 'info');
+            showToast('Historial de canalizaciones bloqueado', 'info');
             switchTab('form');
         }
 
@@ -1483,7 +1533,7 @@ ID EXPEDIENTE: ${report.id || 'N/A'}
 
 Estimado Departamento de Psicopedagogía,
 
-Por medio del presente oficio institucional, comparto el expediente de canalización detallado de conformidad con la Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP). A continuación se asientan los datos oficiales:
+Por medio del presente oficio institucional, comparto el expediente de canalización de conformidad con la LFPDPPP. A continuación se asientan los datos oficiales:
 
 1. DATOS DEL DOCENTE REMITENTE
 ---------------------------------------------
