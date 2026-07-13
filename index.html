@@ -841,9 +841,10 @@
                 <button onclick="copyEmailBody()" class="flex-1 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-black uppercase tracking-wider rounded-xl transition-colors flex items-center justify-center gap-1.5">
                     <i data-lucide="copy" class="w-4.5 h-4.5"></i> Copiar Cuerpo
                 </button>
-                <button id="btn-trigger-client-email" class="flex-1 py-2.5 bg-[#3B4995] hover:bg-[#141b3d] text-white text-xs font-black uppercase tracking-wider rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5">
+                <!-- BOTÓN REESTRUCTURADO A ENLACE NATIVO PARA PREVENIR BLOQUEOS DE NAVEGACIÓN EN IFRAMES -->
+                <a id="btn-trigger-client-email" href="#" target="_blank" class="flex-1 py-2.5 bg-[#3B4995] hover:bg-[#141b3d] text-white text-xs font-black uppercase tracking-wider rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer">
                     <i data-lucide="external-link" class="w-4.5 h-4.5 text-gold-400"></i> Abrir Outlook / Mail
-                </button>
+                </a>
             </div>
         </div>
     </div>
@@ -1409,35 +1410,18 @@
                 const mailtoUrl = `mailto:${toEmail}?cc=${ccEmails}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
                 const triggerButton = document.getElementById('btn-trigger-client-email');
-                triggerButton.onclick = (e) => {
-                    e.preventDefault();
-                    
+                triggerButton.href = mailtoUrl;
+                triggerButton.onclick = () => {
                     // Copiar automáticamente al portapapeles como respaldo seguro por si el navegador bloquea el mailto
                     try {
                         const textarea = document.getElementById('email-preview-body');
                         textarea.select();
                         document.execCommand('copy');
-                        showToast("Contenido copiado al portapapeles como respaldo", "info");
+                        showToast("Oficio copiado al portapapeles de respaldo", "info");
                     } catch (err) {
                         console.warn("No se pudo copiar automáticamente:", err);
                     }
-
-                    // Creación y simulación de un elemento de anclaje físico (evita bloqueos de seguridad de iframe/sandbox)
-                    try {
-                        const mailAnchor = document.createElement('a');
-                        mailAnchor.href = mailtoUrl;
-                        mailAnchor.target = '_blank';
-                        mailAnchor.style.display = 'none';
-                        document.body.appendChild(mailAnchor);
-                        mailAnchor.click();
-                        setTimeout(() => {
-                            document.body.removeChild(mailAnchor);
-                        }, 100);
-                        showToast("Abriendo cliente de correo institucional...", "success");
-                    } catch (errorMail) {
-                        console.error("Fallo al ejecutar mailto:", errorMail);
-                        window.location.href = mailtoUrl;
-                    }
+                    showToast("Abriendo cliente de correo institucional...", "success");
                 };
 
                 document.getElementById('modal-email-dispatch').classList.remove('hidden');
