@@ -1513,80 +1513,40 @@
                 const accionesList = Array.isArray(report.acciones) ? report.acciones : [];
                 const accionesTexto = accionesList.join(', ') || 'Ninguna acción registrada con antelación.';
                 
-                const htmlContent = `
-                    <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; background-color: #ffffff; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
-                        <div style="background: linear-gradient(135deg, #141b3d 0%, #1e293b 100%); padding: 25px; color: #ffffff; text-align: center;">
-                            <h1 style="margin: 0; font-size: 20px; font-weight: 800; letter-spacing: 1px;">CEUT</h1>
-                            <p style="margin: 5px 0 0 0; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: #cbd5e1;">Centro Universitario Tehuacán</p>
-                            <p style="margin: 3px 0 0 0; font-size: 12px; color: #e6a700; font-weight: bold;">FICHA OFICIAL DE CANALIZACIÓN</p>
-                        </div>
-                        
-                        <div style="padding: 30px; color: #334155; line-height: 1.6;">
-                            <div style="display: flex; justify-content: space-between; font-size: 11px; color: #64748b; margin-bottom: 25px; border-bottom: 1px solid #f1f5f9; padding-bottom: 12px;">
-                                <div><strong>ID EXPEDIENTE:</strong> ${report.id}</div>
-                                <div style="text-align: right;"><strong>REGISTRO:</strong> ${report.timestamp}</div>
-                            </div>
-                            
-                            <div style="background-color: #f8fafc; border-left: 4px solid #3b4995; padding: 12px 15px; margin-bottom: 25px; border-radius: 0 8px 8px 0;">
-                                <span style="font-size: 10px; text-transform: uppercase; font-weight: bold; color: #3b4995; display: block; margin-bottom: 2px;">Motivo e Incidencia</span>
-                                <strong style="font-size: 13px; color: #1e293b;">${report.motivo}</strong>
-                                <span style="font-size: 11px; color: #64748b; display: block; margin-top: 4px;">Prioridad de Atención: <strong>${report.prioridad}</strong></span>
-                            </div>
-
-                            <div style="margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; padding-bottom: 15px;">
-                                <h3 style="font-size: 12px; font-weight: bold; color: #141b3d; margin: 0 0 10px 0; text-transform: uppercase; tracking-wider;">1. Datos del Docente Remitente</h3>
-                                <p style="margin: 0; font-size: 13px;"><strong>Docente:</strong> ${report.docente_nombre}</p>
-                                <p style="margin: 3px 0 0 0; font-size: 13px;"><strong>Asignatura:</strong> ${report.materia}</p>
-                                <p style="margin: 3px 0 0 0; font-size: 13px;"><strong>Email:</strong> ${report.docente_email}</p>
-                            </div>
-
-                            <div style="margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; padding-bottom: 15px;">
-                                <h3 style="font-size: 12px; font-weight: bold; color: #141b3d; margin: 0 0 10px 0; text-transform: uppercase; tracking-wider;">2. Datos de Alumno y Expediente</h3>
-                                <p style="margin: 0; font-size: 13px;"><strong>Estudiante:</strong> ${report.alumno_nombre}</p>
-                                <p style="margin: 3px 0 0 0; font-size: 13px;"><strong>Carrera / Área:</strong> ${report.estudiante_especificacion}</p>
-                                <p style="margin: 3px 0 0 0; font-size: 13px;"><strong>Nivel:</strong> ${report.nivel_educativo} | <strong>Grado y Grupo:</strong> ${report.estudiante_grado} - ${report.estudiante_grupo}</p>
-                                <p style="margin: 3px 0 0 0; font-size: 13px;"><strong>Modalidad:</strong> ${report.estudiante_modalidad}</p>
-                            </div>
-
-                            <div style="margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; padding-bottom: 15px;">
-                                <h3 style="font-size: 12px; font-weight: bold; color: #141b3d; margin: 0 0 10px 0; text-transform: uppercase; tracking-wider;">3. Detalles Narrativos</h3>
-                                <div style="font-size: 13px; color: #334155; text-align: justify; white-space: pre-line; background-color: #f8fafc; padding: 12px; border-radius: 8px;">
-                                    ${report.descripcion}
-                                </div>
-                            </div>
-
-                            <div style="margin-bottom: 25px;">
-                                <h3 style="font-size: 12px; font-weight: bold; color: #141b3d; margin: 0 0 10px 0; text-transform: uppercase; tracking-wider;">4. Acciones Previas</h3>
-                                <p style="margin: 0; font-size: 13px;"><strong>Medidas Implementadas:</strong> ${accionesTexto}</p>
-                                <p style="margin: 5px 0 0 0; font-size: 13px;"><strong>Observaciones:</strong> ${report.observaciones_acciones || 'Sin observaciones adicionales.'}</p>
-                            </div>
-
-                            <div style="text-align: center; border-top: 1px solid #f1f5f9; padding-top: 20px;">
-                                <div style="font-size: 11px; text-transform: uppercase; color: #94a3b8; margin-bottom: 30px;">Firmado Electrónicamente por</div>
-                                <div style="font-size: 13px; font-weight: bold; color: #141b3d;">${report.docente_nombre}</div>
-                                <div style="font-size: 11px; color: #64748b;">Cátedra Docente - CEUT</div>
-                            </div>
-                        </div>
-                        
-                        <div style="background-color: #f8fafc; padding: 15px; border-top: 1px solid #e2e8f0; text-align: center; font-size: 10px; color: #94a3b8;">
-                            Este es un correo oficial cifrado generado de forma directa por el portal de Canalizaciones del CEUT en conformidad con la LFPDPPP.
-                        </div>
-                    </div>
-                `;
-
                 // Mostrar el modal de carga
                 document.getElementById('loading-modal').classList.remove('hidden');
 
+                // Enviamos un payload estructurado para que Web3Forms lo convierta de forma nativa en una tabla profesional y limpia.
                 const payload = {
                     access_key: web3FormsKey,
-                    name: `Portal Docente CEUT (${report.docente_nombre})`,
-                    email: report.docente_email,
+                    from_name: "Portal de Canalizaciones CEUT",
                     subject: subject,
-                    to: destEmail,
-                    reply_to: report.docente_email,
-                    cc: ccEmails,
-                    message: `Reporte de Canalización de Alumno:\nID: ${report.id}\nAlumno: ${report.alumno_nombre}\nDocente: ${report.docente_nombre}\nMotivo: ${report.motivo}`,
-                    html: htmlContent
+                    email: report.docente_email,
+                    replyto: report.docente_email,
+                    ccemail: ccEmails,
+                    "=== INFORMACIÓN DEL REPORTE ===": "=====================================",
+                    "ID de Referencia": report.id,
+                    "Fecha de Emisión": report.timestamp,
+                    "=== DATOS DEL DOCENTE ===": "=====================================",
+                    "Nombre del Docente": report.docente_nombre,
+                    "Asignatura que Imparte": report.materia,
+                    "Email Institucional": report.docente_email,
+                    "=== EXPEDIENTE DEL ALUMNO ===": "=====================================",
+                    "Nombre del Alumno": report.alumno_nombre,
+                    "Nivel Educativo": report.nivel_educativo,
+                    "Semestre / Cuatrimestre": report.estudiante_grado,
+                    "Grupo": report.estudiante_grupo,
+                    "Carrera / Especialización": report.estudiante_especificacion,
+                    "Modalidad de Estudio": report.estudiante_modalidad,
+                    "=== DETALLES DE LA INCIDENCIA ===": "=====================================",
+                    "Motivo de Canalización": report.motivo,
+                    "Prioridad de Atención": report.prioridad,
+                    "Descripción de los Hechos": report.descripcion,
+                    "=== ACCIONES PEDAGÓGICAS PREVIAS ===": "=====================================",
+                    "Medidas Implementadas": accionesTexto,
+                    "Observaciones de las Medidas": report.observaciones_acciones || "Ninguna",
+                    "=== VALIDACIÓN DIGITAL ===": "=====================================",
+                    "Firma de Conformidad": `Firmado bajo protesta de decir verdad por el docente ${report.docente_nombre} en conformidad con la LFPDPPP.`
                 };
 
                 fetch("https://api.web3forms.com/submit", {
@@ -1614,7 +1574,8 @@
                     // Fallback automático mailto si falla la red o si la key está bloqueada
                     const toEmail = "deptopsicopedagogico@ceut.edu.mx";
                     const fallbackCc = "luz.ortega@ceut.edu.mx,samuel.roldan@ceut.edu.mx,miroslava.hoyos@ceut.edu.mx";
-                    const mailtoUrl = `mailto:${toEmail}?cc=${fallbackCc}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(payload.message)}`;
+                    const simpleMessage = `Reporte de Canalización de Alumno:\nID: ${report.id}\nAlumno: ${report.alumno_nombre}\nDocente: ${report.docente_nombre}\nMotivo: ${report.motivo}\nPrioridad: ${report.prioridad}\n\nDescripción:\n${report.descripcion}`;
+                    const mailtoUrl = `mailto:${toEmail}?cc=${fallbackCc}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(simpleMessage)}`;
                     
                     showCustomAlert("Envío Alternativo Activado", "La conexión directa falló temporalmente o la llave Access Key no es correcta. Hemos preparado un envío alternativo en tu gestor de correo.");
                     window.location.href = mailtoUrl;
