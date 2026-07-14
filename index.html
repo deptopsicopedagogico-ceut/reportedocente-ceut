@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portal de Coordinadoras - CEUT</title>
+  <title>Portal de Reporte Docente - CEUT</title>
   
   <!-- Tailwind CSS para diseño responsivo e interactivo -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -100,7 +100,7 @@
         <div class="relative w-12 h-12 bg-brand-dark rounded-xl border border-brand-accent/30 flex items-center justify-center overflow-hidden" style="background-color: #0B0F19; border: 1px solid rgba(212, 175, 55, 0.3);">
           <!-- Fallback vectorial integrado para que nunca falle la carga visual inicial -->
           <div id="logoFallback" class="absolute inset-0 text-brand-accent text-xl flex items-center justify-center bg-brand-dark">
-            <svg class="w-8 h-8 text-brand-accent animate-pulse" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg class="w-8 h-8 text-brand-accent " viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
               <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/>
             </svg>
@@ -113,9 +113,9 @@
         </div>
         <div>
           <h1 class="text-lg font-extrabold tracking-wider text-slate-100 flex items-center gap-2">
-            CEUT <span class="text-brand-accent text-xs px-2 py-0.5 rounded bg-brand-accent/10 border border-brand-accent/20" style="color: #D4AF37; background-color: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.2);">PREMIUM</span>
+            CEUT <span class="text-brand-accent text-xs px-2 py-0.5 rounded bg-brand-accent/10 border border-brand-accent/20" style="color: #D4AF37; background-color: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.2);">DOCENTE</span>
           </h1>
-          <p class="text-[10px] text-slate-400 font-medium uppercase tracking-widest">Portal de Coordinación Institucional</p>
+          <p class="text-[10px] text-slate-400 font-medium uppercase tracking-widest">Portal de Reporte y Canalización</p>
         </div>
       </div>
 
@@ -135,7 +135,7 @@
   <!-- SECCIÓN CENTRAL DE LA INTERFAZ -->
   <main class="flex-grow max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
     
-    <!-- COLUMNA IZQUIERDA: FORMULARIO ORIGINAL CEUT (7 COLUMNAS) -->
+    <!-- COLUMNA IZQUIERDA: FORMULARIO ORIGINAL CEUT ADAPTADO A DOCENTE (7 COLUMNAS) -->
     <div class="no-print lg:col-span-7 flex flex-col gap-6">
       
       <!-- Acordeón informativo dorado -->
@@ -145,23 +145,23 @@
             <i class="fa-solid fa-circle-exclamation"></i>
           </div>
           <div>
-            <h3 class="text-xs font-bold text-slate-100">Envío con Copias Automáticas (CC) Activas</h3>
+            <h3 class="text-xs font-bold text-slate-100">Envío con Copias Automáticas (CC) a Coordinación</h3>
             <p class="text-[11px] text-slate-300 mt-1 leading-relaxed">
-              El sistema ha sido configurado para enviar el reporte de forma automática a la dirección principal y con copias en tiempo real a las coordinadoras mediante <strong>FormSubmit</strong> de forma gratuita.
+              El sistema enviará el reporte docente de forma automática a la dirección principal (ej. psicopedagogía o dirección) y con copias en tiempo real a las coordinadoras académicas configuradas mediante <strong>FormSubmit</strong>.
             </p>
             <p class="text-[10px] text-brand-accent mt-1.5 font-semibold" style="color: #D4AF37;">
-              ⚠️ Nota: La primera vez que envíes un correo a una dirección nueva, llegará un correo de FormSubmit al buzón del "Destinatario" pidiendo activar la cuenta una sola vez. Haz clic en "Confirm" en ese correo para activar los envíos por siempre.
+              ⚠️ Nota de Primera Activación: Al enviar un reporte a un correo destinatario nuevo, FormSubmit enviará un único mensaje de confirmación al buzón del receptor. Deberá dar clic en "Confirm" para habilitar las recepciones futuras.
             </p>
           </div>
         </div>
       </div>
 
-      <!-- Tarjeta del Formulario Original -->
+      <!-- Tarjeta del Formulario Original Adaptado a Docente -->
       <div class="bg-brand-card border border-brand-border rounded-xl p-6 shadow-2xl flex flex-col gap-5" style="background-color: #161D30; border: 1px solid #2A364F;">
         <div class="border-b border-brand-border pb-4 flex items-center justify-between" style="border-bottom: 1px solid #2A364F;">
           <div class="flex items-center gap-2">
-            <i class="fa-solid fa-paper-plane text-brand-accent" style="color: #D4AF37;"></i>
-            <h2 class="text-sm font-bold text-slate-100">Nuevo Reporte de Coordinación</h2>
+            <i class="fa-solid fa-user-graduate text-brand-accent" style="color: #D4AF37;"></i>
+            <h2 class="text-sm font-bold text-slate-100">Nuevo Reporte y Canalización Docente</h2>
           </div>
           <span class="text-xs text-slate-400">Paso 1 de 2</span>
         </div>
@@ -171,7 +171,7 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label for="emailDestino" class="block text-xs font-semibold text-slate-300 mb-1">
-                Correo Destinatario <span class="text-brand-accent" style="color: #D4AF37;">*</span>
+                Correo Destinatario (Psicopedagogía / Dirección) <span class="text-brand-accent" style="color: #D4AF37;">*</span>
               </label>
               <div class="relative">
                 <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500 text-xs">
@@ -182,12 +182,12 @@
                        style="background-color: #0B0F19; border: 1px solid #2A364F;"
                        placeholder="deptopsicopedagogico@ceut.edu.mx">
               </div>
-              <p class="text-[10px] text-slate-400 mt-1">Donde se enviará el reporte principal.</p>
+              <p class="text-[10px] text-slate-400 mt-1">Buzón principal que recibirá y procesará el reporte.</p>
             </div>
 
             <div>
               <label for="emailCC" class="block text-xs font-semibold text-slate-300 mb-1">
-                Copiar a (CC)
+                Copiar a Coordinadoras (CC)
               </label>
               <div class="relative">
                 <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500 text-xs">
@@ -198,52 +198,52 @@
                        style="background-color: #0B0F19; border: 1px solid #2A364F;"
                        placeholder="luz.ortega@ceut.edu.mx, samuel.roldan@ceut.edu.mx, miroslava.hoyos@ceut.edu.mx">
               </div>
-              <p class="text-[10px] text-slate-400 mt-1">Correos separados por comas para conocimiento grupal.</p>
+              <p class="text-[10px] text-slate-400 mt-1">Cuentas de coordinadoras separadas por comas para seguimiento.</p>
             </div>
           </div>
 
-          <!-- Datos del Emisor -->
+          <!-- Datos del Docente Emisor -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label for="nombreCoordinador" class="block text-xs font-semibold text-slate-300 mb-1">
-                Nombre de la Coordinadora <span class="text-brand-accent" style="color: #D4AF37;">*</span>
+              <label for="nombreDocente" class="block text-xs font-semibold text-slate-300 mb-1">
+                Nombre del Docente Emisor <span class="text-brand-accent" style="color: #D4AF37;">*</span>
               </label>
               <div class="relative">
                 <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500 text-xs">
-                  <i class="fa-solid fa-user-tie"></i>
+                  <i class="fa-solid fa-chalkboard-user"></i>
                 </span>
-                <input type="text" id="nombreCoordinador" required
+                <input type="text" id="nombreDocente" required
                        class="w-full bg-brand-dark text-slate-200 pl-8 pr-3 py-2 rounded-lg border border-brand-border focus:border-brand-accent focus:ring-1 focus:ring-brand-accent text-xs outline-none transition-all"
                        style="background-color: #0B0F19; border: 1px solid #2A364F;"
-                       placeholder="Lic. María Elena Rojas">
+                       placeholder="Mtro. Alejandro Silva Torres">
               </div>
             </div>
 
             <div>
-              <label for="departamento" class="block text-xs font-semibold text-slate-300 mb-1">
-                Departamento / Área <span class="text-brand-accent" style="color: #D4AF37;">*</span>
+              <label for="academia" class="block text-xs font-semibold text-slate-300 mb-1">
+                Academia / Asignatura / Especialidad <span class="text-brand-accent" style="color: #D4AF37;">*</span>
               </label>
               <div class="relative">
                 <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500 text-xs">
-                  <i class="fa-solid fa-building-user"></i>
+                  <i class="fa-solid fa-book-bookmark"></i>
                 </span>
-                <input type="text" id="departamento" required
+                <input type="text" id="academia" required
                        class="w-full bg-brand-dark text-slate-200 pl-8 pr-3 py-2 rounded-lg border border-brand-border focus:border-brand-accent focus:ring-1 focus:ring-brand-accent text-xs outline-none transition-all"
                        style="background-color: #0B0F19; border: 1px solid #2A364F;"
-                       placeholder="Coordinación Académica Preparatoria">
+                       placeholder="Academia de Ciencias y Matemáticas">
               </div>
             </div>
           </div>
 
-          <!-- Mensaje y Detalles -->
+          <!-- Mensaje y Detalles del Reporte -->
           <div>
             <label for="mensaje" class="block text-xs font-semibold text-slate-300 mb-1">
-              Descripción Detallada del Reporte o Evento <span class="text-brand-accent" style="color: #D4AF37;">*</span>
+              Descripción Detallada del Reporte, Incidencia o Canalización <span class="text-brand-accent" style="color: #D4AF37;">*</span>
             </label>
             <textarea id="mensaje" required rows="5"
                       class="w-full bg-brand-dark text-slate-200 p-3 rounded-lg border border-brand-border focus:border-brand-accent focus:ring-1 focus:ring-brand-accent text-xs outline-none transition-all resize-none"
                       style="background-color: #0B0F19; border: 1px solid #2A364F;"
-                      placeholder="Escribe aquí los pormenores del evento, requerimientos, fechas y agenda..."></textarea>
+                      placeholder="Escribe detalladamente las observaciones académicas o de conducta del alumno, acuerdos previos, fechas e incidencias detectadas..."></textarea>
           </div>
 
           <!-- Cuadro de avisos integrado -->
@@ -257,7 +257,7 @@
             
             <button type="submit" id="btnEnviar" class="px-6 py-2 bg-brand-accent hover:bg-brand-accentHover text-brand-dark text-xs font-extrabold rounded-lg tracking-wider transition-all flex items-center gap-2 shadow-lg shadow-brand-accent/20" style="background-color: #D4AF37; color: #0B0F19;">
               <span id="spinnerCarga" class="hidden"><i class="fa-solid fa-circle-notch animate-spin mr-1"></i> Enviando...</span>
-              <span id="btnTexto"><i class="fa-solid fa-paper-plane"></i> Enviar Correo Institucional</span>
+              <span id="btnTexto"><i class="fa-solid fa-paper-plane"></i> Enviar Reporte Docente</span>
             </button>
           </div>
         </form>
@@ -275,9 +275,9 @@
               <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
               <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
             </span>
-            <h2 class="text-sm font-extrabold tracking-wide text-slate-100 uppercase">Actividad en Tiempo Real</h2>
+            <h2 class="text-sm font-extrabold tracking-wide text-slate-100 uppercase">Actividad Docente en Vivo</h2>
           </div>
-          <span class="text-[10px] text-brand-accent font-bold bg-brand-dark px-2.5 py-1 rounded-full border border-brand-border" style="color: #D4AF37; background-color: #0B0F19; border: 1px solid #2A364F;">Coordinadoras</span>
+          <span class="text-[10px] text-brand-accent font-bold bg-brand-dark px-2.5 py-1 rounded-full border border-brand-border" style="color: #D4AF37; background-color: #0B0F19; border: 1px solid #2A364F;">Reportes</span>
         </div>
 
         <!-- Feed de Notificaciones -->
@@ -288,8 +288,8 @@
               <i class="fa-solid fa-bell-slash text-2xl"></i>
             </div>
             <div>
-              <h4 class="text-xs font-bold text-slate-400">Sin notificaciones recientes</h4>
-              <p class="text-[10px] text-slate-500 max-w-[200px] mt-1 mx-auto">Los reportes que se envíen aparecerán aquí en tiempo real para todas las coordinadoras.</p>
+              <h4 class="text-xs font-bold text-slate-400">Sin reportes recientes</h4>
+              <p class="text-[10px] text-slate-500 max-w-[200px] mt-1 mx-auto">Las canalizaciones de los docentes aparecerán aquí en tiempo real para conocimiento de las coordinadoras.</p>
             </div>
           </div>
         </div>
@@ -326,23 +326,23 @@
         </div>
       </div>
       <div class="text-right">
-        <span class="text-[10px] font-mono text-gray-500 block">DOCUMENTO OFICIAL DE CONTROL</span>
+        <span class="text-[10px] font-mono text-gray-500 block">DOCUMENTO DOCENTE OFICIAL</span>
         <span class="text-xs font-bold block" id="printFecha">--/--/----</span>
       </div>
     </div>
 
     <!-- Título de Ficha -->
     <div class="text-center bg-gray-100 py-2 border border-gray-300 rounded mb-6">
-      <h2 class="text-sm font-extrabold uppercase tracking-wider text-gray-800">Ficha Técnica de Reporte y Enlace Institucional</h2>
+      <h2 class="text-sm font-extrabold uppercase tracking-wider text-gray-800">Ficha Técnica de Reporte y Canalización Docente</h2>
     </div>
 
     <!-- Tabla de Metadatos -->
     <table class="w-full text-xs border-collapse border border-gray-300 mb-6">
       <tbody>
         <tr>
-          <td class="border border-gray-300 p-2 font-bold bg-gray-50 w-1/4">Coordinadora Emisora:</td>
+          <td class="border border-gray-300 p-2 font-bold bg-gray-50 w-1/4">Docente Emisor:</td>
           <td class="border border-gray-300 p-2" id="printCoordinador">-----------------------------------------</td>
-          <td class="border border-gray-300 p-2 font-bold bg-gray-50 w-1/4">Área / Departamento:</td>
+          <td class="border border-gray-300 p-2 font-bold bg-gray-50 w-1/4">Academia / Asignatura:</td>
           <td class="border border-gray-300 p-2" id="printDepto">-----------------------------------------</td>
         </tr>
         <tr>
@@ -356,7 +356,7 @@
 
     <!-- Contenido Técnico del Reporte -->
     <div class="mb-8">
-      <h3 class="text-xs font-extrabold uppercase tracking-wider text-gray-700 mb-2 border-b border-gray-200 pb-1">Descripción del Reporte / Evento:</h3>
+      <h3 class="text-xs font-extrabold uppercase tracking-wider text-gray-700 mb-2 border-b border-gray-200 pb-1">Descripción del Reporte Docente / Incidencia:</h3>
       <div class="text-xs leading-relaxed text-gray-800 bg-white border border-gray-200 rounded p-4 min-h-[250px]" id="printMensaje" style="white-space: pre-wrap;">
         Sin contenido cargado. Use el botón "Previsualizar / Imprimir" del portal para cargar la información antes de mandar la impresión.
       </div>
@@ -366,14 +366,14 @@
     <div class="mt-16 grid grid-cols-2 gap-12 text-center text-xs">
       <div>
         <div class="w-3/4 mx-auto border-t border-black pt-2" style="border-top: 1px solid black;">
-          <p class="font-bold uppercase" id="printFirmaNombre">Firma de la Coordinadora</p>
-          <p class="text-[10px] text-gray-500">Emisora de Ficha</p>
+          <p class="font-bold uppercase" id="printFirmaNombre">Firma del Docente</p>
+          <p class="text-[10px] text-gray-500">Emisor del Reporte</p>
         </div>
       </div>
       <div>
         <div class="w-3/4 mx-auto border-t border-black pt-2" style="border-top: 1px solid black;">
-          <p class="font-bold uppercase">Sello y Firma de Dirección</p>
-          <p class="text-[10px] text-gray-500">Validación Académica CEUT</p>
+          <p class="font-bold uppercase">Sello y Firma de Coordinación</p>
+          <p class="text-[10px] text-gray-500">Recepción Académica CEUT</p>
         </div>
       </div>
     </div>
@@ -395,7 +395,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
   <script>
-    // Inicialización de lógicas de respaldo contra fallos de red
+    // Inicialización de lógicas de respaldo contra fallos de red o de carga del SDK
     window.guardarNotificacionFirestore = async function(nombre, depto, dest, cc) {
       console.log("Servicio Firebase fuera de línea en este sandbox. Guardando traza local.");
       agregarNotificacionLocal(nombre, depto, dest, cc);
@@ -424,9 +424,9 @@
             <p class="flex items-center gap-1">
               <i class="fa-solid fa-envelope text-[8px] text-slate-500"></i> Destinatario: <span class="text-slate-300 font-mono truncate">${dest}</span>
             </p>
-            ${cc ? `
+            \${cc ? `
             <p class="flex items-center gap-1 text-[9px] text-amber-400/85" style="color: rgba(243, 205, 95, 0.85);">
-              <i class="fa-solid fa-users text-[7px]"></i> Copia (CC) a: <span class="truncate max-w-[180px] font-mono">${cc}</span>
+              <i class="fa-solid fa-users text-[7px]"></i> Copia (CC) a: <span class="truncate max-w-[180px] font-mono">\${cc}</span>
             </p>` : ''}
           </div>
         </div>
@@ -455,11 +455,11 @@
         osc.start();
         osc.stop(audioCtx.currentTime + 0.35);
       } catch (e) {
-        console.warn("Reproducción auditiva bloqueada por directivas de seguridad de navegador.");
+        console.warn("Reproducción auditiva bloqueada por directivas de seguridad de navegador o sandbox.");
       }
     }
 
-    // Inicialización del ecosistema de Firebase con detección inteligente
+    // Inicialización del ecosistema de Firebase con detección inteligente adaptada al proyecto reporte-docente
     try {
       let firebaseConfig = {
         apiKey: "AIzaSyCVgbSlImT02t1SMJ6RljHpzpDDJPBKMxk",
@@ -528,9 +528,9 @@
             const d = doc.data();
             listado.push({ 
               id: doc.id, 
-              coordinadora: d.coordinadora || d.coordinador || "Coordinadora",
-              departamento: d.departamento || "General",
-              destinatario: d.destinatario || "Dirección",
+              coordinadora: d.coordinadora || d.coordinador || d.docente || "Docente",
+              departamento: d.departamento || d.academia || "General",
+              destinatario: d.destinatario || "Psicopedagogía",
               copiaCC: d.copiaCC || d.cc || "",
               timestamp: d.timestamp || Date.now()
             });
@@ -579,17 +579,17 @@
           </div>
           <div class="flex-grow min-w-0">
             <div class="flex items-center justify-between gap-2">
-              <h4 class="text-xs font-bold text-slate-100 truncate">${item.coordinadora}</h4>
-              <span class="text-[9px] font-mono text-slate-500 shrink-0">${h}</span>
+              <h4 class="text-xs font-bold text-slate-100 truncate">\${item.coordinadora}</h4>
+              <span class="text-[9px] font-mono text-slate-500 shrink-0">\${h}</span>
             </div>
-            <p class="text-[10px] text-brand-accent font-medium mt-0.5 truncate" style="color: #D4AF37;">${item.departamento}</p>
+            <p class="text-[10px] text-brand-accent font-medium mt-0.5 truncate" style="color: #D4AF37;">\${item.departamento}</p>
             <div class="text-[10px] text-slate-400 mt-1 flex flex-col gap-0.5">
               <p class="flex items-center gap-1">
-                <i class="fa-solid fa-envelope text-[8px] text-slate-500"></i> Destinatario: <span class="text-slate-300 font-mono truncate">${item.destinatario}</span>
+                <i class="fa-solid fa-envelope text-[8px] text-slate-500"></i> Destinatario: <span class="text-slate-300 font-mono truncate">\${item.destinatario}</span>
               </p>
-              ${item.copiaCC ? `
+              \${item.copiaCC ? `
               <p class="flex items-center gap-1 text-[9px] text-amber-400/85" style="color: rgba(243, 205, 95, 0.85);">
-                <i class="fa-solid fa-users text-[7px]"></i> Copia (CC) a: <span class="truncate max-w-[180px] font-mono">${item.copiaCC}</span>
+                <i class="fa-solid fa-users text-[7px]"></i> Copia (CC) a: <span class="truncate max-w-[180px] font-mono">\${item.copiaCC}</span>
               </p>` : ''}
             </div>
           </div>
@@ -600,8 +600,8 @@
 
     function generarLogsLocalesDemo() {
       const demoItems = [
-        {coordinadora: "Lic. Luz Ortega", departamento: "Coordinación Académica Preparatoria", destinatario: "director.general@ceut.edu.mx", copiaCC: "director@ceut.edu.mx, samuel.roldan@ceut.edu.mx", timestamp: Date.now() - 45000},
-        {coordinadora: "Lic. Miroslava Hoyos", departamento: "Coordinación Psicopedagógica", destinatario: "contabilidad@ceut.edu.mx", copiaCC: "luz.ortega@ceut.edu.mx", timestamp: Date.now() - 320000}
+        {coordinadora: "Mtro. Alejandro Silva Torres", departamento: "Academia de Matemáticas", destinatario: "deptopsicopedagogico@ceut.edu.mx", copiaCC: "luz.ortega@ceut.edu.mx, samuel.roldan@ceut.edu.mx", timestamp: Date.now() - 45000},
+        {coordinadora: "Dra. Miroslava Hoyos Cruz", departamento: "Academia de Lenguaje y Comunicación", destinatario: "deptopsicopedagogico@ceut.edu.mx", copiaCC: "miroslava.hoyos@ceut.edu.mx", timestamp: Date.now() - 320000}
       ];
       setTimeout(() => pintarFeed(demoItems), 400);
     }
@@ -613,28 +613,28 @@
       const demoData = {
         emailDestino: "deptopsicopedagogico@ceut.edu.mx",
         emailCC: "luz.ortega@ceut.edu.mx, samuel.roldan@ceut.edu.mx, miroslava.hoyos@ceut.edu.mx",
-        nombreCoordinador: "Lic. Liliana Benítez Ortiz",
-        departamento: "Coordinación de Psicopedagogía",
-        mensaje: "Estimada Dirección Académica,\n\nPor medio del presente reporte comparto la planificación del taller para el manejo de estrés escolar y técnicas de estudio grupal dirigido a los alumnos de preparatoria.\n\nFecha programada: Jueves 11 de Junio.\nLugar: Aula de Conferencias CEUT.\nObjetivos: Brindar soporte técnico escolar y herramientas para exámenes.\n\nQuedo a su disposición para cualquier retroalimentación y la firma correspondiente.\n\nAtentamente,\nLic. Liliana Benítez Ortiz\nCoordinación de Psicopedagogía"
+        nombreDocente: "Mtro. Alejandro Silva Torres",
+        academia: "Academia de Ciencias y Matemáticas",
+        mensaje: "Estimado Departamento Psicopedagógico y Coordinación,\\n\\nPor medio de este reporte docente, hago de su conocimiento la canalización oficial del alumno de 4° semestre de bachillerato, quien ha mostrado cambios significativos de conducta e inasistencia constante en mi asignatura durante las últimas tres semanas.\\n\\nObservaciones:\\n1. Calificaciones de tareas incompletas.\\n2. Desinterés evidente durante las dinámicas de clase.\\n3. Acercamiento previo del docente sin respuesta favorable.\\n\\nSolicito su valiosa intervención psicopedagógica para el seguimiento correspondiente con los tutores.\\n\\nAtentamente,\\nMtro. Alejandro Silva Torres\\nDocente Titular de Física"
       };
 
-      // Autocompletador de demostración
+      // Autocompletador de demostración de Reporte Docente
       const btnAutoDemo = document.getElementById('btnAutoDemo');
       if (btnAutoDemo) {
         btnAutoDemo.addEventListener('click', () => {
           const emailDestinoEl = document.getElementById('emailDestino');
           const emailCCEl = document.getElementById('emailCC');
-          const nombreCoordinadorEl = document.getElementById('nombreCoordinador');
-          const departamentoEl = document.getElementById('departamento');
+          const nombreDocenteEl = document.getElementById('nombreDocente');
+          const academiaEl = document.getElementById('academia');
           const mensajeEl = document.getElementById('mensaje');
 
           if(emailDestinoEl) emailDestinoEl.value = demoData.emailDestino;
           if(emailCCEl) emailCCEl.value = demoData.emailCC;
-          if(nombreCoordinadorEl) nombreCoordinadorEl.value = demoData.nombreCoordinador;
-          if(departamentoEl) departamentoEl.value = demoData.departamento;
+          if(nombreDocenteEl) nombreDocenteEl.value = demoData.nombreDocente;
+          if(academiaEl) academiaEl.value = demoData.academia;
           if(mensajeEl) mensajeEl.value = demoData.mensaje;
           
-          lanzarAvisoInteractivo("Datos cargados correctamente. ¡Puedes probar el envío o la previsualización de impresión!", "success");
+          lanzarAvisoInteractivo("Datos del Reporte Docente cargados correctamente. ¡Listo para enviar o imprimir!", "success");
         });
       }
 
@@ -656,17 +656,17 @@
           
           const emailDestino = document.getElementById('emailDestino').value.trim();
           const emailCC = document.getElementById('emailCC').value.trim();
-          const nombreCoordinador = document.getElementById('nombreCoordinador').value.trim();
-          const departamento = document.getElementById('departamento').value.trim();
+          const nombreDocente = document.getElementById('nombreDocente').value.trim();
+          const academia = document.getElementById('academia').value.trim();
           const mensaje = document.getElementById('mensaje').value.trim();
           
           // FormSubmit Payload
           const payload = {
-            _subject: `[CEUT REPORTE] ${departamento} - ${nombreCoordinador}`,
+            _subject: `[CEUT REPORTE DOCENTE] \${academia} - \${nombreDocente}`,
             _captcha: "false",
             _template: "table",
-            "Coordinadora Emisora": nombreCoordinador,
-            "Departamento": departamento,
+            "Docente Emisor": nombreDocente,
+            "Academia / Asignatura": academia,
             "Contenido del Reporte": mensaje,
             "Fecha Emisión": new Date().toLocaleString('es-MX', { timeZone: 'America/Mexico_City' })
           };
@@ -679,7 +679,7 @@
           const timeoutId = setTimeout(() => controller.abort(), 8000);
           
           try {
-            const response = await fetch(`https://formsubmit.co/ajax/${emailDestino}`, {
+            const response = await fetch(`https://formsubmit.co/ajax/\${emailDestino}`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -694,12 +694,12 @@
             
             if (response.ok && result.success === "true") {
               lanzarAvisoInteractivo(`
-                <strong>¡Reporte enviado y copiado exitosamente!</strong><br>
-                <span class="block mt-1 font-medium text-[11px]">Se despachó en tiempo real al correo de destino y a los coordinadores en copia. El monitor de actividad se ha sincronizado.</span>
+                <strong>¡Reporte Docente enviado y copiado exitosamente!</strong><br>
+                <span class="block mt-1 font-medium text-[11px]">Se despachó en tiempo real al buzón receptor y con copia automática a las coordinadoras. Sincronizado en el monitor.</span>
               `, "success");
               
               if (window.guardarNotificacionFirestore) {
-                await window.guardarNotificacionFirestore(nombreCoordinador, departamento, emailDestino, emailCC);
+                await window.guardarNotificacionFirestore(nombreDocente, academia, emailDestino, emailCC);
               }
               
               formPortal.reset();
@@ -717,15 +717,15 @@
               detalleErr = "Se agotó el tiempo de espera del servidor de correo.";
             }
             
-            const mailtoSubject = encodeURIComponent(`[CEUT] Reporte de ${departamento}`);
-            const mailtoBody = encodeURIComponent(`Emisor: ${nombreCoordinador}\nÁrea: ${departamento}\n\nReporte:\n${mensaje}`);
-            const mailtoUrl = `mailto:${emailDestino}?cc=${emailCC}&subject=${mailtoSubject}&body=${mailtoBody}`;
+            const mailtoSubject = encodeURIComponent(`[CEUT] Reporte de \${academia}`);
+            const mailtoBody = encodeURIComponent(`Docente: \${nombreDocente}\\nAcademia: \${academia}\\n\\nReporte:\\n\${mensaje}`);
+            const mailtoUrl = `mailto:\${emailDestino}?cc=\${emailCC}&subject=\${mailtoSubject}&body=\${mailtoBody}`;
             
             lanzarAvisoInteractivo(`
               <strong>Fallo en el envío automático de fondo.</strong><br>
-              <span class="text-[11px] block my-2 text-slate-300">${detalleErr}</span>
+              <span class="text-[11px] block my-2 text-slate-300">\${detalleErr}</span>
               <div class="mt-2">
-                <a href="${mailtoUrl}" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-brand-accent hover:bg-brand-accentHover text-brand-dark rounded text-xs font-bold transition-all" style="background-color: #D4AF37; color: #0B0F19;">
+                <a href="\${mailtoUrl}" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-brand-accent hover:bg-brand-accentHover text-brand-dark rounded text-xs font-bold transition-all" style="background-color: #D4AF37; color: #0B0F19;">
                   <i class="fa-solid fa-envelope-open-text"></i> Despachar por correo tradicional (Mailto)
                 </a>
               </div>
@@ -738,12 +738,12 @@
         });
       }
 
-      // Preparación y vaciado de Ficha Técnica de Impresión
+      // Preparación y vaciado de Ficha Técnica de Impresión de Reporte Docente
       const btnPrintPreview = document.getElementById('btnPrintPreview');
       if (btnPrintPreview) {
         btnPrintPreview.addEventListener('click', () => {
-          const nom = document.getElementById('nombreCoordinador').value.trim() || "-----------------------------------------";
-          const dep = document.getElementById('departamento').value.trim() || "-----------------------------------------";
+          const nom = document.getElementById('nombreDocente').value.trim() || "-----------------------------------------";
+          const dep = document.getElementById('academia').value.trim() || "-----------------------------------------";
           const dest = document.getElementById('emailDestino').value.trim() || "-----------------------------------------";
           const cc = document.getElementById('emailCC').value.trim() || "-----------------------------------------";
           const msg = document.getElementById('mensaje').value.trim() || "Sin contenido cargado.";
@@ -768,7 +768,7 @@
           if(printEmailCC) printEmailCC.innerText = cc;
           if(printMensaje) printMensaje.innerText = msg;
           if(printFecha) printFecha.innerText = fechaActual;
-          if(printFirmaNombre) printFirmaNombre.innerText = nom !== "-----------------------------------------" ? nom : "Firma de la Coordinadora";
+          if(printFirmaNombre) printFirmaNombre.innerText = nom !== "-----------------------------------------" ? nom : "Firma del Docente";
 
           window.print();
         });
