@@ -8,13 +8,13 @@
   <!-- Tailwind CSS para diseño responsivo e interactivo -->
   <script src="https://cdn.tailwindcss.com"></script>
   
-  <!-- Fuentes de Google de alta legibilidad -->
+  <!-- Fuentes de Google (Montserrat para alta legibilidad institucional) -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   
   <!-- Iconos FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
-  <!-- CONFIGURACIÓN DE TAILWIND SEGURA (INMUNE A REFERENCIA ANTES DE CARGAR) -->
+  <!-- CONFIGURACIÓN DE TAILWIND SEGURA -->
   <script>
     window.tailwind = window.tailwind || {};
     window.tailwind.config = {
@@ -55,7 +55,7 @@
       background: #D4AF37;
     }
 
-    /* Estructura para impresión estricta en una sola página (Formato Carta) */
+    /* Estructura para impresión estricta en una sola página (Formato Carta de Lujo) */
     @media print {
       body {
         background: white !important;
@@ -72,7 +72,7 @@
         width: 100% !important;
         max-width: 100% !important;
         margin: 0 !important;
-        padding: 1.2cm !important;
+        padding: 1.5cm !important;
         box-shadow: none !important;
         background: white !important;
         color: black !important;
@@ -83,30 +83,28 @@
       }
       @page {
         size: letter;
-        margin: 1cm 1.2cm 1cm 1.2cm;
+        margin: 1.2cm 1.5cm 1.2cm 1.5cm;
       }
     }
   </style>
 </head>
-<!-- Estilos en línea de respaldo absoluto para garantizar que la pantalla no se quede en blanco -->
 <body class="bg-brand-dark text-slate-100 font-sans min-h-screen flex flex-col antialiased" style="background-color: #0B0F19; color: #f1f5f9; font-family: 'Montserrat', sans-serif;">
 
-  <!-- -->
+  <!-- CABECERA PRINCIPAL (DISEÑO OSCURO CON BORDE DORADO CEUT) -->
   <header class="no-print bg-brand-card/90 backdrop-blur border-b border-brand-border sticky top-0 z-50 px-4 py-3" style="background-color: #161D30; border-bottom: 1px solid #2A364F;">
     <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
       
-      <!-- Identidad Visual -->
+      <!-- Identidad Visual CEUT -->
       <div class="flex items-center gap-3">
-        <!-- Contenedor del Logo con sistema inteligente de carga robusto -->
+        <!-- Contenedor del Logo con cargador seguro -->
         <div class="relative w-12 h-12 bg-brand-dark rounded-xl border border-brand-accent/30 flex items-center justify-center overflow-hidden" style="background-color: #0B0F19; border: 1px solid rgba(212, 175, 55, 0.3);">
-          <!-- Fallback seguro -->
+          <!-- Fallback vectorial integrado para que nunca falle la carga visual inicial -->
           <div id="logoFallback" class="absolute inset-0 text-brand-accent text-xl flex items-center justify-center bg-brand-dark">
             <svg class="w-8 h-8 text-brand-accent animate-pulse" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
               <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/>
             </svg>
           </div>
-          <!-- Imagen del Logotipo con controlador de carga seguro para evitar bloqueos por carga asíncrona -->
           <img src="./Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview.png" 
                alt="CEUT" 
                class="absolute inset-0 w-full h-full object-contain bg-brand-dark"
@@ -115,91 +113,96 @@
         </div>
         <div>
           <h1 class="text-lg font-extrabold tracking-wider text-slate-100 flex items-center gap-2">
-            CEUT <span class="text-brand-accent text-xs px-2 py-0.5 rounded bg-brand-accent/10 border border-brand-accent/20" style="color: #D4AF37; background-color: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.2);">PORTAL</span>
+            CEUT <span class="text-brand-accent text-xs px-2 py-0.5 rounded bg-brand-accent/10 border border-brand-accent/20" style="color: #D4AF37; background-color: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.2);">PREMIUM</span>
           </h1>
-          <p class="text-[10px] text-slate-400 font-medium uppercase tracking-widest">Coordinación de Plantel</p>
+          <p class="text-[10px] text-slate-400 font-medium uppercase tracking-widest">Portal de Coordinación Institucional</p>
         </div>
       </div>
 
-      <!-- Acciones de Cabecera -->
+      <!-- Acciones Rápidas -->
       <div class="flex items-center gap-3">
         <button id="btnAutoDemo" type="button" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-brand-accent/10 hover:bg-brand-accent text-brand-accent hover:text-brand-dark border border-brand-accent/30 transition-all duration-300 flex items-center gap-2" style="color: #D4AF37; border: 1px solid rgba(212, 175, 55, 0.3);">
-          <i class="fa-solid fa-wand-magic-sparkles"></i> Auto-Llenar Demo
+          <i class="fa-solid fa-wand-magic-sparkles"></i> Autocompletar Demo
         </button>
         <div class="flex items-center gap-2 text-xs bg-brand-dark px-3 py-1.5 rounded-lg border border-brand-border" style="background-color: #0B0F19; border: 1px solid #2A364F;">
-          <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
-          <span class="text-slate-300 font-medium">Línea Segura</span>
+          <span class="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse"></span>
+          <span class="text-slate-300 font-medium">Servidor Activo</span>
         </div>
       </div>
     </div>
   </header>
 
-  <!-- -->
+  <!-- SECCIÓN CENTRAL DE LA INTERFAZ -->
   <main class="flex-grow max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
     
-    <!-- COLUMNA DEL FORMULARIO (7 COLUMNAS) -->
+    <!-- COLUMNA IZQUIERDA: FORMULARIO ORIGINAL CEUT (7 COLUMNAS) -->
     <div class="no-print lg:col-span-7 flex flex-col gap-6">
       
-      <!-- Cuadro Informativo de FormSubmit -->
+      <!-- Acordeón informativo dorado -->
       <div class="bg-gradient-to-r from-amber-950/20 to-brand-card border border-brand-accent/30 rounded-xl p-4 shadow-lg" style="background: linear-gradient(to right, rgba(120, 53, 4, 0.1), #161D30); border: 1px solid rgba(212, 175, 55, 0.3);">
         <div class="flex gap-3">
           <div class="text-brand-accent text-lg mt-0.5" style="color: #D4AF37;">
-            <i class="fa-solid fa-envelope-circle-check"></i>
+            <i class="fa-solid fa-circle-exclamation"></i>
           </div>
           <div>
-            <h3 class="text-xs font-bold text-slate-100">Envío Directo y Copias en Tiempo Real (CC)</h3>
+            <h3 class="text-xs font-bold text-slate-100">Envío con Copias Automáticas (CC) Activas</h3>
             <p class="text-[11px] text-slate-300 mt-1 leading-relaxed">
-              El portal despacha tus reportes mediante <strong>FormSubmit</strong>. La primera vez que envíes un correo a un destinatario nuevo, este recibirá un mensaje de confirmación de FormSubmit para activar el canal. Solo debe dar clic en "Confirm" una vez.
+              El sistema ha sido configurado para enviar el reporte de forma automática a la dirección principal y con copias en tiempo real a las coordinadoras mediante <strong>FormSubmit</strong> de forma gratuita.
+            </p>
+            <p class="text-[10px] text-brand-accent mt-1.5 font-semibold" style="color: #D4AF37;">
+              ⚠️ Nota: La primera vez que envíes un correo a una dirección nueva, llegará un correo de FormSubmit al buzón del "Destinatario" pidiendo activar la cuenta una sola vez. Haz clic en "Confirm" en ese correo para activar los envíos por siempre.
             </p>
           </div>
         </div>
       </div>
 
-      <!-- Tarjeta del Formulario -->
-      <div class="bg-brand-card border border-brand-border rounded-xl p-6 shadow-2xl flex flex-col gap-4" style="background-color: #161D30; border: 1px solid #2A364F;">
-        <div class="border-b border-brand-border pb-3 flex items-center justify-between" style="border-bottom: 1px solid #2A364F;">
+      <!-- Tarjeta del Formulario Original -->
+      <div class="bg-brand-card border border-brand-border rounded-xl p-6 shadow-2xl flex flex-col gap-5" style="background-color: #161D30; border: 1px solid #2A364F;">
+        <div class="border-b border-brand-border pb-4 flex items-center justify-between" style="border-bottom: 1px solid #2A364F;">
           <div class="flex items-center gap-2">
-            <i class="fa-solid fa-file-signature text-brand-accent" style="color: #D4AF37;"></i>
-            <h2 class="text-sm font-bold text-slate-100">Redactar Reporte de Coordinación</h2>
+            <i class="fa-solid fa-paper-plane text-brand-accent" style="color: #D4AF37;"></i>
+            <h2 class="text-sm font-bold text-slate-100">Nuevo Reporte de Coordinación</h2>
           </div>
-          <span class="text-[10px] text-slate-400 font-mono">Paso 1 de 2</span>
+          <span class="text-xs text-slate-400">Paso 1 de 2</span>
         </div>
 
         <form id="formPortal" class="space-y-4">
-          <!-- Correos de Envío -->
+          <!-- Correos de Destino y Copias -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label for="emailDestino" class="block text-xs font-semibold text-slate-300 mb-1">
-                Correo Destino <span class="text-brand-accent" style="color: #D4AF37;">*</span>
+                Correo Destinatario <span class="text-brand-accent" style="color: #D4AF37;">*</span>
               </label>
               <div class="relative">
                 <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500 text-xs">
-                  <i class="fa-solid fa-user-tag"></i>
+                  <i class="fa-solid fa-envelope"></i>
                 </span>
                 <input type="email" id="emailDestino" required
                        class="w-full bg-brand-dark text-slate-200 pl-8 pr-3 py-2 rounded-lg border border-brand-border focus:border-brand-accent focus:ring-1 focus:ring-brand-accent text-xs outline-none transition-all"
                        style="background-color: #0B0F19; border: 1px solid #2A364F;"
-                       placeholder="director@ceut.edu.mx">
+                       placeholder="deptopsicopedagogico@ceut.edu.mx">
               </div>
+              <p class="text-[10px] text-slate-400 mt-1">Donde se enviará el reporte principal.</p>
             </div>
 
             <div>
               <label for="emailCC" class="block text-xs font-semibold text-slate-300 mb-1">
-                Enviar Copia a (CC)
+                Copiar a (CC)
               </label>
               <div class="relative">
                 <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500 text-xs">
-                  <i class="fa-solid fa-users"></i>
+                  <i class="fa-solid fa-envelope-open-text"></i>
                 </span>
                 <input type="text" id="emailCC"
                        class="w-full bg-brand-dark text-slate-200 pl-8 pr-3 py-2 rounded-lg border border-brand-border focus:border-brand-accent focus:ring-1 focus:ring-brand-accent text-xs outline-none transition-all"
                        style="background-color: #0B0F19; border: 1px solid #2A364F;"
-                       placeholder="coordinadora.prepa@ceut.edu.mx">
+                       placeholder="luz.ortega@ceut.edu.mx, samuel.roldan@ceut.edu.mx, miroslava.hoyos@ceut.edu.mx">
               </div>
+              <p class="text-[10px] text-slate-400 mt-1">Correos separados por comas para conocimiento grupal.</p>
             </div>
           </div>
 
-          <!-- Datos de la Coordinadora -->
+          <!-- Datos del Emisor -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label for="nombreCoordinador" class="block text-xs font-semibold text-slate-300 mb-1">
@@ -207,7 +210,7 @@
               </label>
               <div class="relative">
                 <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500 text-xs">
-                  <i class="fa-solid fa-user-shield"></i>
+                  <i class="fa-solid fa-user-tie"></i>
                 </span>
                 <input type="text" id="nombreCoordinador" required
                        class="w-full bg-brand-dark text-slate-200 pl-8 pr-3 py-2 rounded-lg border border-brand-border focus:border-brand-accent focus:ring-1 focus:ring-brand-accent text-xs outline-none transition-all"
@@ -218,94 +221,93 @@
 
             <div>
               <label for="departamento" class="block text-xs font-semibold text-slate-300 mb-1">
-                Departamento o Área <span class="text-brand-accent" style="color: #D4AF37;">*</span>
+                Departamento / Área <span class="text-brand-accent" style="color: #D4AF37;">*</span>
               </label>
               <div class="relative">
                 <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500 text-xs">
-                  <i class="fa-solid fa-layer-group"></i>
+                  <i class="fa-solid fa-building-user"></i>
                 </span>
                 <input type="text" id="departamento" required
                        class="w-full bg-brand-dark text-slate-200 pl-8 pr-3 py-2 rounded-lg border border-brand-border focus:border-brand-accent focus:ring-1 focus:ring-brand-accent text-xs outline-none transition-all"
                        style="background-color: #0B0F19; border: 1px solid #2A364F;"
-                       placeholder="Psicopedagogía Bachillerato">
+                       placeholder="Coordinación Académica Preparatoria">
               </div>
             </div>
           </div>
 
-          <!-- Descripción del Evento -->
+          <!-- Mensaje y Detalles -->
           <div>
             <label for="mensaje" class="block text-xs font-semibold text-slate-300 mb-1">
-              Descripción del Reporte / Agenda del Evento <span class="text-brand-accent" style="color: #D4AF37;">*</span>
+              Descripción Detallada del Reporte o Evento <span class="text-brand-accent" style="color: #D4AF37;">*</span>
             </label>
             <textarea id="mensaje" required rows="5"
                       class="w-full bg-brand-dark text-slate-200 p-3 rounded-lg border border-brand-border focus:border-brand-accent focus:ring-1 focus:ring-brand-accent text-xs outline-none transition-all resize-none"
                       style="background-color: #0B0F19; border: 1px solid #2A364F;"
-                      placeholder="Indique los acuerdos, planeaciones o incidencias escolares aquí..."></textarea>
+                      placeholder="Escribe aquí los pormenores del evento, requerimientos, fechas y agenda..."></textarea>
           </div>
 
-          <!-- Cuadro de estado dinámico -->
-          <div id="alertBox" class="hidden rounded-lg p-3 text-xs"></div>
+          <!-- Cuadro de avisos integrado -->
+          <div id="alertBox" class="hidden rounded-lg p-3 text-xs leading-relaxed"></div>
 
-          <!-- Botones de Acción -->
+          <!-- Acciones de Formulario -->
           <div class="flex items-center justify-between gap-4 pt-2">
             <button id="btnPrintPreview" type="button" class="px-4 py-2 bg-brand-blue hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-lg border border-brand-border transition-all flex items-center gap-2" style="background-color: #1E293B; border: 1px solid #2A364F;">
-              <i class="fa-solid fa-print"></i> Vista de Impresión
+              <i class="fa-solid fa-print"></i> Previsualizar / Imprimir
             </button>
             
-            <button type="submit" id="btnEnviar" class="px-6 py-2 bg-brand-accent hover:bg-brand-accentHover text-brand-dark text-xs font-extrabold rounded-lg tracking-wider transition-all flex items-center gap-2 shadow-lg shadow-brand-accent/10" style="background-color: #D4AF37; color: #0B0F19;">
-              <span id="spinnerCarga" class="hidden"><i class="fa-solid fa-spinner animate-spin mr-1"></i> Transmitiendo...</span>
-              <span id="btnTexto"><i class="fa-solid fa-paper-plane"></i> Despachar Correo</span>
+            <button type="submit" id="btnEnviar" class="px-6 py-2 bg-brand-accent hover:bg-brand-accentHover text-brand-dark text-xs font-extrabold rounded-lg tracking-wider transition-all flex items-center gap-2 shadow-lg shadow-brand-accent/20" style="background-color: #D4AF37; color: #0B0F19;">
+              <span id="spinnerCarga" class="hidden"><i class="fa-solid fa-circle-notch animate-spin mr-1"></i> Enviando...</span>
+              <span id="btnTexto"><i class="fa-solid fa-paper-plane"></i> Enviar Correo Institucional</span>
             </button>
           </div>
         </form>
       </div>
     </div>
 
-    <!-- -->
+    <!-- COLUMNA DERECHA: NOTIFICACIONES REAL-TIME (5 COLUMNAS) -->
     <div class="no-print lg:col-span-5 flex flex-col gap-6">
       
-      <!-- Panel de logs activos -->
-      <div class="bg-brand-card border border-brand-border rounded-xl p-5 shadow-2xl flex flex-col gap-4 h-[550px]" style="background-color: #161D30; border: 1px solid #2A364F;">
+      <!-- Panel de Actividad -->
+      <div class="bg-brand-card border border-brand-border rounded-xl p-5 shadow-2xl flex flex-col gap-4 h-[580px]" style="background-color: #161D30; border: 1px solid #2A364F;">
         <div class="flex items-center justify-between border-b border-brand-border pb-3" style="border-bottom: 1px solid #2A364F;">
           <div class="flex items-center gap-2">
             <span class="relative flex h-2.5 w-2.5">
-              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-              <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-accent" style="background-color: #D4AF37;"></span>
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
             </span>
-            <h2 class="text-xs font-extrabold tracking-wider text-slate-100 uppercase">Actividad de Coordinadoras</h2>
+            <h2 class="text-sm font-extrabold tracking-wide text-slate-100 uppercase">Actividad en Tiempo Real</h2>
           </div>
-          <span class="text-[9px] text-brand-accent font-bold bg-brand-accent/10 px-2.5 py-0.5 rounded-full border border-brand-accent/20" style="color: #D4AF37; background-color: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.2);">En Vivo</span>
+          <span class="text-[10px] text-brand-accent font-bold bg-brand-dark px-2.5 py-1 rounded-full border border-brand-border" style="color: #D4AF37; background-color: #0B0F19; border: 1px solid #2A364F;">Coordinadoras</span>
         </div>
 
         <!-- Feed de Notificaciones -->
         <div id="notificationsContainer" class="flex-grow overflow-y-auto space-y-3 pr-1">
-          <!-- Feed Vacío por Defecto -->
+          <!-- Feed Vacío Inicial -->
           <div id="emptyFeed" class="h-full flex flex-col items-center justify-center text-center p-6 text-slate-500 gap-3">
-            <div class="w-12 h-12 bg-brand-dark rounded-full flex items-center justify-center border border-brand-border text-slate-600" style="background-color: #0B0F19; border: 1px solid #2A364F;">
-              <i class="fa-solid fa-signal text-xl"></i>
+            <div class="w-16 h-16 bg-brand-dark rounded-full flex items-center justify-center border border-brand-border text-slate-600" style="background-color: #0B0F19; border: 1px solid #2A364F;">
+              <i class="fa-solid fa-bell-slash text-2xl"></i>
             </div>
             <div>
-              <h4 class="text-xs font-bold text-slate-400">Esperando transmisiones</h4>
-              <p class="text-[10px] text-slate-500 max-w-[180px] mt-1 mx-auto">Tus envíos exitosos se verán aquí de forma inmediata.</p>
+              <h4 class="text-xs font-bold text-slate-400">Sin notificaciones recientes</h4>
+              <p class="text-[10px] text-slate-500 max-w-[200px] mt-1 mx-auto">Los reportes que se envíen aparecerán aquí en tiempo real para todas las coordinadoras.</p>
             </div>
           </div>
         </div>
 
-        <div class="text-[9px] text-slate-500 text-center border-t border-brand-border pt-3 flex items-center justify-center gap-1.5" style="border-top: 1px solid #2A364F;">
-          <i class="fa-solid fa-database text-brand-accent" style="color: #D4AF37;"></i> Monitor de datos seguro y descentralizado
+        <div class="text-[10px] text-slate-500 text-center border-t border-brand-border pt-3 flex items-center justify-center gap-1" style="border-top: 1px solid #2A364F;">
+          <i class="fa-solid fa-circle-nodes text-brand-accent" style="color: #D4AF37;"></i> Sincronizado automáticamente mediante Firestore
         </div>
       </div>
     </div>
 
   </main>
 
-  <!-- -->
+  <!-- FICHA DE IMPRESIÓN OFICIAL CEUT (OCULTA EN PANTALLA) -->
   <div class="print-only hidden print-container bg-white text-black">
-    <!-- Encabezado de Impresión -->
-    <div class="flex items-center justify-between border-b-2 border-black pb-4 mb-5" style="border-bottom: 2px solid black;">
+    <!-- Encabezado de la Institución -->
+    <div class="flex items-center justify-between border-b-2 border-black pb-4 mb-6" style="border-bottom: 2px solid black;">
       <div class="flex items-center gap-4">
-        <div class="w-14 h-14 flex items-center justify-center border border-gray-300 rounded overflow-hidden relative">
-          <!-- Fallback vectorizado seguro para impresión -->
+        <div class="w-16 h-16 flex items-center justify-center border border-gray-300 rounded overflow-hidden relative bg-white">
           <div id="printLogoFallback" class="absolute inset-0 text-black text-2xl flex items-center justify-center bg-white">
             <svg class="w-10 h-10 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
@@ -319,23 +321,23 @@
                onerror="this.style.display='none';">
         </div>
         <div>
-          <h1 class="text-lg font-bold tracking-tight uppercase">Centro Universitario Tehuacán</h1>
-          <p class="text-[10px] font-semibold tracking-wider text-gray-600">DIRECCIÓN ACADÉMICA • FICHA OFICIAL DE SEGUIMIENTO</p>
+          <h1 class="text-xl font-bold tracking-tight uppercase">Centro Universitario Tehuacán</h1>
+          <p class="text-xs font-semibold tracking-widest text-gray-600">DIRECCIÓN ACADÉMICA - DEPARTAMENTO DE COORDINACIÓN</p>
         </div>
       </div>
       <div class="text-right">
-        <span class="text-[9px] font-mono text-gray-500 block">CONTROL INTERNO</span>
+        <span class="text-[10px] font-mono text-gray-500 block">DOCUMENTO OFICIAL DE CONTROL</span>
         <span class="text-xs font-bold block" id="printFecha">--/--/----</span>
       </div>
     </div>
 
-    <!-- Título de la Ficha -->
-    <div class="text-center bg-gray-100 py-1.5 border border-gray-300 rounded mb-4">
-      <h2 class="text-xs font-extrabold uppercase tracking-widest text-gray-800">Minuta Técnica de Coordinación Escolar</h2>
+    <!-- Título de Ficha -->
+    <div class="text-center bg-gray-100 py-2 border border-gray-300 rounded mb-6">
+      <h2 class="text-sm font-extrabold uppercase tracking-wider text-gray-800">Ficha Técnica de Reporte y Enlace Institucional</h2>
     </div>
 
     <!-- Tabla de Metadatos -->
-    <table class="w-full text-xs border-collapse border border-gray-300 mb-5">
+    <table class="w-full text-xs border-collapse border border-gray-300 mb-6">
       <tbody>
         <tr>
           <td class="border border-gray-300 p-2 font-bold bg-gray-50 w-1/4">Coordinadora Emisora:</td>
@@ -344,59 +346,58 @@
           <td class="border border-gray-300 p-2" id="printDepto">-----------------------------------------</td>
         </tr>
         <tr>
-          <td class="border border-gray-300 p-2 font-bold bg-gray-50">Correo Destino:</td>
+          <td class="border border-gray-300 p-2 font-bold bg-gray-50">Correo Destinatario:</td>
           <td class="border border-gray-300 p-2" id="printEmailDest">-----------------------------------------</td>
-          <td class="border border-gray-300 p-2 font-bold bg-gray-50">Copia (CC):</td>
+          <td class="border border-gray-300 p-2 font-bold bg-gray-50">Copia Informativa (CC):</td>
           <td class="border border-gray-300 p-2" id="printEmailCC">-----------------------------------------</td>
         </tr>
       </tbody>
     </table>
 
-    <!-- Contenido del Reporte -->
+    <!-- Contenido Técnico del Reporte -->
     <div class="mb-8">
-      <h3 class="text-xs font-extrabold uppercase tracking-wider text-gray-700 mb-2 border-b border-gray-200 pb-1">Descripción del Reporte:</h3>
-      <div class="text-xs leading-relaxed text-gray-800 bg-white border border-gray-200 rounded p-4 min-h-[220px]" id="printMensaje" style="white-space: pre-wrap;">
-        Sin contenido cargado en la ficha.
+      <h3 class="text-xs font-extrabold uppercase tracking-wider text-gray-700 mb-2 border-b border-gray-200 pb-1">Descripción del Reporte / Evento:</h3>
+      <div class="text-xs leading-relaxed text-gray-800 bg-white border border-gray-200 rounded p-4 min-h-[250px]" id="printMensaje" style="white-space: pre-wrap;">
+        Sin contenido cargado. Use el botón "Previsualizar / Imprimir" del portal para cargar la información antes de mandar la impresión.
       </div>
     </div>
 
-    <!-- Espacios para Firmas -->
-    <div class="mt-14 grid grid-cols-2 gap-12 text-center text-xs">
+    <!-- Firmas Oficiales -->
+    <div class="mt-16 grid grid-cols-2 gap-12 text-center text-xs">
       <div>
-        <div class="w-3/4 mx-auto border-t border-black pt-2">
+        <div class="w-3/4 mx-auto border-t border-black pt-2" style="border-top: 1px solid black;">
           <p class="font-bold uppercase" id="printFirmaNombre">Firma de la Coordinadora</p>
-          <p class="text-[9px] text-gray-500">Área de Emisión</p>
+          <p class="text-[10px] text-gray-500">Emisora de Ficha</p>
         </div>
       </div>
       <div>
-        <div class="w-3/4 mx-auto border-t border-black pt-2">
+        <div class="w-3/4 mx-auto border-t border-black pt-2" style="border-top: 1px solid black;">
           <p class="font-bold uppercase">Sello y Firma de Dirección</p>
-          <p class="text-[9px] text-gray-500">Centro Universitario Tehuacán</p>
+          <p class="text-[10px] text-gray-500">Validación Académica CEUT</p>
         </div>
       </div>
     </div>
 
-    <!-- Pie de Ficha -->
-    <div class="mt-12 text-center border-t border-gray-200 pt-3 text-[8px] text-gray-400">
-      Este documento es una copia institucional válida para el control académico del Centro Universitario Tehuacán.
+    <!-- Pie de Página -->
+    <div class="mt-16 text-center border-t border-gray-200 pt-3 text-[9px] text-gray-500">
+      Este documento es de carácter informativo institucional. Centro Universitario Tehuacán. Dirección General Académica.
     </div>
   </div>
 
   <!-- PIE DE PÁGINA (NO SE IMPRIME) -->
   <footer class="no-print bg-brand-card/30 border-t border-brand-border text-center py-4 text-xs text-slate-500" style="border-top: 1px solid #2A364F;">
-    <p>© 2026 Centro Universitario Tehuacán. Todos los derechos reservados de control interno.</p>
+    <p>© 2026 Centro Universitario Tehuacán. Todos los derechos reservados.</p>
   </footer>
 
-  <!-- Firebase Legacy Compat SDK (Carga tradicional robusta) -->
+  <!-- Firebase Legacy Compat SDK (Carga tradicional para máxima compatibilidad con el entorno) -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
-  <!-- -->
   <script>
-    // Inicialización de funciones globales de respaldo (Previene fallos de CORS)
+    // Inicialización de lógicas de respaldo contra fallos de red
     window.guardarNotificacionFirestore = async function(nombre, depto, dest, cc) {
-      console.log("Servicio remoto de Firebase inactivo o no configurado en este sandbox. Registrando localmente.");
+      console.log("Servicio Firebase fuera de línea en este sandbox. Guardando traza local.");
       agregarNotificacionLocal(nombre, depto, dest, cc);
     };
 
@@ -431,11 +432,11 @@
         </div>
       `;
       if (container) container.insertBefore(itemEl, container.firstChild);
-      sonarAlertaPremium();
+      sonarAlertaAcustica();
     }
 
-    // Alerta acústica premium sintetizada por Web Audio API
-    function sonarAlertaPremium() {
+    // Sintetizador acústico oficial de aviso mediante Web Audio API (Nativo de alta frecuencia)
+    function sonarAlertaAcustica() {
       try {
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         const osc = audioCtx.createOscillator();
@@ -445,8 +446,8 @@
         gain.connect(audioCtx.destination);
         
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // Do5
-        osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.12); // Sol5
+        osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // Re5
+        osc.frequency.setValueAtTime(880.00, audioCtx.currentTime + 0.12); // La5
         
         gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.35);
@@ -454,11 +455,11 @@
         osc.start();
         osc.stop(audioCtx.currentTime + 0.35);
       } catch (e) {
-        console.warn("La alerta acústica fue bloqueada por el navegador o sandbox:", e);
+        console.warn("Reproducción auditiva bloqueada por directivas de seguridad de navegador.");
       }
     }
 
-    // Conexión y sincronización en la nube con Firebase
+    // Inicialización del ecosistema de Firebase con detección inteligente
     try {
       let firebaseConfig = {
         apiKey: "AIzaSyCVgbSlImT02t1SMJ6RljHpzpDDJPBKMxk",
@@ -475,7 +476,7 @@
             ? JSON.parse(window.__firebase_config) 
             : window.__firebase_config;
         } catch(err) {
-          console.warn("Fallo de lectura en variable inyectada, usando configuración predeterminada.");
+          console.warn("Error leyendo variables externas, usando credenciales por defecto.");
         }
       }
 
@@ -486,7 +487,7 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        auth.signInAnonymously().catch(err => console.warn("Error en login anónimo:", err));
+        auth.signInAnonymously().catch(err => console.warn("Error en ingreso anónimo:", err));
 
         auth.onAuthStateChanged((user) => {
           if (user) {
@@ -504,7 +505,7 @@
               timestamp: Date.now()
             });
           } catch (e) {
-            console.warn("Fallo en sincronización Firestore, registrando en local:", e);
+            console.warn("Error en escritura Firestore remota, procediendo con local:", e);
             agregarNotificacionLocal(nombre, depto, dest, cc);
           }
         };
@@ -512,7 +513,7 @@
         generarLogsLocalesDemo();
       }
     } catch (e) {
-      console.warn("Fallo crítico al conectar con base de datos, activando logs locales:", e);
+      console.warn("Error en conexión con base de datos, activando local fallback.", e);
       generarLogsLocalesDemo();
     }
 
@@ -539,11 +540,11 @@
           pintarFeed(listado);
 
           if (inicializacionCompletada && snapshot.docChanges().some(change => change.type === "added")) {
-            sonarAlertaPremium();
+            sonarAlertaAcustica();
           }
           inicializacionCompletada = true;
         }, (error) => {
-          console.warn("Fallo de conexión Firestore. Usando log de simulación.");
+          console.warn("Fallo de conexión Firestore en tiempo real. Usando log demostrativo.");
           generarLogsLocalesDemo();
         });
       } catch(err) {
@@ -599,25 +600,25 @@
 
     function generarLogsLocalesDemo() {
       const demoItems = [
-        {coordinadora: "Lic. Luz Ortega", departamento: "Coordinación Académica Preparatoria", destinatario: "director.general@ceut.edu.mx", copiaCC: "director@ceut.edu.mx", timestamp: Date.now() - 45000},
+        {coordinadora: "Lic. Luz Ortega", departamento: "Coordinación Académica Preparatoria", destinatario: "director.general@ceut.edu.mx", copiaCC: "director@ceut.edu.mx, samuel.roldan@ceut.edu.mx", timestamp: Date.now() - 45000},
         {coordinadora: "Lic. Miroslava Hoyos", departamento: "Coordinación Psicopedagógica", destinatario: "contabilidad@ceut.edu.mx", copiaCC: "luz.ortega@ceut.edu.mx", timestamp: Date.now() - 320000}
       ];
       setTimeout(() => pintarFeed(demoItems), 400);
     }
   </script>
 
-  <!-- -->
+  <!-- CONTROL DE INTERACCIONES Y ENVÍOS -->
   <script>
-    function arranqueSeguroDelPortal() {
+    function inicializarEcosistema() {
       const demoData = {
         emailDestino: "deptopsicopedagogico@ceut.edu.mx",
         emailCC: "luz.ortega@ceut.edu.mx, samuel.roldan@ceut.edu.mx, miroslava.hoyos@ceut.edu.mx",
         nombreCoordinador: "Lic. Liliana Benítez Ortiz",
         departamento: "Coordinación de Psicopedagogía",
-        mensaje: "Estimada Dirección Académica,\n\nPor medio de este reporte comparto la planificación del taller para el manejo de ansiedad y técnicas de estudio dirigido a los alumnos de 3° semestre de bachillerato.\n\nFecha estimada: Jueves 11 de Junio.\nInstalaciones: Aula de Conferencias CEUT.\nObjetivos: Fomentar el auto-control de estrés antes de exámenes.\n\nQuedo a su disposición para la firma de autorización correspondiente.\n\nAtentamente,\nLic. Liliana Benítez Ortiz\nCoordinadora Psicopedagógica"
+        mensaje: "Estimada Dirección Académica,\n\nPor medio del presente reporte comparto la planificación del taller para el manejo de estrés escolar y técnicas de estudio grupal dirigido a los alumnos de preparatoria.\n\nFecha programada: Jueves 11 de Junio.\nLugar: Aula de Conferencias CEUT.\nObjetivos: Brindar soporte técnico escolar y herramientas para exámenes.\n\nQuedo a su disposición para cualquier retroalimentación y la firma correspondiente.\n\nAtentamente,\nLic. Liliana Benítez Ortiz\nCoordinación de Psicopedagogía"
       };
 
-      // Auto-completador de Demostración
+      // Autocompletador de demostración
       const btnAutoDemo = document.getElementById('btnAutoDemo');
       if (btnAutoDemo) {
         btnAutoDemo.addEventListener('click', () => {
@@ -633,11 +634,11 @@
           if(departamentoEl) departamentoEl.value = demoData.departamento;
           if(mensajeEl) mensajeEl.value = demoData.mensaje;
           
-          lanzarAvisoInteractivo("Datos cargados exitosamente. Ahora puedes probar el envío o la impresión.", "success");
+          lanzarAvisoInteractivo("Datos cargados correctamente. ¡Puedes probar el envío o la previsualización de impresión!", "success");
         });
       }
 
-      // Procesamiento de Formulario Asíncrono
+      // Procesamiento de formulario con FormSubmit AJAX asíncrono
       const formPortal = document.getElementById('formPortal');
       if (formPortal) {
         formPortal.addEventListener('submit', async (e) => {
@@ -659,14 +660,14 @@
           const departamento = document.getElementById('departamento').value.trim();
           const mensaje = document.getElementById('mensaje').value.trim();
           
-          // FormSubmit JSON Payload
+          // FormSubmit Payload
           const payload = {
             _subject: `[CEUT REPORTE] ${departamento} - ${nombreCoordinador}`,
             _captcha: "false",
             _template: "table",
-            "Coordinadora": nombreCoordinador,
+            "Coordinadora Emisora": nombreCoordinador,
             "Departamento": departamento,
-            "Detalle del Reporte": mensaje,
+            "Contenido del Reporte": mensaje,
             "Fecha Emisión": new Date().toLocaleString('es-MX', { timeZone: 'America/Mexico_City' })
           };
           
@@ -693,8 +694,8 @@
             
             if (response.ok && result.success === "true") {
               lanzarAvisoInteractivo(`
-                <strong>¡Reporte de coordinación enviado y copiado!</strong><br>
-                <span class="block mt-1">Se procesó de forma segura al buzón de destino y se actualizó el feed en tiempo real.</span>
+                <strong>¡Reporte enviado y copiado exitosamente!</strong><br>
+                <span class="block mt-1 font-medium text-[11px]">Se despachó en tiempo real al correo de destino y a los coordinadores en copia. El monitor de actividad se ha sincronizado.</span>
               `, "success");
               
               if (window.guardarNotificacionFirestore) {
@@ -704,16 +705,16 @@
               formPortal.reset();
               
             } else {
-              throw new Error("FormSubmit rechazó los datos.");
+              throw new Error("FormSubmit rechazó el envío de datos.");
             }
             
           } catch (error) {
             clearTimeout(timeoutId);
-            console.error("Fallo de comunicación:", error);
+            console.error("Fallo de envío automático:", error);
             
-            let detalleErr = "Verifica tu conexión a internet o comprueba el formato de tus correos.";
+            let detalleErr = "Comprueba tu conexión o verifica que las direcciones de correo electrónico sean válidas.";
             if (error.name === 'AbortError') {
-              detalleErr = "El servidor tardó demasiado en responder.";
+              detalleErr = "Se agotó el tiempo de espera del servidor de correo.";
             }
             
             const mailtoSubject = encodeURIComponent(`[CEUT] Reporte de ${departamento}`);
@@ -721,11 +722,11 @@
             const mailtoUrl = `mailto:${emailDestino}?cc=${emailCC}&subject=${mailtoSubject}&body=${mailtoBody}`;
             
             lanzarAvisoInteractivo(`
-              <strong>No se pudo enviar automáticamente.</strong><br>
+              <strong>Fallo en el envío automático de fondo.</strong><br>
               <span class="text-[11px] block my-2 text-slate-300">${detalleErr}</span>
               <div class="mt-2">
                 <a href="${mailtoUrl}" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-brand-accent hover:bg-brand-accentHover text-brand-dark rounded text-xs font-bold transition-all" style="background-color: #D4AF37; color: #0B0F19;">
-                  <i class="fa-solid fa-envelope-open-text"></i> Despachar por correo tradicional
+                  <i class="fa-solid fa-envelope-open-text"></i> Despachar por correo tradicional (Mailto)
                 </a>
               </div>
             `, "error");
@@ -787,11 +788,11 @@
       }
     }
 
-    // Arranque de ciclo de vida seguro robusto
+    // Arranque de ciclo de vida seguro
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', arranqueSeguroDelPortal);
+      document.addEventListener('DOMContentLoaded', inicializarEcosistema);
     } else {
-      arranqueSeguroDelPortal();
+      inicializarEcosistema();
     }
   </script>
 </body>
