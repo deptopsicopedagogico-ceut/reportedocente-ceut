@@ -8,10 +8,10 @@
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   
-  <!-- Google Fonts: Montserrat para un acabado institucional premium -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Google Fonts: Montserrat para interfaz y Playfair Display para títulos formales -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,500&display=swap" rel="stylesheet">
   
-  <!-- CONFIGURACIÓN DE COLORES PERSONALIZADOS CEUT -->
+  <!-- Configuración de Colores Corporativos CEUT -->
   <script>
     window.tailwind = window.tailwind || {};
     try {
@@ -20,7 +20,8 @@
         theme: {
           extend: {
             fontFamily: {
-              sans: ['Montserrat', 'sans-serif']
+              sans: ['Montserrat', 'sans-serif'],
+              serif: ['Playfair Display', 'serif']
             },
             colors: {
               brand: {
@@ -29,34 +30,37 @@
                 accent: '#D4AF37',
                 accentHover: '#F3CD5F',
                 blue: '#1E293B',
-                border: '#2A364F'
+                border: '#2A364F',
+                success: '#10B981',
+                danger: '#EF4444'
               }
             }
           }
         }
       };
     } catch (e) {
-      console.warn("Error al cargar configuración de Tailwind.");
+      console.warn("Fallo al inicializar la configuración de Tailwind.");
     }
   </script>
 
   <style>
-    /* Scrollbar minimalista y elegante a juego con la identidad oscura */
+    /* Scrollbar ultra-fino y elegante con acentos dorados */
     ::-webkit-scrollbar {
-      width: 6px;
+      width: 5px;
+      height: 5px;
     }
     ::-webkit-scrollbar-track {
       background: #0B0F19;
     }
     ::-webkit-scrollbar-thumb {
-      background: #1E293B;
-      border-radius: 3px;
+      background: #2A364F;
+      border-radius: 4px;
     }
     ::-webkit-scrollbar-thumb:hover {
       background: #D4AF37;
     }
 
-    /* Reglas estrictas para impresión en hoja tamaño Carta */
+    /* Reglas estrictas de impresión tamaño Carta (Oficial) */
     @media print {
       body {
         background: white !important;
@@ -89,87 +93,124 @@
     }
   </style>
 </head>
-<body class="bg-[#0B0F19] text-slate-100 font-sans min-h-screen flex flex-col antialiased">
+<body class="bg-brand-dark text-slate-100 font-sans min-h-screen flex flex-col antialiased">
 
-  <header class="no-print bg-[#161D30]/90 backdrop-blur border-b border-[#2A364F] sticky top-0 z-50 px-4 py-3">
+  <!-- CABECERA INSTITUCIONAL (NO SE IMPRIME) -->
+  <header class="no-print bg-brand-card/95 backdrop-blur border-b border-brand-border sticky top-0 z-50 px-4 py-3 shadow-xl">
     <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
       
-      <!-- Identidad Corporativa CEUT con logo SVG Premium integrado -->
-      <div class="flex items-center gap-3">
-        <div class="relative w-12 h-12 bg-[#0B0F19] rounded-xl border border-[#D4AF37]/30 flex items-center justify-center overflow-hidden">
-          <svg class="w-8 h-8 text-[#D4AF37]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
-            <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/>
+      <!-- Identidad Corporativa CEUT con Escudo Vectorial Premium -->
+      <div class="flex items-center gap-4">
+        <div class="relative w-14 h-14 bg-brand-dark rounded-xl border border-brand-accent/40 flex items-center justify-center p-1.5 shadow-lg shadow-brand-accent/10">
+          <!-- Escudo Heráldico del CEUT en SVG -->
+          <svg class="w-full h-full text-brand-accent" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 5C50 5 85 10 85 45C85 70 50 95 50 95C50 95 15 70 15 45C15 10 50 5 50 5Z" fill="#0B0F19" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+            <path d="M50 15V80" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2 2"/>
+            <path d="M25 40H75" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2 2"/>
+            <!-- Antorcha del Saber -->
+            <path d="M46 55 L54 55 L52 70 L48 70 Z" fill="currentColor" opacity="0.8"/>
+            <path d="M50 35 C53 35 55 42 50 48 C45 42 47 35 50 35 Z" fill="#EF4444"/>
+            <!-- Hojas de Laurel -->
+            <path d="M22 45 C25 55 35 60 45 62" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M78 45 C75 55 65 60 55 62" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <!-- Libro Abierto -->
+            <path d="M35 48 C42 45 50 48 50 48 C50 48 58 45 65 48 L65 54 C58 51 50 54 50 54 C50 54 42 51 35 54 Z" fill="none" stroke="currentColor" stroke-width="2"/>
           </svg>
         </div>
         <div>
-          <h1 class="text-lg font-extrabold tracking-wider text-slate-100 flex items-center gap-2">
-            CEUT <span class="text-[#D4AF37] text-xs px-2 py-0.5 rounded bg-[#D4AF37]/10 border border-[#D4AF37]/20">DOCENTE</span>
+          <h1 class="text-xl font-extrabold tracking-wider text-slate-100 flex items-center gap-2">
+            CEUT <span class="text-brand-accent text-[10px] tracking-widest px-2.5 py-0.5 rounded bg-brand-accent/10 border border-brand-accent/30 font-bold uppercase">SICARED</span>
           </h1>
-          <p class="text-[10px] text-slate-400 font-medium uppercase tracking-widest">Portal de Reporte y Canalización</p>
+          <p class="text-[10px] text-slate-400 font-semibold uppercase tracking-widest">Portal Oficial de Reporte, Canalización y Métricas Docentes</p>
         </div>
       </div>
 
-      <!-- Barra de Acciones y Estado del Servidor -->
+      <!-- Controladores Rápidos y Estado -->
       <div class="flex items-center gap-3">
-        <button id="btnAutoDemo" type="button" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-[#D4AF37]/10 hover:bg-[#D4AF37] text-[#D4AF37] hover:text-[#0B0F19] border border-[#D4AF37]/30 transition-all duration-300 flex items-center gap-2">
-          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <button id="btnAutoDemo" type="button" class="px-4 py-2 text-xs font-bold rounded-lg bg-brand-accent/10 hover:bg-brand-accent text-brand-accent hover:text-brand-dark border border-brand-accent/30 transition-all duration-300 flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
           </svg>
           Autocompletar Demo
         </button>
-        <div class="flex items-center gap-2 text-xs bg-[#0B0F19] px-3 py-1.5 rounded-lg border border-[#2A364F]">
+        <div class="flex items-center gap-2 text-xs bg-brand-dark px-3 py-2 rounded-lg border border-brand-border">
           <span class="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse"></span>
-          <span class="text-slate-300 font-medium">Servidor Activo</span>
+          <span class="text-slate-300 font-semibold">Base de Datos Conectada</span>
         </div>
       </div>
     </div>
   </header>
 
+  <!-- NAVEGACIÓN DE PESTAÑAS (NO SE IMPRIME) -->
+  <div class="no-print bg-[#121826] border-b border-brand-border px-4 py-2">
+    <div class="max-w-7xl mx-auto flex gap-2 overflow-x-auto">
+      <button onclick="switchTab('nuevo')" id="tab-nuevo" class="px-4 py-2 text-xs font-bold rounded-lg bg-brand-accent text-brand-dark transition-all flex items-center gap-2">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+        Nueva Canalización
+      </button>
+      <button onclick="switchTab('historial')" id="tab-historial" class="px-4 py-2 text-xs font-bold rounded-lg bg-brand-card text-slate-300 hover:bg-brand-border transition-all flex items-center gap-2">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        Historial de Reportes (<span id="countHistorial">0</span>)
+      </button>
+      <button onclick="switchTab('metricas')" id="tab-metricas" class="px-4 py-2 text-xs font-bold rounded-lg bg-brand-card text-slate-300 hover:bg-brand-border transition-all flex items-center gap-2">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
+        </svg>
+        Métricas e Indicadores
+      </button>
+    </div>
+  </div>
+
+  <!-- SECCIÓN CENTRAL -->
   <main class="flex-grow max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
     
-    <!-- COLUMNA IZQUIERDA: FORMULARIO DE CANALIZACIONES (7 COLUMNAS) -->
-    <div class="no-print lg:col-span-7 flex flex-col gap-6">
+    <!-- PESTAÑA 1: NUEVA CANALIZACIÓN -->
+    <div id="panel-nuevo" class="no-print lg:col-span-7 flex flex-col gap-6">
       
-      <!-- Aviso Informativo sobre envíos automáticos y copias (CC) -->
-      <div class="bg-gradient-to-r from-amber-950/20 to-[#161D30] border border-[#D4AF37]/30 rounded-xl p-4 shadow-lg">
+      <!-- Panel de Avisos Inteligente (FormSubmit / Copias CC) -->
+      <div class="bg-gradient-to-r from-amber-950/20 to-brand-card border border-brand-accent/30 rounded-xl p-4 shadow-lg">
         <div class="flex gap-3">
-          <div class="text-[#D4AF37] text-lg mt-0.5">
+          <div class="text-brand-accent mt-0.5">
             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
           <div>
-            <h3 class="text-xs font-bold text-slate-100">Envío con Copias Automáticas (CC) a Coordinación</h3>
+            <h3 class="text-xs font-bold text-slate-100">Configuración de Envío de Oficios</h3>
             <p class="text-[11px] text-slate-300 mt-1 leading-relaxed">
-              El sistema enviará el reporte docente de forma automática a la dirección principal (ej. psicopedagogía o dirección) y con copias en tiempo real a las coordinadoras académicas configuradas mediante <strong>FormSubmit</strong>.
+              El sistema procesará tu reporte y emitirá copias automáticas al buzón del departamento psicopedagógico y coordinaciones académicas configuradas. 
             </p>
-            <p class="text-[10px] text-[#D4AF37] mt-1.5 font-semibold">
-              ⚠️ Nota de Primera Activación: Al enviar un reporte a un correo destinatario nuevo, FormSubmit enviará un único mensaje de confirmación al buzón del receptor. Deberá dar clic en "Confirm" para habilitar las recepciones futuras.
+            <p class="text-[10px] text-brand-accent mt-1.5 font-semibold">
+              ⚠️ Nota de Activación: Si configuras un correo nuevo por primera vez, FormSubmit enviará un mensaje de confirmación único al buzón para validar el enlace de envío.
             </p>
           </div>
         </div>
       </div>
 
       <!-- Tarjeta del Formulario Principal -->
-      <div class="bg-[#161D30] border border-[#2A364F] rounded-xl p-6 shadow-2xl flex flex-col gap-5">
-        <div class="border-b border-[#2A364F] pb-4 flex items-center justify-between">
+      <div class="bg-brand-card border border-brand-border rounded-xl p-6 shadow-2xl flex flex-col gap-5">
+        <div class="border-b border-brand-border pb-4 flex items-center justify-between">
           <div class="flex items-center gap-2">
-            <svg class="w-5 h-5 text-[#D4AF37]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z" />
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+            <svg class="w-5 h-5 text-brand-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
             </svg>
-            <h2 class="text-sm font-bold text-slate-100">Nuevo Reporte y Canalización Docente</h2>
+            <h2 class="text-sm font-bold text-slate-100">Ficha Técnica de Reporte de Alumno</h2>
           </div>
           <span class="text-xs text-slate-400">Paso 1 de 2</span>
         </div>
 
         <form id="formPortal" class="space-y-4">
+          
           <!-- Correos de Destino y Copias -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label for="emailDestino" class="block text-xs font-semibold text-slate-300 mb-1">
-                Correo Destinatario (Psicopedagogía / Dirección) <span class="text-[#D4AF37]">*</span>
+                Correo Receptor Principal <span class="text-brand-accent">*</span>
               </label>
               <div class="relative">
                 <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-505">
@@ -178,10 +219,9 @@
                   </svg>
                 </span>
                 <input type="email" id="emailDestino" required
-                       class="w-full bg-[#0B0F19] text-slate-200 pl-9 pr-3 py-2 rounded-lg border border-[#2A364F] focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] text-xs outline-none transition-all"
+                       class="w-full bg-brand-dark text-slate-200 pl-9 pr-3 py-2 rounded-lg border border-brand-border focus:border-brand-accent focus:ring-1 focus:ring-brand-accent text-xs outline-none transition-all"
                        placeholder="deptopsicopedagogico@ceut.edu.mx" value="deptopsicopedagogico@ceut.edu.mx">
               </div>
-              <p class="text-[10px] text-slate-400 mt-1">Buzón principal que recibirá y procesará el reporte.</p>
             </div>
 
             <div>
@@ -189,68 +229,122 @@
                 Copiar a Coordinadoras (CC)
               </label>
               <div class="relative">
-                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-550">
+                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-505">
                   <svg class="w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                   </svg>
                 </span>
                 <input type="text" id="emailCC"
-                       class="w-full bg-[#0B0F19] text-slate-200 pl-9 pr-3 py-2 rounded-lg border border-[#2A364F] focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] text-xs outline-none transition-all"
-                       placeholder="luz.ortega@ceut.edu.mx, samuel.roldan@ceut.edu.mx" value="luz.ortega@ceut.edu.mx, samuel.roldan@ceut.edu.mx">
+                       class="w-full bg-brand-dark text-slate-200 pl-9 pr-3 py-2 rounded-lg border border-brand-border focus:border-brand-accent focus:ring-1 focus:ring-brand-accent text-xs outline-none transition-all"
+                       placeholder="coordinacion@ceut.edu.mx" value="luz.ortega@ceut.edu.mx, samuel.roldan@ceut.edu.mx">
               </div>
-              <p class="text-[10px] text-slate-400 mt-1">Cuentas de coordinadoras separadas por comas para seguimiento.</p>
             </div>
           </div>
 
-          <!-- Datos del Docente Emisor -->
+          <!-- Datos del Emisor -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label for="nombreDocente" class="block text-xs font-semibold text-slate-300 mb-1">
-                Nombre del Docente Emisor <span class="text-[#D4AF37]">*</span>
+                Docente Emisor <span class="text-brand-accent">*</span>
               </label>
-              <div class="relative">
-                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500">
-                  <svg class="w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
-                </span>
-                <input type="text" id="nombreDocente" required
-                       class="w-full bg-[#0B0F19] text-slate-200 pl-9 pr-3 py-2 rounded-lg border border-[#2A364F] focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] text-xs outline-none transition-all"
-                       placeholder="Mtro. Alejandro Silva Torres">
-              </div>
+              <input type="text" id="nombreDocente" required
+                     class="w-full bg-brand-dark text-slate-200 px-3 py-2 rounded-lg border border-brand-border focus:border-brand-accent focus:ring-1 focus:ring-brand-accent text-xs outline-none transition-all"
+                     placeholder="Mtro. Alejandro Silva Torres">
             </div>
 
             <div>
               <label for="academia" class="block text-xs font-semibold text-slate-300 mb-1">
-                Academia / Asignatura / Especialidad <span class="text-[#D4AF37]">*</span>
+                Academia / Asignatura <span class="text-brand-accent">*</span>
               </label>
-              <div class="relative">
-                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500">
-                  <svg class="w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                  </svg>
-                </span>
-                <input type="text" id="academia" required
-                       class="w-full bg-[#0B0F19] text-slate-200 pl-9 pr-3 py-2 rounded-lg border border-[#2A364F] focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] text-xs outline-none transition-all"
-                       placeholder="Academia de Ciencias y Matemáticas">
+              <input type="text" id="academia" required
+                     class="w-full bg-brand-dark text-slate-200 px-3 py-2 rounded-lg border border-brand-border focus:border-brand-accent focus:ring-1 focus:ring-brand-accent text-xs outline-none transition-all"
+                     placeholder="Academia de Ciencias y Matemáticas">
+            </div>
+          </div>
+
+          <!-- Datos del Alumno -->
+          <div class="bg-brand-dark/40 border border-brand-border p-4 rounded-lg space-y-3">
+            <h4 class="text-xs font-bold text-brand-accent uppercase tracking-wider">Identificación del Alumno</h4>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div class="md:col-span-2">
+                <label for="nombreAlumno" class="block text-[11px] font-semibold text-slate-400 mb-1">Nombre Completo <span class="text-brand-accent">*</span></label>
+                <input type="text" id="nombreAlumno" required
+                       class="w-full bg-brand-dark text-slate-200 px-3 py-1.5 rounded border border-brand-border focus:border-brand-accent text-xs outline-none"
+                       placeholder="Ej. Juan Carlos López Pérez">
+              </div>
+              <div>
+                <label for="matricula" class="block text-[11px] font-semibold text-slate-400 mb-1">Matrícula / ID <span class="text-brand-accent">*</span></label>
+                <input type="text" id="matricula" required
+                       class="w-full bg-brand-dark text-slate-200 px-3 py-1.5 rounded border border-brand-border focus:border-brand-accent text-xs outline-none"
+                       placeholder="2026-0422">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+              <div>
+                <label for="semestre" class="block text-[11px] font-semibold text-slate-400 mb-1 font-bold">Semestre <span class="text-brand-accent">*</span></label>
+                <select id="semestre" class="w-full bg-brand-dark text-slate-200 px-2 py-1.5 rounded border border-brand-border focus:border-brand-accent text-xs outline-none">
+                  <option value="1">1° Semestre</option>
+                  <option value="2">2° Semestre</option>
+                  <option value="3">3° Semestre</option>
+                  <option value="4">4° Semestre</option>
+                  <option value="5">5° Semestre</option>
+                  <option value="6">6° Semestre</option>
+                  <option value="7">7° Semestre</option>
+                  <option value="8">8° Semestre</option>
+                </select>
+              </div>
+              <div>
+                <label for="grupo" class="block text-[11px] font-semibold text-slate-400 mb-1 font-bold">Grupo <span class="text-brand-accent">*</span></label>
+                <select id="grupo" class="w-full bg-brand-dark text-slate-200 px-2 py-1.5 rounded border border-brand-border focus:border-brand-accent text-xs outline-none">
+                  <option value="A">Grupo A</option>
+                  <option value="B">Grupo B</option>
+                  <option value="C">Grupo C</option>
+                  <option value="D">Grupo D</option>
+                </select>
+              </div>
+              <div>
+                <label for="categoria" class="block text-[11px] font-semibold text-slate-400 mb-1 font-bold">Categoría <span class="text-brand-accent">*</span></label>
+                <select id="categoria" class="w-full bg-brand-dark text-slate-200 px-2 py-1.5 rounded border border-brand-border focus:border-brand-accent text-xs outline-none">
+                  <option value="Conductual">Conductual</option>
+                  <option value="Académico">Académico</option>
+                  <option value="Faltas">Inasistencia</option>
+                  <option value="Psicológico">Psicopedagógico</option>
+                </select>
+              </div>
+              <div>
+                <label for="gravedad" class="block text-[11px] font-semibold text-slate-400 mb-1 font-bold">Gravedad <span class="text-brand-accent">*</span></label>
+                <select id="gravedad" class="w-full bg-brand-dark text-slate-200 px-2 py-1.5 rounded border border-brand-border focus:border-brand-accent text-xs outline-none">
+                  <option value="Bajo">Bajo</option>
+                  <option value="Medio">Medio</option>
+                  <option value="Alto">Alto / Urgente</option>
+                </select>
               </div>
             </div>
           </div>
 
-          <!-- Mensaje y Detalles del Reporte -->
+          <!-- Descripcion del Reporte con Atajos de Plantillas -->
           <div>
-            <label for="mensaje" class="block text-xs font-semibold text-slate-300 mb-1">
-              Descripción Detallada del Reporte, Incidencia o Canalización <span class="text-[#D4AF37]">*</span>
-            </label>
+            <div class="flex items-center justify-between mb-1">
+              <label for="mensaje" class="block text-xs font-semibold text-slate-300">
+                Descripción Detallada y Evidencias <span class="text-brand-accent">*</span>
+              </label>
+              <div class="flex gap-1">
+                <button type="button" onclick="cargarPlantilla('academico')" class="px-2 py-0.5 text-[9px] bg-brand-blue hover:bg-slate-700 text-slate-300 rounded border border-brand-border transition-all">📋 Académico</button>
+                <button type="button" onclick="cargarPlantilla('conducta')" class="px-2 py-0.5 text-[9px] bg-brand-blue hover:bg-slate-700 text-slate-300 rounded border border-brand-border transition-all">📋 Conducta</button>
+                <button type="button" onclick="cargarPlantilla('faltas')" class="px-2 py-0.5 text-[9px] bg-brand-blue hover:bg-slate-700 text-slate-300 rounded border border-brand-border transition-all">📋 Faltas</button>
+              </div>
+            </div>
             <textarea id="mensaje" required rows="5"
-                      class="w-full bg-[#0B0F19] text-slate-200 p-3 rounded-lg border border-[#2A364F] focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] text-xs outline-none transition-all resize-none"
-                      placeholder="Escribe detalladamente las observaciones académicas o de conducta del alumno..."></textarea>
+                      class="w-full bg-brand-dark text-slate-200 p-3 rounded-lg border border-brand-border focus:border-brand-accent focus:ring-1 focus:ring-brand-accent text-xs outline-none transition-all resize-none"
+                      placeholder="Escribe las observaciones académicas o de conducta del alumno..."></textarea>
           </div>
 
-          <!-- Alertas integradas en el flujo del formulario -->
+          <!-- Alerta del Formulario -->
           <div id="alertBox" class="hidden rounded-lg p-3 text-xs leading-relaxed"></div>
 
-          <!-- Botonera Principal -->
+          <!-- Botones de Acción -->
           <div class="flex items-center justify-between gap-4 pt-2">
             <button id="btnPrintPreview" type="button" class="px-4 py-2 bg-[#1E293B] hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-lg border border-[#2A364F] transition-all flex items-center gap-2">
               <svg class="w-4 h-4 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -259,7 +353,7 @@
               Previsualizar / Imprimir
             </button>
             
-            <button type="submit" id="btnEnviar" class="px-6 py-2 bg-[#D4AF37] hover:bg-[#F3CD5F] text-[#0B0F19] text-xs font-extrabold rounded-lg tracking-wider transition-all flex items-center gap-2 shadow-lg shadow-[#D4AF37]/20">
+            <button type="submit" id="btnEnviar" class="px-6 py-2 bg-brand-accent hover:bg-brand-accentHover text-brand-dark text-xs font-extrabold rounded-lg tracking-wider transition-all flex items-center gap-2 shadow-lg shadow-brand-accent/20">
               <span id="spinnerCarga" class="hidden flex items-center gap-2">
                 <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
                   <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -271,7 +365,7 @@
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                 </svg>
-                Enviar Reporte Docente
+                Guardar y Enviar Reporte
               </span>
             </button>
           </div>
@@ -279,12 +373,119 @@
       </div>
     </div>
 
-    <!-- COLUMNA DERECHA: MONITOREO REAL-TIME (5 COLUMNAS) -->
+    <!-- PESTAÑA 2: HISTORIAL DE REPORTES (PERSISTENTE EN LOCALSTORAGE) -->
+    <div id="panel-historial" class="no-print hidden lg:col-span-7 flex flex-col gap-6">
+      <div class="bg-brand-card border border-brand-border rounded-xl p-6 shadow-2xl flex flex-col gap-4">
+        <div class="flex items-center justify-between border-b border-brand-border pb-3">
+          <h2 class="text-sm font-bold text-slate-100 flex items-center gap-2">
+            <svg class="w-5 h-5 text-brand-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+            </svg>
+            Historial de Canalizaciones Registradas
+          </h2>
+          <button onclick="limpiarTodoHistorial()" class="text-[10px] px-2.5 py-1 bg-red-950/40 text-red-400 hover:bg-red-900 hover:text-white rounded border border-red-900/30 transition-all font-semibold uppercase tracking-wider">
+            Borrar Todo
+          </button>
+        </div>
+
+        <div id="historyTableContainer" class="overflow-x-auto">
+          <!-- Se poblará de forma dinámica -->
+        </div>
+      </div>
+    </div>
+
+    <!-- PESTAÑA 3: MÉTRICAS E INDICADORES (NO SE IMPRIME) -->
+    <div id="panel-metricas" class="no-print hidden lg:col-span-7 flex flex-col gap-6">
+      <div class="bg-brand-card border border-brand-border rounded-xl p-6 shadow-2xl flex flex-col gap-4">
+        <div class="border-b border-brand-border pb-3">
+          <h2 class="text-sm font-bold text-slate-100">Indicadores Académicos y de Alerta Temprana</h2>
+          <p class="text-[11px] text-slate-400">Distribución porcentual de incidencias escolares recopiladas localmente.</p>
+        </div>
+
+        <!-- Gráfica SVG Dinámica de Tipo de Incidencia -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+          <div class="bg-brand-dark/40 border border-brand-border p-4 rounded-xl flex flex-col items-center">
+            <h4 class="text-xs font-bold text-brand-accent uppercase tracking-wider mb-3">Gravedad de Reportes</h4>
+            <div class="relative w-36 h-36 flex items-center justify-center">
+              <svg class="w-full h-full -rotate-90" viewBox="0 0 36 36">
+                <!-- Circulo base -->
+                <circle class="text-brand-border" stroke="currentColor" stroke-width="3" fill="none" cx="18" cy="18" r="15.915"></circle>
+                <!-- Segmento dinámico Alto (Rojo) -->
+                <circle id="chartUrgent" class="text-red-500" stroke="currentColor" stroke-width="4.5" stroke-dasharray="0 100" fill="none" cx="18" cy="18" r="15.915"></circle>
+                <!-- Segmento dinámico Medio (Amarillo) -->
+                <circle id="chartMedium" class="text-yellow-500" stroke="currentColor" stroke-width="4" stroke-dasharray="0 100" fill="none" cx="18" cy="18" r="15.915"></circle>
+                <!-- Segmento dinámico Bajo (Verde) -->
+                <circle id="chartLow" class="text-emerald-500" stroke="currentColor" stroke-width="3.5" stroke-dasharray="0 100" fill="none" cx="18" cy="18" r="15.915"></circle>
+              </svg>
+              <div class="absolute flex flex-col items-center justify-center text-center">
+                <span id="chartTotalCount" class="text-lg font-black text-white">0</span>
+                <span class="text-[8px] text-slate-400 uppercase tracking-widest font-bold">Total</span>
+              </div>
+            </div>
+            
+            <div class="flex justify-around w-full text-[10px] mt-4 gap-2">
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-red-500"></span> Alto (<span id="lblUrgent">0</span>)</span>
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-yellow-500"></span> Medio (<span id="lblMedium">0</span>)</span>
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Bajo (<span id="lblLow">0</span>)</span>
+            </div>
+          </div>
+
+          <!-- Distribución por Categoria -->
+          <div class="bg-brand-dark/40 border border-brand-border p-4 rounded-xl flex flex-col justify-between">
+            <h4 class="text-xs font-bold text-brand-accent uppercase tracking-wider mb-2">Canalización por Categoría</h4>
+            
+            <div class="space-y-3 flex-grow flex flex-col justify-center">
+              <div>
+                <div class="flex justify-between text-[10px] mb-1">
+                  <span>Conductual</span>
+                  <span id="lblBarConducta">0%</span>
+                </div>
+                <div class="w-full h-2 bg-brand-border rounded-full overflow-hidden">
+                  <div id="barConducta" class="h-full bg-amber-500 transition-all duration-500" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-[10px] mb-1">
+                  <span>Académico</span>
+                  <span id="lblBarAcademico">0%</span>
+                </div>
+                <div class="w-full h-2 bg-brand-border rounded-full overflow-hidden">
+                  <div id="barAcademico" class="h-full bg-blue-500 transition-all duration-500" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-[10px] mb-1">
+                  <span>Inasistencias</span>
+                  <span id="lblBarFaltas">0%</span>
+                </div>
+                <div class="w-full h-2 bg-brand-border rounded-full overflow-hidden">
+                  <div id="barFaltas" class="h-full bg-rose-500 transition-all duration-500" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-[10px] mb-1">
+                  <span>Psicopedagógico</span>
+                  <span id="lblBarPsico">0%</span>
+                </div>
+                <div class="w-full h-2 bg-brand-border rounded-full overflow-hidden">
+                  <div id="barPsico" class="h-full bg-emerald-500 transition-all duration-500" style="width: 0%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COLUMNA DERECHA: MONITOR DE ACTIVIDAD EN TIEMPO REAL (5 COLUMNAS) -->
     <div class="no-print lg:col-span-5 flex flex-col gap-6">
       
       <!-- Panel de Actividad en Vivo -->
-      <div class="bg-[#161D30] border border-[#2A364F] rounded-xl p-5 shadow-2xl flex flex-col gap-4 h-[580px]">
-        <div class="flex items-center justify-between border-b border-[#2A364F] pb-3">
+      <div class="bg-brand-card border border-brand-border rounded-xl p-5 shadow-2xl flex flex-col gap-4 h-[580px]">
+        <div class="flex items-center justify-between border-b border-brand-border pb-3">
           <div class="flex items-center gap-2">
             <span class="relative flex h-2.5 w-2.5">
               <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
@@ -292,16 +493,16 @@
             </span>
             <h2 class="text-sm font-extrabold tracking-wide text-slate-100 uppercase">Actividad Docente en Vivo</h2>
           </div>
-          <span class="text-[10px] text-[#D4AF37] font-bold bg-[#0B0F19] px-2.5 py-1 rounded-full border border-[#2A364F]">Reportes</span>
+          <span class="text-[10px] text-brand-accent font-bold bg-brand-dark px-2.5 py-1 rounded-full border border-brand-border">Monitor</span>
         </div>
 
         <!-- Feed de Notificaciones Dinámico -->
         <div id="notificationsContainer" class="flex-grow overflow-y-auto space-y-3 pr-1">
-          <!-- El contenedor se poblará automáticamente mediante JavaScript -->
+          <!-- Se renderizan los reportes agregados -->
         </div>
 
-        <div class="text-[10px] text-slate-500 text-center border-t border-[#2A364F] pt-3 flex items-center justify-center gap-1.5">
-          <svg class="w-3.5 h-3.5 text-[#D4AF37]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+        <div class="text-[10px] text-slate-505 text-center border-t border-brand-border pt-3 flex items-center justify-center gap-1.5">
+          <svg class="w-3.5 h-3.5 text-brand-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
           </svg>
           Sincronizado Localmente de Forma Directa
@@ -311,54 +512,63 @@
 
   </main>
 
-  <!-- VISTA DE IMPRESIÓN OFICIAL (SÓLO VISIBLE AL MANDAR A IMPRESIÓN) -->
+  <!-- VISTA DE IMPRESIÓN OFICIAL (SÓLO VISIBLE AL ENVIAR A IMPRESIÓN/PREVIEW) -->
   <div class="print-only hidden print-container bg-white text-black">
     <div class="flex items-center justify-between border-b-2 border-black pb-4 mb-6">
       <div class="flex items-center gap-4">
-        <div class="w-16 h-16 flex items-center justify-center border border-gray-300 rounded overflow-hidden relative bg-white">
-          <svg class="w-10 h-10 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M22 10v6M2 10l10-5 10 5-10 5z"/>
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/>
+        <div class="w-16 h-16 flex items-center justify-center border border-gray-300 rounded overflow-hidden p-1 bg-white">
+          <!-- Escudo institucional impreso formal -->
+          <svg class="w-full h-full text-black" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 5C50 5 85 10 85 45C85 70 50 95 50 95C50 95 15 70 15 45C15 10 50 5 50 5Z" fill="white" stroke="currentColor" stroke-width="4"/>
+            <path d="M50 15V80" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2 2"/>
+            <path d="M25 40H75" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2 2"/>
+            <path d="M50 35 C53 35 55 42 50 48 C45 42 47 35 50 35 Z" fill="black"/>
+            <path d="M46 55 L54 55 L52 70 L48 70 Z" fill="black"/>
           </svg>
         </div>
         <div>
-          <h1 class="text-xl font-bold tracking-tight uppercase">Centro Universitario Tehuacán</h1>
-          <p class="text-xs font-semibold tracking-widest text-gray-600">DIRECCIÓN ACADÉMICA - DEPARTAMENTO DE COORDINACIÓN</p>
+          <h1 class="text-xl font-bold tracking-tight uppercase font-serif">Centro Universitario Tehuacán</h1>
+          <p class="text-xs font-semibold tracking-widest text-gray-600">DIRECCIÓN GENERAL ACADÉMICA - DEPARTAMENTO DE PSICOPEDAGOGÍA</p>
         </div>
       </div>
       <div class="text-right">
-        <span class="text-[10px] font-mono text-gray-500 block">DOCUMENTO DOCENTE OFICIAL</span>
+        <span class="text-[9px] font-mono text-gray-500 block font-bold">FICHA TÉCNICA OFICIAL</span>
         <span class="text-xs font-bold block" id="printFecha">--/--/----</span>
       </div>
     </div>
 
-    <!-- Título de la Ficha Técnica -->
     <div class="text-center bg-gray-100 py-2 border border-gray-300 rounded mb-6">
-      <h2 class="text-sm font-extrabold uppercase tracking-wider text-gray-800">Ficha Técnica de Reporte y Canalización Docente</h2>
+      <h2 class="text-sm font-extrabold uppercase tracking-wider text-gray-800">Oficio de Canalización Docente de Alumno</h2>
     </div>
 
     <!-- Tabla de Metadatos Formales -->
-    <table class="w-full text-xs border-collapse border border-gray-300 mb-6">
+    <table class="w-full text-xs border-collapse border border-gray-400 mb-6">
       <tbody>
         <tr>
-          <td class="border border-gray-300 p-2 font-bold bg-gray-50 w-1/4">Docente Emisor:</td>
-          <td class="border border-gray-300 p-2" id="printCoordinador">-----------------------------------------</td>
-          <td class="border border-gray-300 p-2 font-bold bg-gray-50 w-1/4">Academia / Asignatura:</td>
-          <td class="border border-gray-300 p-2" id="printDepto">-----------------------------------------</td>
+          <td class="border border-gray-400 p-2 font-bold bg-gray-50 w-1/4">Docente Emisor:</td>
+          <td class="border border-gray-400 p-2" id="printCoordinador">-----------------------------------------</td>
+          <td class="border border-gray-400 p-2 font-bold bg-gray-50 w-1/4">Academia / Asignatura:</td>
+          <td class="border border-gray-400 p-2" id="printDepto">-----------------------------------------</td>
         </tr>
         <tr>
-          <td class="border border-gray-300 p-2 font-bold bg-gray-50">Correo Destinatario:</td>
-          <td class="border border-gray-300 p-2" id="printEmailDest">-----------------------------------------</td>
-          <td class="border border-gray-300 p-2 font-bold bg-gray-50">Copia Informativa (CC):</td>
-          <td class="border border-gray-300 p-2" id="printEmailCC">-----------------------------------------</td>
+          <td class="border border-gray-400 p-2 font-bold bg-gray-50">Nombre Alumno:</td>
+          <td class="border border-gray-400 p-2 font-bold" id="printAlumno">-----------------------------------------</td>
+          <td class="border border-gray-400 p-2 font-bold bg-gray-50">Matrícula / ID:</td>
+          <td class="border border-gray-400 p-2" id="printMatricula">-----------------------------------------</td>
+        </tr>
+        <tr>
+          <td class="border border-gray-400 p-2 font-bold bg-gray-50">Semestre y Grupo:</td>
+          <td class="border border-gray-400 p-2" id="printSemestreGrupo">-----------------------------------------</td>
+          <td class="border border-gray-400 p-2 font-bold bg-gray-50">Gravedad y Categoría:</td>
+          <td class="border border-gray-400 p-2" id="printGravedadCat">-----------------------------------------</td>
         </tr>
       </tbody>
     </table>
 
     <!-- Cuerpo del Oficio Docente -->
     <div class="mb-8">
-      <h3 class="text-xs font-extrabold uppercase tracking-wider text-gray-700 mb-2 border-b border-gray-200 pb-1">Descripción del Reporte Docente / Incidencia:</h3>
-      <div class="text-xs leading-relaxed text-gray-800 bg-white border border-gray-200 rounded p-4 min-h-[250px]" id="printMensaje" style="white-space: pre-wrap;">
+      <h3 class="text-xs font-extrabold uppercase tracking-wider text-gray-700 mb-2 border-b border-gray-300 pb-1">Descripción de la Observación y Evidencia Técnica:</h3>
+      <div class="text-xs leading-relaxed text-gray-800 bg-white border border-gray-300 rounded p-4 min-h-[300px]" id="printMensaje" style="white-space: pre-wrap;">
         Sin contenido cargado. Use el botón "Previsualizar / Imprimir" del portal para cargar la información antes de mandar la impresión.
       </div>
     </div>
@@ -373,42 +583,113 @@
       </div>
       <div>
         <div class="w-3/4 mx-auto border-t border-black pt-2">
-          <p class="font-bold uppercase">Sello y Firma de Coordinación</p>
-          <p class="text-[10px] text-gray-500">Recepción Académica CEUT</p>
+          <p class="font-bold uppercase">Sello y Firma de Recepción</p>
+          <p class="text-[10px] text-gray-500">Departamento Psicopedagógico</p>
         </div>
       </div>
     </div>
 
     <div class="mt-16 text-center border-t border-gray-200 pt-3 text-[9px] text-gray-500">
-      Este documento es de carácter informativo institucional. Centro Universitario Tehuacán. Dirección General Académica.
+      Este documento es de carácter oficial interno y confidencial. Centro Universitario Tehuacán. Dirección General de Servicios Escolares.
     </div>
   </div>
 
   <!-- PIE DE PÁGINA (NO SE IMPRIME) -->
-  <footer class="no-print bg-[#161D30]/30 border-t border-[#2A364F] text-center py-4 text-xs text-slate-500">
-    <p>© 2026 Centro Universitario Tehuacán. Todos los derechos reservados.</p>
+  <footer class="no-print bg-brand-card/50 border-t border-brand-border text-center py-4 text-xs text-slate-500">
+    <p>© 2026 Centro Universitario Tehuacán. Todos los derechos reservados. Portal SICARED.</p>
   </footer>
 
+  <!-- SCRIPT CON LÓGICAS INTERACTIVAS Y CONFIGURACIONES DE LOCALSTORAGE -->
   <script>
-    // Variables de Estado en Memoria de Notificaciones
-    const feedNotificaciones = [
+    // Inicialización del Historial desde LocalStorage de forma segura
+    let feedNotificaciones = [];
+    const dummyDemoData = [
       {
+        id: 1,
         coordinadora: "Mtro. Alejandro Silva Torres",
         departamento: "Academia de Ciencias y Matemáticas",
-        destinatario: "deptopsicopedagogico@ceut.edu.mx",
-        copiaCC: "luz.ortega@ceut.edu.mx, samuel.roldan@ceut.edu.mx",
+        alumno: "Santiago Méndez",
+        matricula: "2024-0012",
+        semestre: "4",
+        grupo: "B",
+        categoria: "Académico",
+        gravedad: "Alto",
+        mensaje: "El alumno ha reprobado los últimos 3 exámenes parciales de Física.",
         timestamp: Date.now() - 45000
       },
       {
+        id: 2,
         coordinadora: "Dra. Miroslava Hoyos Cruz",
-        departamento: "Academia de Lenguaje y Comunicación",
-        destinatario: "deptopsicopedagogico@ceut.edu.mx",
-        copiaCC: "miroslava.hoyos@ceut.edu.mx",
+        departamento: "Academia de Lenguaje",
+        alumno: "Mariana Rojas",
+        matricula: "2024-0098",
+        semestre: "2",
+        grupo: "A",
+        categoria: "Conductual",
+        gravedad: "Medio",
+        mensaje: "La alumna presenta conductas disruptivas de forma reiterada durante las clases de Literatura.",
         timestamp: Date.now() - 320000
       }
     ];
 
-    // Función para renderizar el feed en vivo con diseño de tarjetas de vidrio
+    try {
+      const savedData = localStorage.getItem('ceut_reportes');
+      if (savedData) {
+        feedNotificaciones = JSON.parse(savedData);
+      } else {
+        feedNotificaciones = [...dummyDemoData];
+        try {
+          localStorage.setItem('ceut_reportes', JSON.stringify(feedNotificaciones));
+        } catch(innerErr) {
+          console.warn("No se pudo escribir en LocalStorage.");
+        }
+      }
+    } catch(e) {
+      console.warn("Fallo de acceso a LocalStorage. Cargando datos de respaldo.");
+      feedNotificaciones = [...dummyDemoData];
+    }
+
+    // Navegación de Pestañas
+    function switchTab(tabId) {
+      document.getElementById('panel-nuevo').classList.add('hidden');
+      document.getElementById('panel-historial').classList.add('hidden');
+      document.getElementById('panel-metricas').classList.add('hidden');
+      
+      document.getElementById('tab-nuevo').className = "px-4 py-2 text-xs font-bold rounded-lg bg-brand-card text-slate-300 hover:bg-brand-border transition-all flex items-center gap-2";
+      document.getElementById('tab-historial').className = "px-4 py-2 text-xs font-bold rounded-lg bg-brand-card text-slate-300 hover:bg-brand-border transition-all flex items-center gap-2";
+      document.getElementById('tab-metricas').className = "px-4 py-2 text-xs font-bold rounded-lg bg-brand-card text-slate-300 hover:bg-brand-border transition-all flex items-center gap-2";
+
+      if(tabId === 'nuevo') {
+        document.getElementById('panel-nuevo').classList.remove('hidden');
+        document.getElementById('tab-nuevo').className = "px-4 py-2 text-xs font-bold rounded-lg bg-brand-accent text-brand-dark transition-all flex items-center gap-2";
+      } else if(tabId === 'historial') {
+        document.getElementById('panel-historial').classList.remove('hidden');
+        document.getElementById('tab-historial').className = "px-4 py-2 text-xs font-bold rounded-lg bg-brand-accent text-brand-dark transition-all flex items-center gap-2";
+        pintarTablaHistorial();
+      } else if(tabId === 'metricas') {
+        document.getElementById('panel-metricas').classList.remove('hidden');
+        document.getElementById('tab-metricas').className = "px-4 py-2 text-xs font-bold rounded-lg bg-brand-accent text-brand-dark transition-all flex items-center gap-2";
+        actualizarMetricas();
+      }
+      sonarAlertaAcustica(350, 'sine', 0.05);
+    }
+
+    // Plantillas de Relleno Automático para Reportes Docentes
+    function cargarPlantilla(tipo) {
+      const area = document.getElementById('mensaje');
+      if (!area) return;
+      
+      const plantillas = {
+        academico: "Canalización por Desempeño Académico:\n\nEl alumno presenta bajo rendimiento en la asignatura. En la evaluación parcial obtuvo calificaciones insatisfactorias. No entrega tareas recurrentes y muestra desinterés en el aula.\n\nEvidencias:\n- Bitácora de faltas y entregables.\n- Examen parcial con promedio de 4.5.",
+        conducta: "Reporte de Incidencia Conductual:\n\nEl estudiante muestra faltas al reglamento escolar dentro de la sesión de clase, usando lenguaje no apropiado e interrumpiendo las explicaciones del docente.\n\nAcción previa del docente:\n- Llamado de atención verbal y plática personalizada al término de la clase.",
+        faltas: "Reporte de Inasistencias Consecutivas:\n\nEl estudiante ha acumulado más del 30% de faltas injustificadas en la asignatura durante el periodo de evaluación, comprometiendo su derecho a examen ordinario."
+      };
+      
+      area.value = plantillas[tipo] || "";
+      sonarAlertaAcustica(600, 'triangle', 0.08);
+    }
+
+    // Renderizar Feed de Actividad Lateral (Monitor)
     function pintarFeed() {
       const container = document.getElementById('notificationsContainer');
       if (!container) return;
@@ -417,63 +698,201 @@
       if (feedNotificaciones.length === 0) {
         container.innerHTML = `
           <div class="h-full flex flex-col items-center justify-center text-center p-6 text-slate-500 gap-3">
-            <div class="w-16 h-16 bg-[#0B0F19] rounded-full flex items-center justify-center border border-[#2A364F] text-slate-600">
+            <div class="w-16 h-16 bg-brand-dark rounded-full flex items-center justify-center border border-brand-border text-slate-600">
               <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
               </svg>
             </div>
             <div>
               <h4 class="text-xs font-bold text-slate-400">Sin reportes recientes</h4>
-              <p class="text-[10px] text-slate-500 max-w-[200px] mt-1 mx-auto">Las canalizaciones de los docentes aparecerán aquí en tiempo real.</p>
+              <p class="text-[10px] text-slate-550 max-w-[200px] mt-1 mx-auto">Las canalizaciones aparecerán aquí conforme se registren.</p>
             </div>
           </div>`;
         return;
       }
 
-      feedNotificaciones.forEach(item => {
-        const h = new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      // Renderizar los 5 más recientes
+      feedNotificaciones.slice(0, 5).forEach(item => {
+        let timeFormatted = "--:--";
+        try {
+          timeFormatted = new Date(item.timestamp).toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+        } catch (e) {
+          timeFormatted = "Reciente";
+        }
+
         const itemEl = document.createElement('div');
-        itemEl.className = "feed-item bg-[#0B0F19]/60 border border-[#2A364F]/60 hover:border-[#D4AF37]/20 p-3.5 rounded-xl flex gap-3 transition-all duration-300";
+        itemEl.className = "feed-item bg-brand-dark/60 border border-brand-border/60 hover:border-brand-accent/20 p-3.5 rounded-xl flex gap-3 transition-all duration-300";
         
         let ccHtml = '';
         if (item.copiaCC) {
           ccHtml = `
             <p class="flex items-center gap-1 text-[9px] text-amber-400/85">
-              <svg class="w-3 h-3 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <svg class="w-3.5 h-3.5 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
               </svg>
               Copia (CC) a: <span class="truncate max-w-[180px] font-mono">${item.copiaCC}</span>
             </p>`;
         }
 
+        const levelColor = item.gravedad === "Alto" ? "text-red-500" : (item.gravedad === "Medio" ? "text-yellow-500" : "text-emerald-500");
+
         itemEl.innerHTML = `
-          <div class="w-8 h-8 rounded-lg bg-[#D4AF37]/10 flex items-center justify-center text-[#D4AF37] border border-[#D4AF37]/20 text-xs shrink-0">
-            <svg class="w-4 h-4 text-[#D4AF37]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          <div class="w-8 h-8 rounded-lg bg-brand-accent/10 flex items-center justify-center text-brand-accent border border-brand-accent/20 text-xs shrink-0">
+            <svg class="w-4 h-4 text-brand-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
             </svg>
           </div>
           <div class="flex-grow min-w-0">
             <div class="flex items-center justify-between gap-2">
               <h4 class="text-xs font-bold text-slate-100 truncate">${item.coordinadora}</h4>
-              <span class="text-[9px] font-mono text-slate-500 shrink-0">${h}</span>
+              <span class="text-[9px] font-mono text-slate-500 shrink-0">${timeFormatted}</span>
             </div>
-            <p class="text-[10px] text-[#D4AF37] font-medium mt-0.5 truncate">${item.departamento}</p>
-            <div class="text-[10px] text-slate-400 mt-1 flex flex-col gap-0.5">
-              <p class="flex items-center gap-1">
-                <svg class="w-3.5 h-3.5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-                Destinatario: <span class="text-slate-300 font-mono truncate">${item.destinatario}</span>
-              </p>
+            <p class="text-[10px] text-brand-accent font-medium mt-0.5 truncate">${item.departamento}</p>
+            <div class="text-[10px] text-slate-400 mt-1.5 flex flex-col gap-1">
+              <p class="font-bold text-slate-200">Alumno: <span class="text-slate-300 font-normal">${item.alumno}</span></p>
+              <p>Gravedad: <span class="font-semibold ${levelColor}">${item.gravedad}</span></p>
               ${ccHtml}
             </div>
           </div>`;
         container.appendChild(itemEl);
       });
+      
+      const countEl = document.getElementById('countHistorial');
+      if (countEl) countEl.innerText = feedNotificaciones.length;
     }
 
-    // Alerta Acústica premium usando Web Audio API nativo de forma síncrona
-    function sonarAlertaAcustica() {
+    // Renderizar Tabla del Historial Completo
+    function pintarTablaHistorial() {
+      const container = document.getElementById('historyTableContainer');
+      if (!container) return;
+
+      if (feedNotificaciones.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-10 text-slate-500">
+            <p class="text-xs">No hay reportes guardados en el almacenamiento.</p>
+          </div>`;
+        return;
+      }
+
+      let html = `
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="border-b border-brand-border text-slate-400">
+              <th class="py-2 px-3">Fecha</th>
+              <th class="py-2 px-3">Docente</th>
+              <th class="py-2 px-3">Alumno</th>
+              <th class="py-2 px-3">Grado</th>
+              <th class="py-2 px-3">Categoría</th>
+              <th class="py-2 px-3">Gravedad</th>
+              <th class="py-2 px-3 text-right">Ficha</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-brand-border/40">`;
+
+      feedNotificaciones.forEach(item => {
+        let fStr = "---";
+        try {
+          fStr = new Date(item.timestamp).toLocaleDateString('es-MX', { day: 'numeric', month: 'short' });
+        } catch(e) {}
+
+        const colorGrav = item.gravedad === "Alto" ? "bg-red-500/10 text-red-400 border-red-500/20" : (item.gravedad === "Medio" ? "bg-yellow-500/10 text-yellow-400 border-yellow-500/20" : "bg-emerald-500/10 text-emerald-400 border-emerald-500/20");
+
+        html += `
+          <tr class="hover:bg-brand-dark/30 transition-all">
+            <td class="py-3 px-3 font-mono text-slate-400">${fStr}</td>
+            <td class="py-3 px-3 font-medium text-slate-200">${item.coordinadora}</td>
+            <td class="py-3 px-3 font-semibold text-brand-accent">${item.alumno}</td>
+            <td class="py-3 px-3 text-slate-300">${item.semestre}° ${item.grupo}</td>
+            <td class="py-3 px-3"><span class="px-2 py-0.5 rounded bg-brand-blue/60 text-slate-300 border border-brand-border">${item.categoria}</span></td>
+            <td class="py-3 px-3"><span class="px-2 py-0.5 rounded border ${colorGrav} font-semibold">${item.gravedad}</span></td>
+            <td class="py-3 px-3 text-right">
+              <button onclick="previsualizarFichaDesdeHistorial(${item.id})" class="px-2 py-1 bg-brand-blue hover:bg-slate-700 text-slate-200 rounded border border-brand-border transition-all">🖨️ Imprimir</button>
+            </td>
+          </tr>`;
+      });
+
+      html += `</tbody></table>`;
+      container.innerHTML = html;
+    }
+
+    // Renderizar Métricas Estadísticas
+    function actualizarMetricas() {
+      const total = feedNotificaciones.length;
+      document.getElementById('chartTotalCount').innerText = total;
+
+      if(total === 0) {
+        document.getElementById('lblLow').innerText = "0";
+        document.getElementById('lblMedium').innerText = "0";
+        document.getElementById('lblUrgent').innerText = "0";
+        return;
+      }
+
+      // Gravedad
+      const lowCount = feedNotificaciones.filter(x => x.gravedad === "Bajo" || x.gravedad === "Baja").length;
+      const medCount = feedNotificaciones.filter(x => x.gravedad === "Medio" || x.gravedad === "Media").length;
+      const highCount = feedNotificaciones.filter(x => x.gravedad === "Alto" || x.gravedad === "Alta").length;
+
+      document.getElementById('lblLow').innerText = lowCount;
+      document.getElementById('lblMedium').innerText = medCount;
+      document.getElementById('lblUrgent').innerText = highCount;
+
+      const pLow = (lowCount / total) * 100;
+      const pMed = (medCount / total) * 100;
+      const pHigh = (highCount / total) * 100;
+
+      // SVG Donut Render
+      const chartLow = document.getElementById('chartLow');
+      const chartMedium = document.getElementById('chartMedium');
+      const chartUrgent = document.getElementById('chartUrgent');
+
+      if(chartLow && chartMedium && chartUrgent) {
+        chartLow.setAttribute('stroke-dasharray', `${pLow} 100`);
+        chartMedium.setAttribute('stroke-dasharray', `${pMed} 100`);
+        chartMedium.setAttribute('stroke-dashoffset', `-${pLow}`);
+        chartUrgent.setAttribute('stroke-dasharray', `${pHigh} 100`);
+        chartUrgent.setAttribute('stroke-dashoffset', `-${pLow + pMed}`);
+      }
+
+      // Categorías
+      const cCond = feedNotificaciones.filter(x => x.categoria === "Conductual").length;
+      const cAcad = feedNotificaciones.filter(x => x.categoria === "Académico").length;
+      const cFalt = feedNotificaciones.filter(x => x.categoria === "Faltas" || x.categoria === "Inasistencia").length;
+      const cPsic = feedNotificaciones.filter(x => x.categoria === "Psicológico" || x.categoria === "Psicopedagógico").length;
+
+      const pCond = Math.round((cCond / total) * 100) || 0;
+      const pAcad = Math.round((cAcad / total) * 100) || 0;
+      const pFalt = Math.round((cFalt / total) * 100) || 0;
+      const pPsic = Math.round((cPsic / total) * 100) || 0;
+
+      document.getElementById('barConducta').style.width = `${pCond}%`;
+      document.getElementById('lblBarConducta').innerText = `${pCond}%`;
+
+      document.getElementById('barAcademico').style.width = `${pAcad}%`;
+      document.getElementById('lblBarAcademico').innerText = `${pAcad}%`;
+
+      document.getElementById('barFaltas').style.width = `${pFalt}%`;
+      document.getElementById('lblBarFaltas').innerText = `${pFalt}%`;
+
+      document.getElementById('barPsico').style.width = `${pPsic}%`;
+      document.getElementById('lblBarPsico').innerText = `${pPsic}%`;
+    }
+
+    // Limpiar Todo el Historial
+    function limpiarTodoHistorial() {
+      if(confirm("¿Seguro que deseas eliminar todos los registros del portal?")) {
+        feedNotificaciones = [];
+        try {
+          localStorage.removeItem('ceut_reportes');
+        } catch(e) {}
+        pintarFeed();
+        pintarTablaHistorial();
+        actualizarMetricas();
+        sonarAlertaAcustica(150, 'sawtooth', 0.1);
+      }
+    }
+
+    // Sintetizador Acústico Web Audio API
+    function sonarAlertaAcustica(frecuencia = 587.33, tipo = 'sine', duracion = 0.35) {
       try {
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         const osc = audioCtx.createOscillator();
@@ -482,25 +901,24 @@
         osc.connect(gain);
         gain.connect(audioCtx.destination);
         
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // Re
-        osc.frequency.setValueAtTime(880.00, audioCtx.currentTime + 0.12); // La
+        osc.type = tipo;
+        osc.frequency.setValueAtTime(frecuencia, audioCtx.currentTime); 
         
-        gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.35);
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duracion);
         
         osc.start();
-        osc.stop(audioCtx.currentTime + 0.35);
+        osc.stop(audioCtx.currentTime + duracion);
       } catch (e) {
-        console.warn("Reproducción acústica bloqueada por seguridad del navegador.");
+        console.warn("Audio bloqueado por directiva de sandbox o interacción inicial requerida.");
       }
     }
 
-    // Lanzador de alertas integradas en el formulario
+    // Mostrar Alerta en Pantalla
     function lanzarAvisoInteractivo(msg, tipo) {
       const alertBox = document.getElementById('alertBox');
       if (!alertBox) return;
-      alertBox.classList.remove('hidden', 'bg-emerald-950/40', 'border-emerald-500/30', 'text-emerald-200', 'bg-rose-950/40', 'border-rose-500/30', 'text-rose-200');
+      alertBox.classList.remove('hidden');
       
       if (tipo === 'success') {
         alertBox.className = "rounded-lg p-3 text-xs leading-relaxed bg-[#064e3b]/40 border border-[#10b981]/30 text-[#a7f3d0]";
@@ -510,25 +928,54 @@
       alertBox.innerHTML = msg;
     }
 
-    // Inicializador del Ecosistema de Eventos
-    document.addEventListener('DOMContentLoaded', () => {
+    // Previsualizar e Imprimir Ficha Oficial desde el Historial
+    function previsualizarFichaDesdeHistorial(id) {
+      const item = feedNotificaciones.find(x => x.id === id);
+      if(!item) return;
+
+      const fechaActual = new Date(item.timestamp).toLocaleDateString('es-MX', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+
+      document.getElementById('printCoordinador').innerText = item.coordinadora;
+      document.getElementById('printDepto').innerText = item.departamento;
+      document.getElementById('printAlumno').innerText = item.alumno;
+      document.getElementById('printMatricula').innerText = item.matricula;
+      document.getElementById('printSemestreGrupo').innerText = `${item.semestre}° Semestre - Grupo "${item.grupo}"`;
+      document.getElementById('printGravedadCat').innerText = `${item.categoria} (${item.gravedad})`;
+      document.getElementById('printMensaje').innerText = item.mensaje;
+      document.getElementById('printFecha').innerText = fechaActual;
+      document.getElementById('printFirmaNombre').innerText = item.coordinadora;
+
+      window.print();
+    }
+
+    // Inicializador del Portal (Previene fallos en ambientes asíncronos)
+    function inicializarTodo() {
       pintarFeed();
 
-      // Botón de Autocompletado Demo
+      // Autocompletar Demo
       const btnAutoDemo = document.getElementById('btnAutoDemo');
       if (btnAutoDemo) {
         btnAutoDemo.addEventListener('click', () => {
           document.getElementById('nombreDocente').value = "Mtro. Alejandro Silva Torres";
           document.getElementById('academia').value = "Academia de Ciencias y Matemáticas";
-          document.getElementById('emailDestino').value = "deptopsicopedagogico@ceut.edu.mx";
-          document.getElementById('emailCC').value = "luz.ortega@ceut.edu.mx, samuel.roldan@ceut.edu.mx";
-          document.getElementById('mensaje').value = "Estimado Departamento Psicopedagógico y Coordinación,\n\nPor medio de este reporte docente, hago de su conocimiento la canalización oficial del alumno de 4° semestre de bachillerato, quien ha mostrado cambios significativos de conducta e inasistencia constante en mi asignatura durante las últimas tres semanas.\n\nObservaciones:\n1. Calificaciones de tareas incompletas.\n2. Desinterés evidente durante las dinámicas de clase.\n3. Acercamiento previo del docente sin respuesta favorable.\n\nSolicito su valiosa intervención psicopedagógica para el seguimiento correspondiente con los tutores.\n\nAtentamente,\nMtro. Alejandro Silva Torres\nDocente Titular de Física";
+          document.getElementById('nombreAlumno').value = "Santiago Méndez Juárez";
+          document.getElementById('matricula').value = "2026-0042";
+          document.getElementById('semestre').value = "4";
+          document.getElementById('grupo').value = "B";
+          document.getElementById('categoria').value = "Académico";
+          document.getElementById('gravedad').value = "Alto";
+          document.getElementById('mensaje').value = "Estimado Departamento Psicopedagógico,\n\nPor medio del presente reporte escolar, hago del conocimiento la canalización del alumno del 4° semestre grupo B de bachillerato, quien acumula un promedio reprobatorio constante de 4.2 en los últimos módulos escolares.\n\nSe han realizado asesorías grupales sin percibir mejora sustantiva.";
           
-          lanzarAvisoInteractivo("Datos del Reporte Docente cargados correctamente. ¡Listo para enviar o imprimir!", "success");
+          lanzarAvisoInteractivo("Datos del Reporte cargados correctamente. ¡Prueba la previsualización de impresión o el envío automático!", "success");
+          sonarAlertaAcustica(800, 'sine', 0.15);
         });
       }
 
-      // Procesar Formulario de Envío a FormSubmit por AJAX
+      // Envío de Formulario
       const formPortal = document.getElementById('formPortal');
       if (formPortal) {
         formPortal.addEventListener('submit', async (e) => {
@@ -537,28 +984,36 @@
           const submitButton = document.getElementById('btnEnviar');
           const spinner = document.getElementById('spinnerCarga');
           const btnTexto = document.getElementById('btnTexto');
-          const alertBox = document.getElementById('alertBox');
           
           if (submitButton) submitButton.disabled = true;
           if (spinner) spinner.classList.remove('hidden');
           if (btnTexto) btnTexto.classList.add('hidden');
-          if (alertBox) alertBox.classList.add('hidden');
           
           const emailDestino = document.getElementById('emailDestino').value.trim();
           const emailCC = document.getElementById('emailCC').value.trim();
           const nombreDocente = document.getElementById('nombreDocente').value.trim();
           const academia = document.getElementById('academia').value.trim();
+          const nombreAlumno = document.getElementById('nombreAlumno').value.trim();
+          const matricula = document.getElementById('matricula').value.trim();
+          const semestre = document.getElementById('semestre').value;
+          const grupo = document.getElementById('grupo').value;
+          const categoria = document.getElementById('categoria').value;
+          const gravedad = document.getElementById('gravedad').value;
           const mensaje = document.getElementById('mensaje').value.trim();
           
-          // Construcción de Payload para API de FormSubmit
           const payload = {
-            _subject: "[CEUT REPORTE DOCENTE] " + academia + " - " + nombreDocente,
+            _subject: `[CEUT REPORTE] ${academia} - ${nombreDocente}`,
             _captcha: "false",
             _template: "table",
             "Docente Emisor": nombreDocente,
             "Academia / Asignatura": academia,
-            "Contenido del Reporte": mensaje,
-            "Fecha Emisión": new Date().toLocaleString('es-MX', { timeZone: 'America/Mexico_City' })
+            "Alumno Canalizado": nombreAlumno,
+            "Matrícula": matricula,
+            "Grado": `${semestre}° ${grupo}`,
+            "Categoría de Alerta": categoria,
+            "Severidad": gravedad,
+            "Observación Técnica": mensaje,
+            "Fecha Registro": new Date().toLocaleString('es-MX', { timeZone: 'America/Mexico_City' })
           };
           
           if (emailCC) {
@@ -579,26 +1034,37 @@
             
             if (response.ok && result.success === "true") {
               lanzarAvisoInteractivo(
-                "<strong>¡Reporte Docente enviado y copiado exitosamente!</strong><br>" +
-                "<span class='block mt-1 font-medium text-[11px]'>Se despachó en tiempo real al buzón receptor y con copia automática a las coordinadoras. Sincronizado en el monitor.</span>",
+                "<strong>¡Reporte Docente enviado y copiado exitosamente!</strong><br><span class='block mt-1 font-medium text-[11px]'>Oficio transmitido exitosamente al buzón institucional receptor.</span>",
                 "success"
               );
               
-              // Inserción en el monitor de actividad local en vivo
-              feedNotificaciones.unshift({
+              // Inserción en el Historial
+              const nuevoReporte = {
+                id: Date.now(),
                 coordinadora: nombreDocente,
                 departamento: academia,
-                destinatario: emailDestino,
-                copiaCC: emailCC,
-                timestamp: Date.now()
-              });
+                alumno: nombreAlumno,
+                matricula: matricula,
+                semestre: semestre,
+                grupo: grupo,
+                categoria: categoria,
+                gravedad: gravedad,
+                mensaje: mensaje,
+                timestamp: Date.now(),
+                copiaCC: emailCC
+              };
+              
+              feedNotificaciones.unshift(nuevoReporte);
+              try {
+                localStorage.setItem('ceut_reportes', JSON.stringify(feedNotificaciones));
+              } catch(sErr) {}
               
               pintarFeed();
-              sonarAlertaAcustica();
+              sonarAlertaAcustica(660, 'sine', 0.25);
               
-              // Resetear formulario conservando los correos por defecto
-              document.getElementById('nombreDocente').value = "";
-              document.getElementById('academia').value = "";
+              // Limpiar campos de alumno
+              document.getElementById('nombreAlumno').value = "";
+              document.getElementById('matricula').value = "";
               document.getElementById('mensaje').value = "";
               
             } else {
@@ -606,22 +1072,37 @@
             }
             
           } catch (error) {
-            console.error("Fallo de envío automático:", error);
+            console.error("Fallo de envío de fondo:", error);
             
-            const mailtoSubject = encodeURIComponent("[CEUT] Reporte de " + academia);
-            const mailtoBody = encodeURIComponent("Docente: " + nombreDocente + "\nAcademia: " + academia + "\n\nReporte:\n" + mensaje);
-            const mailtoUrl = "mailto:" + emailDestino + "?cc=" + emailCC + "&subject=" + mailtoSubject + "&body=" + mailtoBody;
+            const mailtoSubject = encodeURIComponent(`[CEUT] Reporte de ${academia} - ${nombreDocente}`);
+            const mailtoBody = encodeURIComponent(`Docente: ${nombreDocente}\nAcademia: ${academia}\nAlumno: ${nombreAlumno} (${semestre}° ${grupo})\nCategoría: ${categoria}\n\nObservaciones:\n${mensaje}`);
+            const mailtoUrl = `mailto:${emailDestino}?cc=${emailCC}&subject=${mailtoSubject}&body=${mailtoBody}`;
             
             lanzarAvisoInteractivo(
-              "<strong>Fallo en el envío automático de fondo.</strong><br>" +
-              "<span class='text-[11px] block my-2 text-slate-300'>Comprueba tu conexión o verifica que las direcciones de correo electrónico sean válidas.</span>" +
-              "<div class='mt-2'>" +
-                "<a href='" + mailtoUrl + "' class='inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#D4AF37] hover:bg-[#F3CD5F] text-[#0B0F19] rounded text-xs font-bold transition-all'>" +
-                  "Despachar por correo tradicional (Mailto)" +
-                "</a>" +
-              "</div>",
+              "<strong>Error al transmitir por API de fondo.</strong><br><span class='text-[11px] block my-1 text-slate-300'>Hemos guardado el reporte en el historial de tu navegador. Puedes despacharlo manualmente por Outlook/Gmail aquí:</span><div class='mt-2'><a href='" + mailtoUrl + "' class='inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#D4AF37] hover:bg-[#F3CD5F] text-[#0B0F19] rounded text-xs font-bold transition-all'>Despachar Oficio por Email Tradicional</a></div>",
               "error"
             );
+            
+            // Guardar en local de todos modos
+            const nuevoReporte = {
+              id: Date.now(),
+              coordinadora: nombreDocente,
+              departamento: academia,
+              alumno: nombreAlumno,
+              matricula: matricula,
+              semestre: semestre,
+              grupo: grupo,
+              categoria: categoria,
+              gravedad: gravedad,
+              mensaje: mensaje,
+              timestamp: Date.now(),
+              copiaCC: emailCC
+            };
+            feedNotificaciones.unshift(nuevoReporte);
+            try {
+              localStorage.setItem('ceut_reportes', JSON.stringify(feedNotificaciones));
+            } catch(sErr) {}
+            pintarFeed();
           } finally {
             if (submitButton) submitButton.disabled = false;
             if (spinner) spinner.classList.add('hidden');
@@ -630,14 +1111,18 @@
         });
       }
 
-      // Preparar Ficha de Impresión y Despachar Comando del Navegador
+      // Previsualizar/Imprimir instantáneo del formulario
       const btnPrintPreview = document.getElementById('btnPrintPreview');
       if (btnPrintPreview) {
         btnPrintPreview.addEventListener('click', () => {
           const nom = document.getElementById('nombreDocente').value.trim() || "-----------------------------------------";
           const dep = document.getElementById('academia').value.trim() || "-----------------------------------------";
-          const dest = document.getElementById('emailDestino').value.trim() || "-----------------------------------------";
-          const cc = document.getElementById('emailCC').value.trim() || "-----------------------------------------";
+          const al = document.getElementById('nombreAlumno').value.trim() || "-----------------------------------------";
+          const mat = document.getElementById('matricula').value.trim() || "-----------------------------------------";
+          const sem = document.getElementById('semestre').value;
+          const gru = document.getElementById('grupo').value;
+          const cat = document.getElementById('categoria').value;
+          const grav = document.getElementById('gravedad').value;
           const msg = document.getElementById('mensaje').value.trim() || "Sin contenido cargado.";
 
           const fechaActual = new Date().toLocaleDateString('es-MX', {
@@ -648,8 +1133,10 @@
 
           document.getElementById('printCoordinador').innerText = nom;
           document.getElementById('printDepto').innerText = dep;
-          document.getElementById('printEmailDest').innerText = dest;
-          document.getElementById('printEmailCC').innerText = cc;
+          document.getElementById('printAlumno').innerText = al;
+          document.getElementById('printMatricula').innerText = mat;
+          document.getElementById('printSemestreGrupo').innerText = `${sem}° Semestre - Grupo "${gru}"`;
+          document.getElementById('printGravedadCat').innerText = `${cat} (${grav})`;
           document.getElementById('printMensaje').innerText = msg;
           document.getElementById('printFecha').innerText = fechaActual;
           document.getElementById('printFirmaNombre').innerText = nom !== "-----------------------------------------" ? nom : "Firma del Docente";
@@ -657,7 +1144,14 @@
           window.print();
         });
       }
-    });
+    }
+
+    // Ejecución segura de inicio sin importar la velocidad de carga de la página
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', inicializarTodo);
+    } else {
+      inicializarTodo();
+    }
   </script>
 </body>
 </html>
