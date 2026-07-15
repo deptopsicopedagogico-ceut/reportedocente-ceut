@@ -6,7 +6,7 @@
     <title>CEUT - Portal Psicopedagógico de Alta Gama</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Lora:ital,wght=0,400;0,600;0,700;1,400&family=Inter:wght=300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Lora:ital,wght=0,400;0,600;0,700;1,400&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script>
@@ -372,7 +372,8 @@
                 <button id="btn-role-teacher" onclick="switchRole('teacher')" class="px-6 py-3.5 rounded-xl text-xs font-bold flex items-center gap-2.5 transition-all duration-300 font-sans text-slate-300 hover:text-white hover:bg-white/5">
                     <i class="fa-solid fa-pen-nib text-ceutGold"></i> Registrar Incidencia
                 </button>
-                <button id="btn-role-admin" onclick="switchRole('admin')" class="px-6 py-3.5 rounded-xl text-xs font-bold flex items-center gap-2.5 transition-all duration-300 font-sans text-slate-300 hover:text-white hover:bg-white/5">
+                <!-- Redireccionamiento del panel hacia la verificación del PIN de alta gama -->
+                <button id="btn-role-admin" onclick="requestAdminAccess()" class="px-6 py-3.5 rounded-xl text-xs font-bold flex items-center gap-2.5 transition-all duration-300 font-sans text-slate-300 hover:text-white hover:bg-white/5">
                     <i class="fa-solid fa-shield-halved text-ceutGold"></i> Panel de Control
                 </button>
             </div>
@@ -566,6 +567,7 @@
                         </div>
                     </div>
 
+                    <!-- Bloque 3: Motivo y Semáforo de Prioridad -->
                     <div class="space-y-5 pt-3">
                         <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-3">
                             <h4 class="font-bold text-xs uppercase tracking-widest text-ceutGold flex items-center gap-2.5 font-sans">
@@ -648,7 +650,7 @@
                                             </div>
                                             <div>
                                                 <span class="block text-xs font-bold text-emerald-600">Prioridad Baja / Preventiva</span>
-                                                <span class="block text-[10px] text-slate-600 mt-0.5 text-justified leading-normal max-w-[260px] font-serif">Fines informativos, preventivos o de llamado de atención menor.</span>
+                                                <span class="block text-[10px] text-slate-300 mt-0.5 text-justified leading-normal max-w-[260px] font-serif">Fines informativos, preventivos o de llamado de atención menor.</span>
                                             </div>
                                         </div>
                                         <input type="radio" name="priority" value="baja" class="h-5 w-5 text-emerald-600 focus:ring-emerald-500">
@@ -724,7 +726,7 @@
                 
                 <div class="flex items-center gap-6 flex-col sm:flex-row text-center sm:text-left z-10">
                     <div class="bg-white/80 p-3 rounded-2xl shadow-md border border-slate-200 backdrop-blur-md relative z-20">
-                        <img src="https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2" alt="Logo Administrator" class="h-20 w-20 object-contain block mx-auto">
+                        <img src="https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2" alt="Logo Administrador" class="h-20 w-20 object-contain block mx-auto">
                     </div>
                     <div>
                         <h3 class="font-bold text-2xl text-slate-800 flex items-center justify-center sm:justify-start gap-3 flex-wrap font-formal">
@@ -741,6 +743,7 @@
                 </button>
             </div>
 
+            <!-- Métricas (Fondo Claro Elegante de Alto Contraste) -->
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 font-sans">
                 <div class="glass-panel text-slate-800 p-8 rounded-3xl border border-slate-200 shadow-premium relative overflow-hidden">
                     <div class="absolute -right-4 -bottom-4 opacity-5 text-slate-900 text-8xl"><i class="fa-solid fa-folder-open"></i></div>
@@ -970,8 +973,37 @@
             </div>
 
             <div class="bg-slate-50 px-8 py-5 flex items-center justify-end gap-3 border-t border-slate-200 flex-shrink-0 font-sans">
-                <button onclick="closeGratitudeModal()" class="w-full sm:w-auto bg-gradient-to-r from-ceutGold to-ceutGold-dark text-ceutBlue-dark font-extrabold px-8 py-3.5 rounded-xl text-xs shadow-md transition-all duration-200 hover:scale-105">
+                <button onclick="closeGratitudeModal()" class="w-full sm:w-auto bg-gradient-to-r from-ceutGold to-ceutGold-dark text-ceutBlue-dark font-extrabold px-8 py-3.5 rounded-xl text-xs shadow-md duration-200 hover:scale-105">
                     Entendido, Volver al Inicio
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Verificación de PIN de Administrador (Protección Premium) -->
+    <div id="pinModal" class="fixed inset-0 z-50 overflow-y-auto bg-slate-950/80 backdrop-blur-md hidden items-center justify-center p-4 transition-all duration-300 animate-fadeIn font-sans">
+        <div class="glass-panel rounded-[2rem] max-w-sm w-full shadow-blue-glow border border-slate-200 overflow-hidden transform scale-95 transition-all duration-300 bg-white p-8 space-y-6 text-center">
+            <div class="mx-auto h-16 w-16 rounded-2xl bg-ceutBlue/5 border border-ceutGold/30 flex items-center justify-center text-ceutGold text-2xl shadow-inner animate-float">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <div class="space-y-2">
+                <h4 class="font-bold text-lg text-slate-800 font-formal gold-shimmer-text">Acceso de Dirección</h4>
+                <p class="text-xs text-slate-500 font-serif leading-relaxed text-justified">
+                    Este módulo contiene expedientes protegidos bajo el marco legal de la LFPDPPP de los Estados Unidos Mexicanos. Ingrese el PIN de seguridad asignado para continuar.
+                </p>
+            </div>
+            
+            <!-- Entrada de PIN con Máscara Segura de Contraste Sólido Claro -->
+            <div class="flex justify-center">
+                <input type="password" id="adminPinInput" maxlength="4" placeholder="••••" pattern="[0-9]*" inputmode="numeric" class="w-36 text-center text-2xl font-bold tracking-widest rounded-xl border border-slate-300 px-4 py-3.5 bg-slate-50 text-slate-800 focus:ring-2 focus:ring-ceutGold focus:outline-none transition-all">
+            </div>
+
+            <div class="flex items-center gap-3">
+                <button onclick="closePinModal()" class="w-1/2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3.5 rounded-xl text-xs transition-all border border-slate-200">
+                    Cancelar
+                </button>
+                <button onclick="submitAdminPin()" class="w-1/2 bg-gradient-to-r from-ceutGold to-ceutGold-dark text-ceutBlue-dark font-black py-3.5 rounded-xl text-xs shadow-md transition-all hover:scale-105">
+                    Entrar
                 </button>
             </div>
         </div>
@@ -1091,7 +1123,7 @@
             </div>
 
             <div class="bg-slate-50 px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-200 flex-shrink-0 font-sans">
-                <span class="text-xs text-slate-500 font-bold uppercase tracking-widest flex items-center gap-1.5"><i class="fa-solid fa-arrows-spin text-ceutGold animate-spin"></i> Sincronización Inmediata</span>
+                <span class="text-xs text-slate-400 font-bold uppercase tracking-widest flex items-center gap-1.5"><i class="fa-solid fa-arrows-spin text-ceutGold animate-spin"></i> Sincronización Inmediata</span>
                 <div class="flex items-center gap-2.5 w-full sm:w-auto">
                     <button onclick="closeDetailsModal()" class="w-full sm:w-auto bg-white hover:bg-slate-100 text-slate-700 font-bold px-6 py-3 rounded-xl text-xs border border-slate-200 transition-all duration-200">
                         Cerrar
@@ -1163,6 +1195,53 @@
                 }, 300);
             }, 6000);
         }
+
+        // Lógica de validación del PIN de Administrador (1015)
+        function requestAdminAccess() {
+            // Si ya estamos en el rol de admin, no pedimos PIN de nuevo
+            if (window.appState.currentRole === 'admin') {
+                return;
+            }
+            const modal = document.getElementById('pinModal');
+            const pinInput = document.getElementById('adminPinInput');
+            pinInput.value = '';
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => pinInput.focus(), 150);
+        }
+
+        function closePinModal() {
+            const modal = document.getElementById('pinModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function submitAdminPin() {
+            const pinInput = document.getElementById('adminPinInput');
+            const pinVal = pinInput.value.trim();
+
+            if (pinVal === '1015') {
+                closePinModal();
+                switchRole('admin');
+                showNotification("Acceso Autorizado", "Bienvenido al Panel de Control de la Dirección Psicopedagógica.", "success");
+            } else {
+                showNotification("Acceso Denegado", "El PIN ingresado es incorrecto. Intente nuevamente.", "error");
+                pinInput.value = '';
+                pinInput.focus();
+            }
+        }
+
+        // Permitir envío de PIN con tecla Enter
+        document.addEventListener('DOMContentLoaded', () => {
+            const pinInput = document.getElementById('adminPinInput');
+            if (pinInput) {
+                pinInput.addEventListener('keydown', (event) => {
+                    if (event.key === 'Enter') {
+                        submitAdminPin();
+                    }
+                });
+            }
+        });
 
         function openPrivacyNotice() {
             const modal = document.getElementById('privacyNoticeModal');
@@ -1369,7 +1448,6 @@ Tigres CEUT — Psicopedagogía`;
             const encodedBody = encodeURIComponent(body);
             const mailtoUrl = `mailto:${to}?cc=${cc}&subject=${encodedSubject}&body=${encodedBody}`;
             
-            // Redireccionar al gestor de correo predeterminado del sistema operativo
             window.location.href = mailtoUrl;
         }
 
