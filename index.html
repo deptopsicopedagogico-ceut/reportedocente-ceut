@@ -493,16 +493,16 @@
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 font-sans">
                             <div>
-                                <label class="block text-xs font-bold text-ceutGold-dark mb-2 uppercase">Nombre Completo del Docente <span class="text-ceutGold font-black">*</span></label>
-                                <input type="text" id="teacherName" required placeholder="Ej. Mtra. María Elena López" class="w-full rounded-xl border-2 border-slate-200 px-4 py-3.5 text-xs focus:ring-2 focus:ring-ceutGold focus:border-ceutGold focus:outline-none transition-all shadow-sm bg-slate-50 text-slate-800 font-medium">
+                                <label class="block text-xs font-bold text-ceutGold mb-2 uppercase">Nombre Completo del Docente <span class="text-ceutGold font-black">*</span></label>
+                                <input type="text" id="teacherName" required oninput="window.cleanInput(this)" placeholder="Ej. Mtra. María Elena López" class="w-full rounded-xl border-2 border-slate-200 px-4 py-3.5 text-xs focus:ring-2 focus:ring-ceutGold focus:border-ceutGold focus:outline-none transition-all shadow-sm bg-slate-50 text-slate-800 font-medium">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-ceutGold-dark mb-2 uppercase">Asignatura o Materia <span class="text-ceutGold font-black">*</span></label>
-                                <input type="text" id="teacherSubject" required placeholder="Ej. Matemáticas II" class="w-full rounded-xl border-2 border-slate-200 px-4 py-3.5 text-xs focus:ring-2 focus:ring-ceutGold focus:border-ceutGold focus:outline-none transition-all shadow-sm bg-slate-50 text-slate-800 font-medium">
+                                <label class="block text-xs font-bold text-ceutGold mb-2 uppercase">Asignatura o Materia <span class="text-ceutGold font-black">*</span></label>
+                                <input type="text" id="teacherSubject" required oninput="window.cleanInput(this)" placeholder="Ej. Matemáticas II" class="w-full rounded-xl border-2 border-slate-200 px-4 py-3.5 text-xs focus:ring-2 focus:ring-ceutGold focus:border-ceutGold focus:outline-none transition-all shadow-sm bg-slate-50 text-slate-800 font-medium">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-ceutGold-dark mb-2 uppercase">Correo Electrónico Institucional <span class="text-ceutGold font-black">*</span></label>
-                                <input type="email" id="teacherEmail" required placeholder="docente@ceut.edu.mx" class="w-full rounded-xl border-2 border-slate-200 px-4 py-3.5 text-xs focus:ring-2 focus:ring-ceutGold focus:border-ceutGold focus:outline-none transition-all shadow-sm bg-slate-50 text-slate-800 font-medium">
+                                <label class="block text-xs font-bold text-ceutGold mb-2 uppercase">Correo Electrónico Institucional <span class="text-ceutGold font-black">*</span></label>
+                                <input type="email" id="teacherEmail" required oninput="window.cleanInput(this)" placeholder="docente@ceut.edu.mx" class="w-full rounded-xl border-2 border-slate-200 px-4 py-3.5 text-xs focus:ring-2 focus:ring-ceutGold focus:border-ceutGold focus:outline-none transition-all shadow-sm bg-slate-50 text-slate-800 font-medium">
                             </div>
                         </div>
                     </div>
@@ -517,11 +517,11 @@
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 font-sans">
                             <div class="md:col-span-2">
-                                <label class="block text-xs font-bold text-ceutGold-dark mb-2 uppercase">Nombre Completo del Alumno <span class="text-ceutGold font-black">*</span></label>
-                                <input type="text" id="studentName" required placeholder="Escriba el nombre completo del estudiante" class="w-full rounded-xl border-2 border-slate-200 px-4 py-3.5 text-xs focus:ring-2 focus:ring-ceutGold focus:border-ceutGold focus:outline-none transition-all shadow-sm bg-slate-50 text-slate-800 font-medium">
+                                <label class="block text-xs font-bold text-ceutGold mb-2 uppercase">Nombre Completo del Alumno <span class="text-ceutGold font-black">*</span></label>
+                                <input type="text" id="studentName" required oninput="window.cleanInput(this)" placeholder="Escriba el nombre completo del estudiante" class="w-full rounded-xl border-2 border-slate-200 px-4 py-3.5 text-xs focus:ring-2 focus:ring-ceutGold focus:border-ceutGold focus:outline-none transition-all shadow-sm bg-slate-50 text-slate-800 font-medium">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-ceutGold-dark mb-2 uppercase">Nivel Educativo <span class="text-ceutGold font-black">*</span></label>
+                                <label class="block text-xs font-bold text-ceutGold mb-2 uppercase">Nivel Educativo <span class="text-ceutGold font-black">*</span></label>
                                 <select id="eduLevel" required onchange="toggleEducationalFields()" class="w-full rounded-xl border-2 border-slate-200 px-4 py-3.5 text-xs focus:ring-2 focus:ring-ceutGold focus:border-ceutGold focus:outline-none bg-slate-50 text-slate-800 transition-all shadow-sm font-bold">
                                     <option value="" disabled selected>Seleccione nivel...</option>
                                     <option value="Preparatoria">Preparatoria / Bachillerato</option>
@@ -529,7 +529,7 @@
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-ceutGold-dark mb-2 uppercase">Modalidad <span class="text-ceutGold font-black">*</span></label>
+                                <label class="block text-xs font-bold text-ceutGold mb-2 uppercase">Modalidad <span class="text-ceutGold font-black">*</span></label>
                                 <select id="modality" required class="w-full rounded-xl border-2 border-slate-200 px-4 py-3.5 text-xs focus:ring-2 focus:ring-ceutGold focus:border-ceutGold focus:outline-none bg-slate-50 text-slate-800 transition-all shadow-sm font-bold">
                                     <option value="" disabled selected>Seleccione modalidad...</option>
                                     <option value="Escolarizada">Escolarizada (Presencial)</option>
@@ -540,20 +540,20 @@
 
                         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 font-sans">
                             <div>
-                                <label class="block text-xs font-bold text-ceutGold-dark mb-2 uppercase">Grado o Semestre <span class="text-ceutGold font-black">*</span></label>
-                                <input type="text" id="grade" required placeholder="Ej. Segundo, Cuarto" class="w-full rounded-xl border-2 border-slate-200 px-4 py-3.5 text-xs focus:ring-2 focus:ring-ceutGold focus:border-ceutGold focus:outline-none transition-all shadow-sm bg-slate-50 text-slate-800 font-medium">
+                                <label class="block text-xs font-bold text-ceutGold mb-2 uppercase">Grado o Semestre <span class="text-ceutGold font-black">*</span></label>
+                                <input type="text" id="grade" required oninput="window.cleanInput(this)" placeholder="Ej. Segundo, Cuarto" class="w-full rounded-xl border-2 border-slate-200 px-4 py-3.5 text-xs focus:ring-2 focus:ring-ceutGold focus:border-ceutGold focus:outline-none transition-all shadow-sm bg-slate-50 text-slate-800 font-medium">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-ceutGold-dark mb-2 uppercase">Grupo <span class="text-ceutGold font-black">*</span></label>
-                                <input type="text" id="group" required placeholder="Ej. A, B" class="w-full rounded-xl border-2 border-slate-200 px-4 py-3.5 text-xs focus:ring-2 focus:ring-ceutGold focus:border-ceutGold focus:outline-none transition-all shadow-sm bg-slate-50 text-slate-800 font-medium">
+                                <label class="block text-xs font-bold text-ceutGold mb-2 uppercase">Grupo <span class="text-ceutGold font-black">*</span></label>
+                                <input type="text" id="group" required oninput="window.cleanInput(this)" placeholder="Ej. A, B" class="w-full rounded-xl border-2 border-slate-200 px-4 py-3.5 text-xs focus:ring-2 focus:ring-ceutGold focus:border-ceutGold focus:outline-none transition-all shadow-sm bg-slate-50 text-slate-800 font-medium">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-ceutGold-dark mb-2 uppercase">Ciclo Escolar <span class="text-ceutGold font-black">*</span></label>
-                                <input type="text" id="semester" required placeholder="Ej. 2026-2027" class="w-full rounded-xl border-2 border-slate-200 px-4 py-3.5 text-xs focus:ring-2 focus:ring-ceutGold focus:border-ceutGold focus:outline-none transition-all shadow-sm bg-slate-50 text-slate-800 font-medium">
+                                <label class="block text-xs font-bold text-ceutGold mb-2 uppercase">Ciclo Escolar <span class="text-ceutGold font-black">*</span></label>
+                                <input type="text" id="semester" required oninput="window.cleanInput(this)" placeholder="Ej. 2026-2027" class="w-full rounded-xl border-2 border-slate-200 px-4 py-3.5 text-xs focus:ring-2 focus:ring-ceutGold focus:border-ceutGold focus:outline-none transition-all shadow-sm bg-slate-50 text-slate-800 font-medium">
                             </div>
                             <div id="div-career" class="hidden">
-                                <label class="block text-xs font-bold text-ceutGold-dark mb-2 uppercase">Carrera (Universidad) <span class="text-ceutGold font-black">*</span></label>
-                                <input type="text" id="career" placeholder="Ej. Licenciatura en Derecho" class="w-full rounded-xl border-2 border-ceutGold px-4 py-3.5 text-xs focus:ring-2 focus:ring-ceutGold focus:border-ceutGold focus:outline-none transition-all shadow-sm bg-white text-slate-800 font-medium">
+                                <label class="block text-xs font-bold text-ceutGold mb-2 uppercase">Carrera (Universidad) <span class="text-ceutGold font-black">*</span></label>
+                                <input type="text" id="career" oninput="window.cleanInput(this)" placeholder="Ej. Licenciatura en Derecho" class="w-full rounded-xl border-2 border-ceutGold px-4 py-3.5 text-xs focus:ring-2 focus:ring-ceutGold focus:border-ceutGold focus:outline-none transition-all shadow-sm bg-white text-slate-800 font-medium">
                             </div>
                         </div>
                     </div>
@@ -569,7 +569,7 @@
                         
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
                             <div class="space-y-4">
-                                <label class="block text-xs font-extrabold text-ceutGold-dark font-sans uppercase">Seleccione el Motivo Principal <span class="text-ceutGold font-black">*</span></label>
+                                <label class="block text-xs font-extrabold text-ceutGold mb-2 uppercase">Seleccione el Motivo Principal <span class="text-ceutGold font-black">*</span></label>
                                 <div class="grid grid-cols-1 gap-3.5">
                                     <label class="hover-gold-grow flex items-start gap-4 p-4.5 bg-slate-50 rounded-2xl border-2 border-slate-200 cursor-pointer shadow-sm">
                                         <input type="radio" name="incidentReason" value="Bajo rendimiento académico" required class="mt-1 h-4.5 w-4.5 text-ceutBlue focus:ring-ceutGold">
@@ -606,11 +606,11 @@
                             </div>
 
                             <div class="space-y-4">
-                                <label class="block text-xs font-extrabold text-ceutGold-dark font-sans uppercase">Semáforo de Prioridad Estimado <span class="text-ceutGold font-black">*</span></label>
+                                <label class="block text-xs font-extrabold text-ceutGold mb-2 uppercase">Semáforo de Prioridad Estimado <span class="text-ceutGold font-black">*</span></label>
                                 <div class="grid grid-cols-1 gap-4 font-sans">
                                     <label class="select-priority flex items-center justify-between p-4.5 rounded-2xl border-2 border-slate-200 bg-slate-50 cursor-pointer hover:border-rose-400 transition-all duration-300 shadow-sm" data-priority="alta">
                                         <div class="flex items-center gap-4">
-                                            <div class="h-10 w-10 rounded-2xl bg-rose-500 flex items-center justify-center text-white text-sm shadow-md">
+                                            <div class="h-10 w-10 rounded-2xl bg-rose-50 flex items-center justify-center text-white text-sm shadow-md">
                                                 <i class="fa-solid fa-fire animate-pulse"></i>
                                             </div>
                                             <div>
@@ -663,7 +663,7 @@
                         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                             <div class="space-y-4 bg-slate-50 p-6 rounded-2xl border-2 border-slate-200 shadow-sm flex flex-col justify-between">
                                 <div>
-                                    <label class="block text-xs font-bold text-ceutGold-dark mb-3 text-justified font-sans uppercase">¿Ha entablado un diálogo previo con el alumno sobre este incidente? <span class="text-ceutGold font-black">*</span></label>
+                                    <label class="block text-xs font-bold text-ceutGold mb-3 text-justified font-sans uppercase">¿Ha entablado un diálogo previo con el alumno sobre este incidente? <span class="text-ceutGold font-black">*</span></label>
                                     <div class="flex items-center gap-6 font-sans">
                                         <label class="flex items-center gap-2.5 cursor-pointer">
                                             <input type="radio" name="priorIntervention" value="si" required class="h-5 w-5 text-ceutGold focus:ring-ceutGold">
@@ -681,8 +681,8 @@
                             </div>
 
                             <div class="lg:col-span-2 space-y-2">
-                                <label class="block text-xs font-bold text-ceutGold-dark font-sans uppercase">Relatoría o Descripción de la Situación <span class="text-ceutGold font-black">*</span></label>
-                                <textarea id="situationDescription" required rows="5" placeholder="Detalle con total respeto y objetividad la relatoría de los hechos, fechas críticas de la incidencia identificada y conductas observadas..." class="w-full rounded-2xl border-2 border-slate-200 p-5 text-xs sm:text-sm focus:ring-2 focus:ring-ceutGold focus:border-ceutGold focus:outline-none transition-all shadow-sm bg-slate-50 font-serif text-slate-800 font-medium"></textarea>
+                                <label class="block text-xs font-bold text-ceutGold mb-2 uppercase">Relatoría o Descripción de la Situación <span class="text-ceutGold font-black">*</span></label>
+                                <textarea id="situationDescription" required oninput="window.cleanInput(this)" rows="5" placeholder="Detalle con total respeto y objetividad la relatoría de los hechos, fechas críticas de la incidencia identificada y conductas observadas..." class="w-full rounded-2xl border-2 border-slate-200 p-5 text-xs sm:text-sm focus:ring-2 focus:ring-ceutGold focus:border-ceutGold focus:outline-none transition-all shadow-sm bg-slate-50 font-serif text-slate-800 font-medium"></textarea>
                             </div>
                         </div>
                     </div>
@@ -717,7 +717,7 @@
                 <div class="flex items-center gap-6 flex-col sm:flex-row text-center sm:text-left z-10">
                     <!-- Logotipo en Pestaña Panel de Control -->
                     <div class="bg-slate-100 p-3 rounded-2xl shadow-md border-2 border-ceutGold relative z-20 animate-float">
-                        <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview_2.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="Logo Administrador" class="h-20 w-20 object-contain block mx-auto">
+                        <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview_2.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="Logo Administrativo" class="h-20 w-20 object-contain block mx-auto">
                     </div>
                     <div>
                         <h3 class="font-bold text-2xl text-slate-800 flex items-center justify-center sm:justify-start gap-3 flex-wrap font-formal">
@@ -777,7 +777,7 @@
                         <label class="block text-[10px] font-bold text-ceutGold-dark uppercase tracking-widest mb-2">Búsqueda Rápida</label>
                         <div class="relative">
                             <i class="fa-solid fa-magnifying-glass absolute left-4 top-4 text-slate-400 text-xs"></i>
-                            <input type="text" id="filter-search" oninput="applyFilters()" placeholder="Buscar alumno o docente..." class="w-full rounded-xl border-2 border-slate-200 pl-11 pr-4 py-3.5 text-xs focus:ring-2 focus:ring-ceutGold focus:outline-none bg-slate-50 text-slate-800 font-medium">
+                            <input type="text" id="filter-search" oninput="window.cleanInput(this); applyFilters();" placeholder="Buscar alumno o docente..." class="w-full rounded-xl border-2 border-slate-200 pl-11 pr-4 py-3.5 text-xs focus:ring-2 focus:ring-ceutGold focus:outline-none bg-slate-50 text-slate-800 font-medium">
                         </div>
                     </div>
 
@@ -1116,7 +1116,7 @@
                         </div>
                         <div class="md:col-span-2">
                             <label class="block text-[9px] font-bold text-slate-600 uppercase tracking-widest mb-1.5">Notas de Intervención / Contención Psicológica</label>
-                            <input type="text" id="details-action-notes" placeholder="Indique la contención asignada, llamadas o tutorías..." class="w-full rounded-xl border-2 border-slate-200 px-3.5 py-3 text-xs focus:ring-2 focus:ring-ceutGold bg-white text-slate-800 shadow-sm font-medium uppercase">
+                            <input type="text" id="details-action-notes" oninput="window.cleanInput(this)" placeholder="Indique la contención asignada, llamadas o tutorías..." class="w-full rounded-xl border-2 border-slate-200 px-3.5 py-3 text-xs focus:ring-2 focus:ring-ceutGold bg-white text-slate-800 shadow-sm font-medium uppercase">
                         </div>
                     </div>
                 </div>
@@ -1156,6 +1156,18 @@
     </footer>
 
     <script>
+        // FUNCIÓN DE LIMPIEZA DINÁMICA DE ENTRADAS EN TIEMPO REAL
+        window.cleanInput = function(element) {
+            const cursorPosition = element.selectionStart;
+            const originalValue = element.value;
+            const cleanedValue = formatUppercaseNoAccents(originalValue);
+            if (originalValue !== cleanedValue) {
+                element.value = cleanedValue;
+                // Mantener el cursor exactamente en su posición para una escritura suave y sin saltos
+                element.setSelectionRange(cursorPosition, cursorPosition);
+            }
+        };
+
         let activeViewReportId = null;
         let currentMailBodyText = "";
 
@@ -1217,6 +1229,7 @@
             modal.classList.remove('flex');
         }
 
+        // Validación del PIN de Administrador
         function submitAdminPin() {
             const pinInput = document.getElementById('adminPinInput');
             const pinVal = pinInput.value.trim();
@@ -1249,13 +1262,14 @@
             modal.classList.add('flex');
         }
 
+        // Cierre del modal de Aviso de Privacidad
         function closePrivacyNotice() {
             const modal = document.getElementById('privacyNoticeModal');
             modal.classList.add('hidden');
             modal.classList.remove('flex');
         }
 
-        // CAMBIAR PESTAÑAS
+        // Navegación del Portal
         function switchRole(role) {
             window.appState.currentRole = role;
             
@@ -1281,6 +1295,7 @@
             }
         }
 
+        // Activación del campo Carrera en Universidad
         function toggleEducationalFields() {
             const levelSelect = document.getElementById('eduLevel');
             const careerDiv = document.getElementById('div-career');
@@ -1321,13 +1336,17 @@
             });
         });
 
-        // UTILIDAD PARA ELIMINAR ACENTOS Y FORZAR MAYUSCULAS (Solo para datos que se integren)
+        // UTILIDAD EXCLUSIVA: ELIMINA ACENTOS ESPAÑOLES Y CONVIERTE EN MAYÚSCULAS PRESERVANDO LA "Ñ"
         function formatUppercaseNoAccents(str) {
             if (!str) return "";
             return str
                 .toUpperCase()
-                .normalize("NFD")
-                .replace(/[\u0300-\u036f]/g, ""); // Remueve acentos
+                .replace(/[ÁÀÂÄ]/g, "A")
+                .replace(/[ÉÈÊË]/g, "E")
+                .replace(/[ÍÌÎÏ]/g, "I")
+                .replace(/[ÓÒÔÖ]/g, "O")
+                .replace(/[ÚÙÛÜ]/g, "U")
+                .replace(/[ÝÝ]/g, "Y");
         }
 
         // ENVIO DE FORMULARIO
@@ -1344,7 +1363,7 @@
             submitBtn.disabled = true;
             submitBtn.innerHTML = `<i class="fa-solid fa-circle-notch animate-spin mr-1.5"></i> Sincronizando...`;
 
-            // Formatear los datos a integrar en mayúsculas y sin acentos
+            // Doble validación y formateo antes de subir a Firestore
             const teacherName = formatUppercaseNoAccents(document.getElementById('teacherName').value);
             const teacherSubject = formatUppercaseNoAccents(document.getElementById('teacherSubject').value);
             const teacherEmail = formatUppercaseNoAccents(document.getElementById('teacherEmail').value);
