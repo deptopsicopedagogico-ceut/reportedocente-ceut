@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CEUT - Portal Psicopedagógico de Alta Gama</title>
     
-    <!-- Configuración del Logotipo en la pestaña del navegador (Favicon) -->
-    <link rel="icon" type="image/png" href="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview.png">
-    <link rel="shortcut icon" href="https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2" type="image/x-icon">
+    <!-- Configuración del Logotipo oficial en la pestaña del navegador (Favicon) -->
+    <link rel="icon" type="image/png" href="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview_2.png">
+    <link rel="shortcut icon" href="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview_2.png" type="image/x-icon">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Lora:ital,wght=0,400;0,600;0,700;1,400&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -141,12 +141,12 @@
                 level: 'ALL',
                 status: 'ALL'
             },
-            // Datos de respaldo iniciales cargados en memoria como catálogo base
+            // Datos de respaldo iniciales cargados en memoria como catálogo base en español de México
             mockReports: [
                 {
                     id: "CASO-01",
                     timestamp: new Date(Date.now() - 3600000 * 2),
-                    teacherName: "PROFRA. MARIA ELENA LOPEZ",
+                    teacherName: "MTRA. MARIA ELENA LOPEZ",
                     teacherEmail: "MARIA.LOPEZ@CEUT.EDU.MX",
                     subject: "MATEMATICAS II",
                     studentName: "JUAN PABLO GOMEZ RUIZ",
@@ -159,7 +159,7 @@
                     reason: "BAJO RENDIMIENTO ACADEMICO",
                     priority: "ALTA",
                     priorIntervention: "SI",
-                    situation: "EL ALUMNO HA REPROBADO LOS ULTIMOS TRES PARCIALES DE ALGEBRA BASICA. NO ENTREGA TAREAS Y MUESTRA APATIA DURANTE LAS SESIONES DE RESOLUCION DE EJERCICIOS PRACTICOS EN EL SALON DE CLASES.",
+                    situation: "EL ALUMNO REPROBO LOS ULTIMOS TRES PARCIALES DE ALGEBRA BASICA. NO ENTREGA TAREAS Y MUESTRA APATIA DURANTE LAS SESIONES DE RESOLUCION DE EJERCICIOS PRACTICOS EN EL SALON DE CLASES.",
                     status: "PENDIENTE",
                     notes: "SE AGENDO LLAMADA TELEFONICA CON LOS PADRES DE FAMILIA PARA EL VIERNES POR LA TARDE.",
                     dataConsent: true,
@@ -177,13 +177,13 @@
                     grade: "5",
                     group: "B",
                     semester: "QUINTO",
-                    career: "LICENCIA EN DERECHO",
+                    career: "LICENCIATURA EN DERECHO",
                     reason: "INASISTENCIA FRECUENTE Y AUSENTISMO",
                     priority: "MEDIA",
                     priorIntervention: "NO",
                     situation: "LA ALUMNA HA ACUMULADO UN 40% DE INASISTENCIAS EN LO QUE VA DEL CICLO ESCOLAR. SE INTENTO CONTACTO POR CORREO DE TUTORIA PERO NO SE HA RECIBIDO RESPUESTA ALGUNA POR SU PARTE.",
                     status: "EN PROCESO",
-                    notes: "EL MTRO. CARLOS AGUILAR ASIGNO TUTOR DE SEGUIMIENTO PSICOPEDAGOGICO Y CITATORIO FISICO.",
+                    notes: "EL MTRO. CARLOS AGUILAR ASIGNO UN TUTOR DE SEGUIMIENTO PSICOPEDAGOGICO Y SE EMITIO UN CITATORIO FISICO.",
                     dataConsent: true,
                     legalBasis: "LFPDPPP ART. 15"
                 }
@@ -223,7 +223,7 @@
                     await signInAnonymously(window.appState.auth);
                 }
             } catch (err) {
-                console.warn("AUTENTICACION FIREBASE RECHAZADA, TRABAJANDO EN MODO LOCAL DE SOLO LECTURA:", err);
+                console.warn("AUTENTICACIÓN EN FIREBASE RECHAZADA, TRABAJANDO EN MODO LOCAL DE SÓLO LECTURA:", err);
                 disableCloudStatusUI();
             }
         }
@@ -250,7 +250,7 @@
                 renderReports();
                 renderMetrics();
             }, (error) => {
-                console.error("FALLA EN LA SINCRONIZACION EN TIEMPO REAL DE FIRESTORE:", error);
+                console.error("FALLA EN LA SINCRONIZACIÓN EN TIEMPO REAL DE FIRESTORE:", error);
                 disableCloudStatusUI();
             });
         }
@@ -279,14 +279,13 @@
                         <span class="relative flex h-3 w-3">
                             <span class="relative inline-flex rounded-full h-3 w-3 bg-rose-500"></span>
                         </span>
-                        <span class="font-bold text-[10px] text-rose-500 uppercase tracking-widest font-sans">SIN CONEXION A LA NUBE (SOLO LECTURA)</span>
+                        <span class="font-bold text-[10px] text-rose-500 uppercase tracking-widest font-sans">SIN CONEXIÓN A LA NUBE (SÓLO LECTURA)</span>
                     `;
                 }
             }
         }
 
         window.submitReportToFirestore = async function(newReport) {
-            // Guardado estricto en la nube, se eliminó el fallback a localStorage
             if (window.appState.isFirebaseActive && window.appState.db && window.appState.currentUser) {
                 try {
                     const colRef = collection(window.appState.db, 'artifacts', appId, 'public', 'data', 'reports');
@@ -296,15 +295,14 @@
                     });
                     return true;
                 } catch (e) {
-                    console.error("ERROR GUARDANDO REPORTE EN FIREBASE:", e);
+                    console.error("ERROR AL GUARDAR EL REPORTE EN FIREBASE:", e);
                     return false;
                 }
             }
-            return false; // Retorna falso inmediatamente si no está conectado a la nube
+            return false; 
         };
 
         window.updateReportStatusInFirestore = async function(reportId, newStatus, followUpNotes = "") {
-            // Edición estricta en la nube
             if (window.appState.isFirebaseActive && window.appState.db && window.appState.currentUser) {
                 try {
                     const docRef = doc(window.appState.db, 'artifacts', appId, 'public', 'data', 'reports', reportId);
@@ -329,7 +327,7 @@
             <div class="flex items-center gap-6 text-center lg:text-left flex-col sm:flex-row">
                 <!-- Logotipo Principal en el Header -->
                 <div class="relative bg-white p-3 rounded-2xl shadow-gold-glow flex-shrink-0 z-50 border-2 border-ceutGold animate-float">
-                    <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Escudo Tigres" class="h-24 w-24 object-contain block mx-auto">
+                    <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview_2.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Escudo Tigres" class="h-24 w-24 object-contain block mx-auto">
                 </div>
                 <div>
                     <h1 class="text-4xl sm:text-5xl font-black tracking-tight flex flex-col sm:flex-row items-center gap-3 justify-center lg:justify-start">
@@ -349,7 +347,7 @@
                         </div>
                     </div>
                     <p class="text-xs sm:text-sm text-slate-300 mt-3 font-serif tracking-wide max-w-2xl text-justified leading-relaxed italic">
-                        Infraestructura digital de alta gama para el registro en tiempo real de incidencias escolares, protegida bajo cumplimiento estricto de la Ley Federal de Protección de Datos Personales (LFPDPPP).
+                        Infraestructura digital de alta gama para el registro en tiempo real de incidencias escolares, protegida bajo cumplimiento estricto de la Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP).
                     </p>
                 </div>
             </div>
@@ -376,18 +374,18 @@
                     <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
                 </span>
                 <span class="font-medium text-justified leading-relaxed text-slate-700">
-                    Conexión cifrada y segura. Procesamiento conforme a la ley mexicana <strong class="text-ceutBlue font-bold text-xs">LFPDPPP (Art. 9, 15 y 16)</strong> para datos escolares confidenciales.
+                    Conexión cifrada y segura. Procesamiento conforme a la legislación mexicana <strong class="text-ceutBlue font-bold text-xs">LFPDPPP (Art. 9, 15 y 16)</strong> para datos escolares confidenciales.
                 </span>
             </div>
             <div class="text-[10px] bg-ceutBlue text-white px-4 py-2 rounded-xl font-bold font-sans whitespace-nowrap shadow-sm border border-ceutGold uppercase tracking-widest">
-                Responsable de Datos: Mtro. Carlos Aguilar Sánchez
+                Responsable del Tratamiento de Datos: Mtro. Carlos Aguilar Sánchez
             </div>
         </div>
     </div>
 
     <main class="flex-grow max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-10 z-20">
 
-        <!-- SECCION 1: INICIO -->
+        <!-- SECCIÓN 1: INICIO -->
         <section id="section-welcome" class="space-y-10 fade-in-up">
             <div class="solid-panel rounded-[2rem] p-8 sm:p-14 relative overflow-hidden border-2 border-ceutBlue/30 bg-ceutBlue-dark text-white">
                 <div class="grid grid-cols-1 lg:grid-cols-4 gap-10 items-center relative z-10">
@@ -409,17 +407,17 @@
                     </div>
                     <!-- Tarjeta con Logo Destacado en Pestaña Inicio -->
                     <div class="flex flex-col items-center justify-center bg-ceutBlue p-6 rounded-3xl border-2 border-ceutGold text-center shadow-lg relative z-20">
-                        <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Escudo Tigres" class="relative z-20 h-32 w-32 object-contain mb-4 animate-float">
+                        <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview_2.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Escudo Tigres" class="relative z-20 h-32 w-32 object-contain mb-4 animate-float">
                         <span class="text-xs font-bold tracking-widest text-ceutGold uppercase font-formal italic">Orgullo Tigre</span>
                         <span class="text-[9px] text-white/70 font-bold mt-1 tracking-widest font-sans">#SOMOSTIGRES</span>
                     </div>
                 </div>
             </div>
 
-            <!-- MARCO JURIDICO -->
+            <!-- MARCO JURÍDICO -->
             <div class="solid-panel p-8 sm:p-12 rounded-[2rem] border-2 border-slate-200 shadow-premium relative bg-white">
                 <div class="absolute right-4 top-4 bg-white p-2 rounded-xl border border-slate-200">
-                    <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-10 w-10 object-contain">
+                    <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview_2.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-10 w-10 object-contain">
                 </div>
                 <div class="flex items-center gap-5 border-b-2 border-slate-100 pb-6 mb-8">
                     <div class="h-14 w-14 rounded-2xl bg-ceutGold/10 text-ceutGold-dark flex items-center justify-center text-2xl border-2 border-ceutGold/30">
@@ -439,7 +437,7 @@
                         </p>
                         <p class="text-justified">
                             <strong class="text-slate-800 block font-bold text-sm mb-1.5"><i class="fa-solid fa-key text-ceutGold mr-1"></i> Consentimiento Expreso (Art. 8):</strong> 
-                            El docente, como enlace authorized, manifiesta con la firma digital obligatoria de este formulario que cuenta con la licitud necesaria para asentar los hechos observados con la única finalidad de canalizar la tutoría personalizada necesaria.
+                            El docente, como enlace autorizado, manifiesta con la firma digital obligatoria de este formulario que cuenta con la licitud necesaria para asentar los hechos observados con la única finalidad de canalizar la tutoría personalizada necesaria.
                         </p>
                     </div>
                     <div class="space-y-5">
@@ -463,7 +461,7 @@
             </div>
         </section>
 
-        <!-- SECCION 2: REGISTRAR INCIDENCIA -->
+        <!-- SECCIÓN 2: REGISTRAR INCIDENCIA -->
         <section id="section-teacher" class="hidden space-y-8 fade-in-up">
             <div class="solid-panel rounded-[2rem] overflow-hidden">
                 <div class="text-white px-8 py-8 flex items-center justify-between relative border-b-2 border-ceutGold bg-ceutBlue">
@@ -478,7 +476,7 @@
                     </div>
                     <!-- Logotipo en Pestaña Registrar Incidencia -->
                     <div class="bg-white p-2 rounded-xl border-2 border-ceutGold shadow-md">
-                        <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="Escudo CEUT" class="h-16 w-16 object-contain">
+                        <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview_2.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="Escudo CEUT" class="h-16 w-16 object-contain">
                     </div>
                 </div>
 
@@ -495,7 +493,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 font-sans">
                             <div>
                                 <label class="block text-xs font-bold text-ceutGold-dark mb-2 uppercase">Nombre Completo del Docente <span class="text-ceutGold font-black">*</span></label>
-                                <input type="text" id="teacherName" required placeholder="Ej. Profra. María Elena López" class="w-full rounded-xl border-2 border-slate-200 px-4 py-3.5 text-xs focus:ring-2 focus:ring-ceutGold focus:border-ceutGold focus:outline-none transition-all shadow-sm bg-slate-50 text-slate-800 font-medium">
+                                <input type="text" id="teacherName" required placeholder="Ej. Mtra. María Elena López" class="w-full rounded-xl border-2 border-slate-200 px-4 py-3.5 text-xs focus:ring-2 focus:ring-ceutGold focus:border-ceutGold focus:outline-none transition-all shadow-sm bg-slate-50 text-slate-800 font-medium">
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-ceutGold-dark mb-2 uppercase">Asignatura o Materia <span class="text-ceutGold font-black">*</span></label>
@@ -541,7 +539,7 @@
 
                         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 font-sans">
                             <div>
-                                <label class="block text-xs font-bold text-ceutGold-dark mb-2 uppercase">Grado / Semestre <span class="text-ceutGold font-black">*</span></label>
+                                <label class="block text-xs font-bold text-ceutGold-dark mb-2 uppercase">Grado o Semestre <span class="text-ceutGold font-black">*</span></label>
                                 <input type="text" id="grade" required placeholder="Ej. Segundo, Cuarto" class="w-full rounded-xl border-2 border-slate-200 px-4 py-3.5 text-xs focus:ring-2 focus:ring-ceutGold focus:border-ceutGold focus:outline-none transition-all shadow-sm bg-slate-50 text-slate-800 font-medium">
                             </div>
                             <div>
@@ -549,7 +547,7 @@
                                 <input type="text" id="group" required placeholder="Ej. A, B" class="w-full rounded-xl border-2 border-slate-200 px-4 py-3.5 text-xs focus:ring-2 focus:ring-ceutGold focus:border-ceutGold focus:outline-none transition-all shadow-sm bg-slate-50 text-slate-800 font-medium">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-ceutGold-dark mb-2 uppercase">Ciclo Escolar / Semestre <span class="text-ceutGold font-black">*</span></label>
+                                <label class="block text-xs font-bold text-ceutGold-dark mb-2 uppercase">Ciclo Escolar <span class="text-ceutGold font-black">*</span></label>
                                 <input type="text" id="semester" required placeholder="Ej. 2026-2027" class="w-full rounded-xl border-2 border-slate-200 px-4 py-3.5 text-xs focus:ring-2 focus:ring-ceutGold focus:border-ceutGold focus:outline-none transition-all shadow-sm bg-slate-50 text-slate-800 font-medium">
                             </div>
                             <div id="div-career" class="hidden">
@@ -559,7 +557,7 @@
                         </div>
                     </div>
 
-                    <!-- BLOQUE 3: MOTIVO Y SEMAFORO DE PRIORIDAD -->
+                    <!-- BLOQUE 3: MOTIVO Y SEMÁFORO DE PRIORIDAD -->
                     <div class="space-y-5 pt-3">
                         <div class="flex flex-wrap items-center justify-between gap-3 border-b-2 border-slate-100 pb-3">
                             <h4 class="font-bold text-xs uppercase tracking-widest text-ceutGold-dark flex items-center gap-2.5 font-sans">
@@ -682,7 +680,7 @@
                             </div>
 
                             <div class="lg:col-span-2 space-y-2">
-                                <label class="block text-xs font-bold text-ceutGold-dark font-sans uppercase">Descripción Narrativa de la Situación <span class="text-ceutGold font-black">*</span></label>
+                                <label class="block text-xs font-bold text-ceutGold-dark font-sans uppercase">Relatoría o Descripción de la Situación <span class="text-ceutGold font-black">*</span></label>
                                 <textarea id="situationDescription" required rows="5" placeholder="Detalle con total respeto y objetividad la relatoría de los hechos, fechas críticas de la incidencia identificada y conductas observadas..." class="w-full rounded-2xl border-2 border-slate-200 p-5 text-xs sm:text-sm focus:ring-2 focus:ring-ceutGold focus:border-ceutGold focus:outline-none transition-all shadow-sm bg-slate-50 font-serif text-slate-800 font-medium"></textarea>
                             </div>
                         </div>
@@ -718,7 +716,7 @@
                 <div class="flex items-center gap-6 flex-col sm:flex-row text-center sm:text-left z-10">
                     <!-- Logotipo en Pestaña Panel de Control -->
                     <div class="bg-slate-100 p-3 rounded-2xl shadow-md border-2 border-ceutGold relative z-20 animate-float">
-                        <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="Logo Administrador" class="h-20 w-20 object-contain block mx-auto">
+                        <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview_2.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="Logo Administrador" class="h-20 w-20 object-contain block mx-auto">
                     </div>
                     <div>
                         <h3 class="font-bold text-2xl text-slate-800 flex items-center justify-center sm:justify-start gap-3 flex-wrap font-formal">
@@ -739,28 +737,28 @@
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 font-sans">
                 <div class="solid-panel text-slate-800 p-8 rounded-3xl bg-white relative">
                     <div class="absolute right-4 top-4">
-                        <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-6 w-6 object-contain opacity-50">
+                        <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview_2.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-6 w-6 object-contain opacity-50">
                     </div>
                     <span class="block text-[10px] uppercase tracking-widest text-slate-500 font-bold">Total de Casos</span>
                     <span class="text-5xl font-black text-ceutBlue block mt-3 font-formal gold-shimmer-text" id="metric-total">0</span>
                 </div>
                 <div class="bg-rose-50 text-rose-950 p-8 rounded-3xl border-2 border-rose-200 shadow-sm relative">
                     <div class="absolute right-4 top-4">
-                        <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-6 w-6 object-contain opacity-30">
+                        <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview_2.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-6 w-6 object-contain opacity-30">
                     </div>
                     <span class="block text-[10px] uppercase tracking-widest text-rose-700 font-bold">Prioridad Alta</span>
                     <span class="text-5xl font-bold text-rose-600 block mt-3 font-formal" id="metric-high">0</span>
                 </div>
                 <div class="bg-yellow-50 text-yellow-950 p-8 rounded-3xl border-2 border-yellow-200 shadow-sm relative">
                     <div class="absolute right-4 top-4">
-                        <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-6 w-6 object-contain opacity-30">
+                        <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview_2.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-6 w-6 object-contain opacity-30">
                     </div>
                     <span class="block text-[10px] uppercase tracking-widest text-yellow-700 font-bold">Prioridad Media</span>
                     <span class="text-5xl font-bold text-yellow-600 block mt-3 font-formal" id="metric-medium">0</span>
                 </div>
                 <div class="bg-emerald-50 text-emerald-950 p-8 rounded-3xl border-2 border-emerald-200 shadow-sm relative">
                     <div class="absolute right-4 top-4">
-                        <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-6 w-6 object-contain opacity-30">
+                        <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview_2.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-6 w-6 object-contain opacity-30">
                     </div>
                     <span class="block text-[10px] uppercase tracking-widest text-emerald-700 font-bold">Prioridad Baja</span>
                     <span class="text-5xl font-bold text-emerald-600 block mt-3 font-formal" id="metric-low">0</span>
@@ -770,7 +768,7 @@
             <!-- FILTROS -->
             <div class="solid-panel p-8 rounded-[2rem] shadow-premium space-y-5 bg-white relative">
                 <div class="absolute right-4 top-4">
-                    <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-10 w-10 object-contain">
+                    <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview_2.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-10 w-10 object-contain">
                 </div>
                 <h4 class="font-bold text-xs uppercase tracking-widest text-ceutGold-dark flex items-center gap-2 font-sans"><i class="fa-solid fa-sliders"></i> Parámetros de Búsqueda</h4>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 font-sans">
@@ -802,9 +800,9 @@
                     </div>
 
                     <div>
-                        <label class="block text-[10px] font-bold text-ceutGold-dark uppercase tracking-widest mb-2">Estatus de Seguimiento</label>
+                        <label class="block text-[10px] font-bold text-ceutGold-dark uppercase tracking-widest mb-2">Estado de Seguimiento</label>
                         <select id="filter-status" onchange="applyFilters()" class="w-full rounded-xl border-2 border-slate-200 px-4 py-3.5 text-xs focus:ring-2 focus:ring-ceutGold focus:outline-none bg-slate-50 text-slate-800 shadow-sm font-bold">
-                            <option value="ALL">Todos los Estatus</option>
+                            <option value="ALL">Todos los Estados</option>
                             <option value="PENDIENTE">Pendiente</option>
                             <option value="EN PROCESO">En Proceso</option>
                             <option value="RESUELTO">Resuelto</option>
@@ -829,7 +827,7 @@
                                 <th class="px-8 py-4.5">Prioridad</th>
                                 <th class="px-8 py-4.5">Motivo del Reporte</th>
                                 <th class="px-8 py-4.5">Docente Emisor</th>
-                                <th class="px-8 py-4.5">Estatus</th>
+                                <th class="px-8 py-4.5">Estado</th>
                                 <th class="px-8 py-4.5 text-right">Acción</th>
                             </tr>
                         </thead>
@@ -840,10 +838,10 @@
 
                 <div id="empty-state" class="hidden p-20 text-center space-y-4">
                     <div class="h-16 w-16 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center text-xl mx-auto border-2 border-slate-200">
-                        <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-8 w-8 object-contain opacity-55 animate-pulse">
+                        <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview_2.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-8 w-8 object-contain opacity-55 animate-pulse">
                     </div>
                     <p class="text-sm font-bold text-slate-800 uppercase">No se encontraron expedientes con los criterios actuales</p>
-                    <p class="text-xs text-slate-500 max-w-md mx-auto text-justified font-serif uppercase font-serif">Ajuste los filtros de búsqueda o registre una incidencia desde el portal del docente.</p>
+                    <p class="text-xs text-slate-500 max-w-md mx-auto text-justified font-serif uppercase">Ajuste los filtros de búsqueda o registre una incidencia desde el portal del docente.</p>
                 </div>
             </div>
         </section>
@@ -856,7 +854,7 @@
             <div class="text-white px-8 py-6 border-b-2 border-ceutGold flex items-center justify-between flex-shrink-0 relative bg-ceutBlue">
                 <div class="flex items-center gap-4 relative z-10 font-formal">
                     <div class="bg-white p-2 rounded-xl border-2 border-ceutGold flex-shrink-0">
-                        <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="Aviso Oficial" class="h-12 w-12 object-contain">
+                        <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview_2.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="Aviso Oficial" class="h-12 w-12 object-contain">
                     </div>
                     <div>
                         <h4 class="font-bold text-base tracking-wide gold-shimmer-text">Aviso de Privacidad Integral</h4>
@@ -922,7 +920,7 @@
             <div class="text-white px-8 py-6 border-b-2 border-ceutGold flex items-center justify-between relative bg-ceutBlue">
                 <div class="flex items-center gap-4 relative z-10 font-formal">
                     <div class="bg-white p-2 rounded-xl border-2 border-ceutGold flex-shrink-0">
-                        <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-10 w-10 object-contain">
+                        <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview_2.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-10 w-10 object-contain">
                     </div>
                     <div>
                         <h4 class="font-bold text-base tracking-wide gold-shimmer-text uppercase">¡Reporte procesado con éxito!</h4>
@@ -986,12 +984,12 @@
     <div id="pinModal" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/90 hidden items-center justify-center p-4 transition-all duration-300 font-sans">
         <div class="solid-panel rounded-[2rem] max-w-sm w-full shadow-blue-glow border-2 border-ceutBlue overflow-hidden transform scale-95 transition-all duration-300 bg-white p-8 space-y-6 text-center">
             <div class="mx-auto h-20 w-20 rounded-2xl bg-slate-50 border-2 border-ceutGold flex items-center justify-center shadow-inner p-3 animate-float">
-                <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-full w-full object-contain">
+                <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview_2.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-full w-full object-contain">
             </div>
             <div class="space-y-2">
                 <h4 class="font-bold text-lg text-slate-800 font-formal gold-shimmer-text uppercase">Acceso de Dirección</h4>
                 <p class="text-xs text-slate-500 font-serif leading-relaxed text-justified">
-                    Este depto contiene expedientes protegidos bajo el marco legal de la LFPDPPP de los Estados Unidos Mexicanos. Ingrese el PIN de seguridad asignado para continuar.
+                    Este departamento contiene expedientes protegidos bajo el marco legal de la LFPDPPP de los Estados Unidos Mexicanos. Ingrese el PIN de seguridad asignado para continuar.
                 </p>
             </div>
             
@@ -1050,7 +1048,7 @@
                                 <span class="font-medium text-slate-700" id="details-std-gradegroup"></span>
                             </div>
                             <div>
-                                <span class="block text-slate-500 font-bold text-[9px] uppercase tracking-wider font-sans">Ciclo Escolar / Semestre:</span>
+                                <span class="block text-slate-500 font-bold text-[9px] uppercase tracking-wider font-sans">Ciclo Escolar:</span>
                                 <span class="font-medium text-slate-700" id="details-std-semester"></span>
                             </div>
                             <div class="col-span-2 hidden" id="details-std-career-container">
@@ -1070,7 +1068,7 @@
                                 <span class="font-bold text-slate-900" id="details-tchr-name"></span>
                             </div>
                             <div class="col-span-2">
-                                <span class="block text-slate-500 font-bold text-[9px] uppercase tracking-wider font-sans">Asignatura / Cátedra:</span>
+                                <span class="block text-slate-500 font-bold text-[9px] uppercase tracking-wider font-sans">Asignatura / Materia:</span>
                                 <span class="font-medium text-slate-700" id="details-tchr-subject"></span>
                             </div>
                             <div class="col-span-2 font-sans">
@@ -1096,7 +1094,7 @@
                             <span class="font-medium text-slate-700 bg-slate-100 px-3.5 py-1.5 rounded-lg inline-block mt-1 border-2 border-slate-200 font-sans" id="details-inc-prior"></span>
                         </div>
                         <div class="sm:col-span-2">
-                            <span class="block text-slate-500 font-bold text-[9px] uppercase tracking-wider mb-2.5 font-sans">Descripción Narrativa del Incidente:</span>
+                            <span class="block text-slate-500 font-bold text-[9px] uppercase tracking-wider mb-2.5 font-sans">Relatoría o Descripción del Incidente:</span>
                             <div class="p-5 bg-slate-900 rounded-2xl text-slate-100 leading-relaxed text-justified whitespace-pre-wrap text-xs sm:text-sm border-2 border-slate-800 font-mono" id="details-inc-situation"></div>
                         </div>
                     </div>
@@ -1108,7 +1106,7 @@
                     </h5>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
-                            <label class="block text-[9px] font-bold text-slate-600 uppercase tracking-widest mb-1.5">Estatus de Seguimiento</label>
+                            <label class="block text-[9px] font-bold text-slate-600 uppercase tracking-widest mb-1.5">Estado de Seguimiento</label>
                             <select id="details-action-status" class="w-full rounded-xl border-2 border-slate-200 px-3.5 py-3 text-xs font-bold focus:ring-2 focus:ring-ceutGold bg-white text-slate-800 shadow-sm uppercase">
                                 <option value="PENDIENTE">PENDIENTE</option>
                                 <option value="EN PROCESO">EN PROCESO</option>
@@ -1143,7 +1141,7 @@
             <div class="flex items-center gap-5 flex-col sm:flex-row text-center sm:text-left">
                 <!-- Logotipo en el Footer -->
                 <div class="bg-white/10 p-3 rounded-2xl shadow-lg border-2 border-ceutGold animate-float">
-                    <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Escudo Tigres" class="h-16 w-16 object-contain">
+                    <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview_2.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Escudo Tigres" class="h-16 w-16 object-contain">
                 </div>
                 <div>
                     <p class="text-slate-300 font-serif italic text-sm text-justified uppercase">&copy; 2026 Centro Universitario Tehuacán (CEUT). Todos los derechos reservados. <span class="text-ceutGold font-bold font-sans not-italic text-xs ml-1 tracking-widest">#SOMOSTIGRES</span></p>
