@@ -502,7 +502,7 @@
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-ceutGold mb-2 uppercase">Correo Electrónico Institucional <span class="text-ceutGold font-black">*</span></label>
-                                <input type="email" id="teacherEmail" required oninput="window.cleanInput(this)" placeholder="docente@ceut.edu.mx" class="w-full rounded-xl border-2 border-slate-200 px-4 py-3.5 text-xs focus:ring-2 focus:ring-ceutGold focus:border-ceutGold focus:outline-none transition-all shadow-sm bg-slate-50 text-slate-800 font-medium">
+                                <input type="email" id="teacherEmail" required placeholder="docente@ceut.edu.mx" class="w-full rounded-xl border-2 border-slate-200 px-4 py-3.5 text-xs focus:ring-2 focus:ring-ceutGold focus:border-ceutGold focus:outline-none transition-all shadow-sm bg-slate-50 text-slate-800 font-medium">
                             </div>
                         </div>
                     </div>
@@ -1024,7 +1024,7 @@
                     <i class="fa-solid fa-xmark text-sm"></i>
                 </button>
             </div>
-
+            <!-- DETALLES EXPEDIENTE (CAMPOS INTERNOS DEL MODAL) -->
             <div class="p-6 sm:p-8 space-y-6 overflow-y-auto flex-grow text-justified bg-white">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="p-5 bg-slate-50 rounded-2xl border-2 border-slate-200 space-y-3.5 shadow-sm">
@@ -1074,7 +1074,7 @@
                             </div>
                             <div class="col-span-2 font-sans">
                                 <span class="block text-slate-500 font-bold text-[9px] uppercase tracking-wider">Correo Electrónico:</span>
-                                <a href="#" id="details-tchr-email" class="font-bold text-ceutGold-dark hover:underline font-mono text-[11px]"></a>
+                                <a href="#" id="details-tchr-email" class="font-bold text-ceutBlue-light hover:underline font-mono text-[11px] lowercase"></a>
                             </div>
                         </div>
                     </div>
@@ -1349,7 +1349,7 @@
                 .replace(/[ÝÝ]/g, "Y");
         }
 
-        // ENVIO DE FORMULARIO
+        <!-- ENVIO DE FORMULARIO -->
         async function handleFormSubmission(e) {
             e.preventDefault();
             
@@ -1366,7 +1366,7 @@
             // Doble validación y formateo antes de subir a Firestore
             const teacherName = formatUppercaseNoAccents(document.getElementById('teacherName').value);
             const teacherSubject = formatUppercaseNoAccents(document.getElementById('teacherSubject').value);
-            const teacherEmail = formatUppercaseNoAccents(document.getElementById('teacherEmail').value);
+            const teacherEmail = document.getElementById('teacherEmail').value.trim().toLowerCase();
             
             const studentName = formatUppercaseNoAccents(document.getElementById('studentName').value);
             const eduLevel = formatUppercaseNoAccents(document.getElementById('eduLevel').value);
@@ -1667,7 +1667,7 @@ TIGRES CEUT — PSICOPEDAGOGIA`;
             document.getElementById('details-tchr-subject').innerText = (report.subject || report.teacherSubject).toUpperCase();
             
             const emailLink = document.getElementById('details-tchr-email');
-            emailLink.innerText = report.teacherEmail.toUpperCase();
+            emailLink.innerText = report.teacherEmail.toLowerCase();
             emailLink.href = `mailto:${report.teacherEmail}`;
 
             document.getElementById('details-inc-reason').innerText = report.reason.toUpperCase();
