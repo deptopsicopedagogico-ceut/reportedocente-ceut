@@ -434,7 +434,7 @@
                 </span>
             </div>
             <div class="text-[9px] sm:text-[10px] bg-ceutBlue text-white px-3 sm:px-4 py-2 rounded-xl font-bold font-sans shadow-sm border border-ceutGold uppercase tracking-widest text-center">
-                Responsable del Tratamiento: Mtro. Carlos Aguilar Sánchez
+                Responsable del Departamento Psicopedagógico: Mtro. Carlos Aguilar Sánchez
             </div>
         </div>
     </div>
@@ -780,7 +780,7 @@
                             <span class="gold-shimmer-text">Buzón de Incidencias Docentes</span>
                             <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border-2 border-emerald-300 font-sans whitespace-nowrap">SINCRONIZADO</span>
                         </h3>
-                        <p class="text-xs sm:text-sm text-slate-600 font-bold mt-1 font-sans uppercase" id="admin-subtitle-name">Mtro. Carlos Aguilar Sánchez — Dirección Psicopedagógica CEUT</p>
+                        <p class="text-xs sm:text-sm text-slate-600 font-bold mt-1 font-sans uppercase" id="admin-subtitle-name">Mtro. Carlos Aguilar Sánchez — Responsable del Departamento Psicopedagógico CEUT</p>
                         <p class="text-[10px] text-rose-600 font-bold uppercase tracking-widest mt-2 flex items-center gap-1.5 justify-center sm:justify-start font-sans"><i class="fa-solid fa-shield-halved text-sm"></i> Acceso Cifrado — Protección LFPDPPP</p>
                     </div>
                 </div>
@@ -804,7 +804,7 @@
                     <h4 class="font-bold text-sm uppercase tracking-wider text-ceutBlue font-formal gold-shimmer-text flex items-center gap-2.5 justify-center sm:justify-start text-center sm:text-left">
                         <i class="fa-solid fa-users-gear text-ceutGold-dark"></i> Configuración de Accesos Auxiliares (Lectores Autorizados)
                     </h4>
-                    <p class="text-xs text-slate-500 font-serif italic mt-1 text-center sm:text-left">Autorice el acceso a tres personas como lectores asignándoles un PIN único. Sólo usted como Director de Control puede editar los reportes.</p>
+                    <p class="text-xs text-slate-500 font-serif italic mt-1 text-center sm:text-left">Autorice el acceso a tres personas como lectores asignándoles un PIN único. Sólo usted como Responsable de Control puede editar los reportes.</p>
                 </div>
 
                 <div id="readers-setup-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 font-sans">
@@ -883,7 +883,7 @@
                             <option value="ALL">Todos los Estados</option>
                             <option value="PENDIENTE">Pendiente</option>
                             <option value="EN PROCESO">En Proceso</option>
-                            <option value="RESUELTO">Resuelto</option>
+                            <option value="RESUELTO">Atendido</option>
                         </select>
                     </div>
                 </div>
@@ -1239,7 +1239,7 @@
                             <select id="details-action-status" class="w-full rounded-xl border-2 border-slate-200 px-3.5 py-3 text-xs font-bold focus:ring-2 focus:ring-ceutGold bg-white text-slate-800 shadow-sm uppercase min-h-[44px]">
                                 <option value="PENDIENTE">PENDIENTE</option>
                                 <option value="EN PROCESO">EN PROCESO</option>
-                                <option value="RESUELTO">RESUELTO</option>
+                                <option value="RESUELTO">ATENDIDO</option>
                             </select>
                         </div>
                         <div class="md:col-span-2">
@@ -1260,6 +1260,9 @@
                     </button>
                 </div>
                 <div class="flex items-center gap-2.5 w-full sm:w-auto justify-end">
+                    <button id="btn-mark-attended" onclick="quickMarkAsAttended()" class="flex-1 sm:flex-none bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold px-6 py-3 rounded-xl text-xs shadow-md transition-all duration-200 hover:scale-105 border border-emerald-500 uppercase min-h-[44px] hidden">
+                        <i class="fa-solid fa-circle-check"></i> Marcar como Atendido
+                    </button>
                     <button onclick="closeDetailsModal()" class="flex-1 sm:flex-none bg-white hover:bg-slate-100 text-slate-700 font-bold px-6 py-3 rounded-xl text-xs border-2 border-slate-200 transition-all duration-200 uppercase min-h-[44px]">
                         Cerrar
                     </button>
@@ -1300,6 +1303,25 @@
         };
 
         let activeViewReportId = null;
+
+        // Función para cambiar de forma rápida el estatus a Atendido desde la gestión
+        window.quickMarkAsAttended = async function() {
+            if (!activeViewReportId) return;
+            if (window.appState.currentUserType !== 'ADMIN') {
+                showNotification("Acción Bloqueada", "No posee privilegios para realizar esta acción.", "error");
+                return;
+            }
+
+            const statusSelect = document.getElementById('details-action-status');
+            const notesInput = document.getElementById('details-action-notes');
+
+            statusSelect.value = 'RESUELTO';
+            if (notesInput.value.trim() === '') {
+                notesInput.value = 'EL EXPEDIENTE HA SIDO ATENDIDO PLENAMENTE POR EL RESPONSABLE DEL DEPARTAMENTO PSICOPEDAGÓGICO.';
+            }
+
+            await saveAdminAction();
+        };
 
         // Generador de Folio Único Oficial para cada Reporte
         function generateUniqueFolio() {
@@ -1457,7 +1479,7 @@
                         <button onclick="switchRole('WELCOME')" class="w-full sm:w-auto text-xs bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-lg uppercase min-h-[44px] sm:min-h-0">Cerrar Sesión</button>
                     `;
                     banner.classList.remove('hidden');
-                    subtitle.innerText = `Mtro. Carlos Aguilar Sánchez — Dirección Psicopedagógica CEUT`;
+                    subtitle.innerText = `Mtro. Carlos Aguilar Sánchez — Responsable del Departamento Psicopedagógico CEUT`;
                     readersSection.classList.remove('hidden');
                 } else if (window.appState.currentUserType === 'LECTOR') {
                     banner.className = "solid-panel p-4 rounded-2xl border-2 border-ceutGold bg-amber-50/50 text-slate-800 text-xs font-sans flex flex-col sm:flex-row items-center justify-between shadow-sm gap-4";
@@ -1815,7 +1837,7 @@
                 } else if (report.status.toUpperCase() === 'EN PROCESO') {
                     statusBadge = `<span class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-yellow-100 text-yellow-700 border border-yellow-200">EN PROCESO</span>`;
                 } else {
-                    statusBadge = `<span class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-700 border border-emerald-200">RESUELTO</span>`;
+                    statusBadge = `<span class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-700 border border-emerald-200">ATENDIDO</span>`;
                 }
 
                 const consentBadge = `<span class="mt-1 inline-flex items-center gap-1 text-[9px] bg-ceutGold/15 text-ceutGold-dark border border-ceutGold/30 px-2 py-0.5 rounded-full font-bold"><i class="fa-solid fa-shield-halved"></i> LFPDPPP</span>`;
@@ -1956,6 +1978,7 @@
             const saveBtn = document.getElementById('btn-save-admin-changes');
             const deleteBtn = document.getElementById('btn-details-delete');
             const readOnlyNotice = document.getElementById('details-read-only-notice');
+            const markAttendedBtn = document.getElementById('btn-mark-attended');
 
             statusSelect.value = (report.status || 'PENDIENTE').toUpperCase();
             notesInput.value = (report.notes || '').toUpperCase();
@@ -1975,6 +1998,12 @@
                 deleteBtn.classList.remove('hidden');
                 readOnlyNotice.classList.add('hidden');
                 
+                if (report.status.toUpperCase() !== 'RESUELTO') {
+                    markAttendedBtn.classList.remove('hidden');
+                } else {
+                    markAttendedBtn.classList.add('hidden');
+                }
+                
                 editableInputs.forEach(id => {
                     const el = document.getElementById(id);
                     if (el) el.removeAttribute('disabled');
@@ -1985,6 +2014,7 @@
                 saveBtn.classList.add('hidden');
                 deleteBtn.classList.add('hidden');
                 readOnlyNotice.classList.remove('hidden');
+                markAttendedBtn.classList.add('hidden');
                 
                 editableInputs.forEach(id => {
                     const el = document.getElementById(id);
@@ -2244,7 +2274,7 @@
                                 <td style="width: 50%; text-align: center; vertical-align: top;">
                                     <div style="width: 150px; border-bottom: 1px solid #64748B; margin: 0 auto 6px auto;"></div>
                                     <div style="font-size: 8pt; font-weight: bold; color: #0F1332; font-family: 'Inter', sans-serif;">MTRO. CARLOS AGUILAR SÁNCHEZ</div>
-                                    <div style="font-size: 7pt; color: #475569; font-family: 'Inter', sans-serif;">Director del Departamento Psicopedagógico CEUT</div>
+                                    <div style="font-size: 7pt; color: #475569; font-family: 'Inter', sans-serif;">Responsable del Departamento Psicopedagógico CEUT</div>
                                     <div style="font-size: 6pt; color: #94A3B8; margin-top: 2px; font-family: 'Inter', sans-serif;">FIRMA DE AUTORIZACIÓN ACADÉMICA</div>
                                 </td>
                                 <td style="width: 50%; text-align: center; vertical-align: middle;">
@@ -2564,7 +2594,7 @@
                         <div class="signature-area">
                             <div class="signature-line"></div>
                             <strong>MTRO. CARLOS AGUILAR SÁNCHEZ</strong><br>
-                            Director del Departamento Psicopedagógico CEUT
+                            Responsable del Departamento Psicopedagógico CEUT
                         </div>
 
                         <div class="footer-notes">
