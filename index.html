@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>CEUT - Portal Psicopedagógico de Alta Gama</title>
     
-    <!-- Configuración definitiva del Logotipo oficial en la pestaña del navegador (Favicon) utilizando ruta absoluta de alta velocidad -->
+    <!-- Configuración definitiva del Logotipo oficial en la pestaña del navegador (Favicon) -->
     <link rel="icon" type="image/png" href="https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2">
     <link rel="shortcut icon" href="https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2" type="image/x-icon">
     <link rel="apple-touch-icon" href="https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2">
@@ -150,6 +150,7 @@
             db: null,
             auth: null,
             currentUser: null,
+            lastSubmittedReport: null, // Almacena temporalmente el último reporte enviado por el docente para su descarga directa
             authorizedReaders: [
                 { id: 'reader-1', name: 'PERSONA AUTORIZADA 1', pin: '2026' },
                 { id: 'reader-2', name: 'PERSONA AUTORIZADA 2', pin: '1111' },
@@ -161,52 +162,7 @@
                 level: 'ALL',
                 status: 'ALL'
             },
-            mockReports: [
-                {
-                    id: "CASO-01",
-                    timestamp: new Date(Date.now() - 3600000 * 2),
-                    teacherName: "MTRA. MARIA ELENA LOPEZ",
-                    teacherEmail: "MARIA.LOPEZ@CEUT.EDU.MX",
-                    subject: "MATEMATICAS II",
-                    studentName: "JUAN PABLO GOMEZ RUIZ",
-                    eduLevel: "PREPARATORIA",
-                    modality: "ESCOLARIZADA",
-                    grade: "2",
-                    group: "A",
-                    semester: "SEGUNDO",
-                    career: "",
-                    reason: "BAJO RENDIMIENTO ACADEMICO",
-                    priority: "ALTA",
-                    priorIntervention: "SI",
-                    situation: "EL ALUMNO REPROBO LOS ULTIMOS TRES PARCIALES DE ALGEBRA BASICA. NO ENTREGA TAREAS Y MUESTRA APATIA DURANTE LAS SESIONES DE RESOLUCION DE EJERCICIOS PRACTICOS EN EL SALON DE CLASES.",
-                    status: "PENDIENTE",
-                    notes: "SE AGENDO LLAMADA TELEFONICA CON LOS PADRES DE FAMILIA PARA EL VIERNES POR LA TARDE.",
-                    dataConsent: true,
-                    legalBasis: "LFPDPPP ART. 15 - FINES DE EVALUACION ESCOLAR Y APOYO ACADEMICO"
-                },
-                {
-                    id: "CASO-02",
-                    timestamp: new Date(Date.now() - 3600000 * 5),
-                    teacherName: "MTRO. ROBERTO TORRES",
-                    teacherEmail: "ROBERTO.TORRES@CEUT.EDU.MX",
-                    subject: "INTRODUCCION AL DERECHO",
-                    studentName: "DIANA VALERIA MARTINEZ CRUZ",
-                    eduLevel: "UNIVERSIDAD",
-                    modality: "MIXTA",
-                    grade: "5",
-                    group: "B",
-                    semester: "QUINTO",
-                    career: "LICENCIATURA EN DERECHO",
-                    reason: "INASISTENCIA FRECUENTE Y AUSENTISMO",
-                    priority: "MEDIA",
-                    priorIntervention: "NO",
-                    situation: "LA ALUMNA HA ACUMULADO UN 40% DE INASISTENCIAS EN LO QUE VA DEL CICLO ESCOLAR. SE INTENTO CONTACTO POR CORREO DE TUTORIA BUT NO SE HA RECIBIDO RESPUESTA ALGUNA.",
-                    status: "EN PROCESO",
-                    notes: "EL MTRO. CARLOS AGUILAR ASIGNO UN TUTOR DE SEGUIMIENTO PSICOPEDAGOGICO Y SE EMITIO UN CITATORIO FISICO.",
-                    dataConsent: true,
-                    legalBasis: "LFPDPPP ART. 15"
-                }
-            ]
+            mockReports: [] // EJEMPLOS ELIMINADOS COMPLETAMENTE - El sistema inicia con base de datos real o limpio.
         };
 
         async function inicializarFirebaseSeguro() {
@@ -277,7 +233,7 @@
                     return dateB - dateA;
                 });
 
-                window.appState.reports = reports.length > 0 ? reports : window.appState.mockReports;
+                window.appState.reports = reports;
                 renderReports();
                 renderMetrics();
             }, (error) => {
@@ -315,7 +271,7 @@
         function disableCloudStatusUI() {
             window.appState.isFirebaseActive = false;
             updateCloudStatusUI(false);
-            window.appState.reports = window.appState.mockReports;
+            window.appState.reports = [];
             renderReports();
             renderMetrics();
         }
@@ -354,10 +310,12 @@
             if (window.appState.db) {
                 try {
                     const colRef = collection(window.appState.db, 'artifacts', appId, 'public', 'data', 'reports');
-                    await addDoc(colRef, {
+                    const docAdded = await addDoc(colRef, {
                         ...newReport,
                         timestamp: serverTimestamp()
                     });
+                    // Guardamos la referencia de ID para descargas inmediatas
+                    newReport.firestoreId = docAdded.id;
                     return true;
                 } catch (e) {
                     console.error("Falla al enviar a Firestore:", e);
@@ -425,7 +383,6 @@
         
         <div class="max-w-7xl mx-auto px-4 py-6 sm:py-8 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-center justify-between gap-6 sm:gap-8 relative z-10">
             <div class="flex items-center gap-4 sm:gap-6 text-center lg:text-left flex-col sm:flex-row w-full lg:w-auto">
-                <!-- Logotipo Principal en el Header -->
                 <div class="relative bg-white p-2.5 sm:p-3 rounded-2xl shadow-gold-glow flex-shrink-0 z-50 border-2 border-ceutGold animate-float mx-auto sm:mx-0">
                     <img src="https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Escudo Tigres" class="h-16 w-16 sm:h-24 sm:w-24 object-contain block mx-auto">
                 </div>
@@ -437,7 +394,6 @@
                         <span class="inline-block text-[10px] font-bold bg-ceutGold text-ceutBlue-dark px-3 py-1.5 rounded-full shadow-lg border border-ceutGold-dark tracking-widest font-sans uppercase">
                             DEPARTAMENTO PSICOPEDAGÓGICO
                         </span>
-                        <!-- Indicador visual de Sincronización en la Nube -->
                         <div id="cloud-status-indicator" class="flex items-center gap-2 bg-ceutBlue-dark border border-ceutGold/30 px-3.5 py-1.5 rounded-full">
                             <span class="relative flex h-2 w-2">
                                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
@@ -505,7 +461,6 @@
                             </button>
                         </div>
                     </div>
-                    <!-- Tarjeta con Logo Destacado en Pestaña Inicio -->
                     <div class="flex flex-col items-center justify-center bg-ceutBlue p-5 sm:p-6 rounded-3xl border-2 border-ceutGold text-center shadow-lg relative z-20 max-w-xs mx-auto lg:max-w-none w-full">
                         <img src="https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Escudo Tigres" class="relative z-20 h-24 w-24 sm:h-32 sm:w-32 object-contain mb-4 animate-float">
                         <span class="text-xs font-bold tracking-widest text-ceutGold uppercase font-formal italic">Orgullo Tigre</span>
@@ -564,7 +519,7 @@
         <section id="section-teacher" class="hidden space-y-8 fade-in-up">
             <div class="solid-panel rounded-[2rem] overflow-hidden">
                 <div class="text-white px-6 sm:px-8 py-6 sm:py-8 flex items-center justify-between relative border-b-2 border-ceutGold bg-ceutBlue">
-                    <div class="flex items-center gap-4 sm:gap-5 relative z-10">
+                    <div class="flex items-center gap-4 sm:gap-5 relative z-10 font-sans">
                         <div class="h-12 w-12 sm:h-14 sm:w-14 bg-ceutGold text-ceutBlue-dark rounded-2xl flex items-center justify-center text-xl shadow-gold-glow font-black border border-ceutGold-dark flex-shrink-0">
                             <i class="fa-solid fa-file-invoice"></i>
                         </div>
@@ -573,7 +528,6 @@
                             <p class="text-[10px] sm:text-xs text-slate-300 mt-1 italic font-serif">Proporcione información detallada para el seguimiento del expediente estudiantil.</p>
                         </div>
                     </div>
-                    <!-- Logotipo en Pestaña Registrar Incidencia -->
                     <div class="bg-white p-2 rounded-xl border-2 border-ceutGold shadow-md hidden sm:block">
                         <img src="https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="Escudo CEUT" class="h-16 w-16 object-contain">
                     </div>
@@ -810,16 +764,14 @@
         </section>
 
         <!-- SECCION 3: PANEL DE CONTROL -->
-        <section id="section-admin" class="hidden space-y-10 fade-in-up">
+        <section id="section-admin" class="hidden space-y-10 fade-in-up font-sans">
             
-            <!-- Banner informativo sobre el tipo de usuario (Admin vs Lector) -->
             <div id="admin-user-banner" class="hidden solid-panel p-4 rounded-2xl border-2 flex flex-col sm:flex-row items-center justify-between gap-4 font-sans text-center sm:text-left">
                 <!-- Llenado dinámico -->
             </div>
 
             <div class="solid-panel p-6 sm:p-8 rounded-[2rem] shadow-premium flex flex-col lg:flex-row lg:items-center justify-between gap-6 sm:gap-8 relative overflow-hidden bg-white">
                 <div class="flex items-center gap-4 sm:gap-6 flex-col sm:flex-row text-center sm:text-left z-10 w-full lg:w-auto">
-                    <!-- Logotipo en Pestaña Panel de Control -->
                     <div class="bg-slate-100 p-3 rounded-2xl shadow-md border-2 border-ceutGold relative z-20 animate-float flex-shrink-0">
                         <img src="https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="Logo Administrativo" class="h-16 w-16 sm:h-20 sm:w-20 object-contain block mx-auto">
                     </div>
@@ -971,8 +923,8 @@
                     <div class="h-16 w-16 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center text-xl mx-auto border-2 border-slate-200">
                         <img src="https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-8 w-8 object-contain opacity-55 animate-pulse">
                     </div>
-                    <p class="text-sm font-bold text-slate-800 uppercase">No se encontraron expedientes con los criterios actuales</p>
-                    <p class="text-xs text-slate-500 max-w-md mx-auto text-justified font-serif uppercase">Ajuste los filtros de búsqueda o registre una incidencia desde el portal del docente.</p>
+                    <p class="text-sm font-bold text-slate-800 uppercase">Sin expedientes activos</p>
+                    <p class="text-xs text-slate-500 max-w-md mx-auto text-justified font-serif uppercase">Ajuste los filtros de búsqueda o registre una nueva incidencia académica desde la pestaña correspondiente.</p>
                 </div>
             </div>
         </section>
@@ -1045,10 +997,10 @@
         </div>
     </div>
 
-    <!-- MODAL: GRATITUD Y CORREO -->
-    <div id="gratitudeModal" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/90 hidden items-center justify-center p-4 transition-all duration-300 bg-white">
+    <!-- MODAL: GRATITUD Y DESCARGA INMEDIATA DE OFICIO -->
+    <div id="gratitudeModal" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/90 hidden items-center justify-center p-4 transition-all duration-300">
         <div class="solid-panel rounded-[2rem] max-w-lg w-full border-2 border-ceutBlue overflow-hidden transform scale-95 transition-all duration-300 bg-white">
-            <div class="text-white px-6 sm:px-8 py-5 border-b-2 border-ceutGold flex items-center justify-between relative bg-ceutBlue">
+            <div class="text-white px-6 sm:px-8 py-5 border-b-2 border-ceutGold flex items-center justify-between relative bg-ceutBlue font-sans">
                 <div class="flex items-center gap-4 relative z-10 font-formal">
                     <div class="bg-white p-2 rounded-xl border-2 border-ceutGold flex-shrink-0">
                         <img src="https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-10 w-10 object-contain">
@@ -1063,7 +1015,7 @@
                 </button>
             </div>
 
-            <div class="p-6 sm:p-8 space-y-6 text-center bg-white max-h-[70vh] overflow-y-auto">
+            <div class="p-6 sm:p-8 space-y-6 text-center bg-white max-h-[70vh] overflow-y-auto font-sans">
                 <div class="mx-auto h-16 w-16 sm:h-20 sm:w-20 rounded-full bg-emerald-100 border-2 border-emerald-300 flex items-center justify-center shadow-md animate-bounce">
                     <i class="fa-solid fa-circle-check text-3xl sm:text-4xl text-emerald-600"></i>
                 </div>
@@ -1071,11 +1023,20 @@
                 <div class="space-y-3">
                     <h3 class="text-xl sm:text-2xl font-black text-ceutBlue font-formal gold-shimmer-text">¡Muchas gracias por su compromiso docente!</h3>
                     <p class="text-xs sm:text-sm text-slate-600 leading-relaxed text-justified font-serif p-4 bg-[#FFFDF0] rounded-2xl border-2 border-ceutGold/30">
-                        Su incidencia ha sido guardada de forma segura en nuestro expediente digital confidencial. Se ha abierto automáticamente su gestor de correo para que despache la plantilla de notificación formal de este caso.
+                        Su incidencia ha sido guardada de forma segura en nuestro expediente digital confidencial. Se ha abierto el gestor de correo para que envíe la plantilla formal del caso. Además, **ya puede descargar su oficio membretado oficial**.
                     </p>
                 </div>
 
-                <div class="space-y-4 text-left font-sans text-xs sm:text-sm border-t-2 border-slate-100 pt-4 bg-white">
+                <!-- ACCIÓN PRIORITARIA: DESCARGAR OFICIO MEMBRETADO PDF -->
+                <div class="p-4 bg-slate-50 rounded-2xl border-2 border-ceutBlue/30 space-y-3.5">
+                    <p class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center justify-center gap-1.5"><i class="fa-solid fa-download text-ceutGold-dark"></i> Documentación formal instantánea</p>
+                    <button onclick="downloadSubmittedReportPDF()" class="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white font-extrabold px-6 py-3.5 rounded-xl text-xs shadow-md transition-all duration-200 hover:scale-105 flex items-center justify-center gap-2 uppercase min-h-[44px]">
+                        <i class="fa-solid fa-file-pdf text-base"></i> DESCARGAR OFICIO EN PDF
+                    </button>
+                    <p class="text-[10px] text-slate-500 italic">Este PDF oficial constituye el acuse membretado formal de entrega para su expediente personal.</p>
+                </div>
+
+                <div class="space-y-4 text-left text-xs sm:text-sm border-t-2 border-slate-100 pt-4 bg-white">
                     <p class="font-bold text-ceutBlue-light flex items-center gap-2">
                         <i class="fa-solid fa-circle-info text-ceutGold-dark"></i> Protocolo de Seguimiento Activado:
                     </p>
@@ -1087,10 +1048,6 @@
                         <li class="flex items-start gap-2.5">
                             <i class="fa-solid fa-check text-emerald-500 mt-1 flex-shrink-0"></i>
                             <span>Se citará y brindará **contención socioemocional** personalizada al alumno reportado.</span>
-                        </li>
-                        <li class="flex items-start gap-2.5">
-                            <i class="fa-solid fa-check text-emerald-500 mt-1 flex-shrink-0"></i>
-                            <span>Se mantendrá comunicación de mediación constante con usted como docente titular de la cátedra.</span>
                         </li>
                     </ul>
                 </div>
@@ -1178,10 +1135,8 @@
                 </button>
             </div>
             
-            <!-- DETALLES EXPEDIENTE -->
             <div class="p-4 sm:p-6 lg:p-8 space-y-6 overflow-y-auto flex-grow text-justified bg-white">
                 
-                <!-- Alerta Banner de Modo de Sólo Lectura dentro de los detalles -->
                 <div id="details-read-only-notice" class="hidden p-4 rounded-xl border bg-amber-50 border-ceutGold-light text-slate-800 text-xs font-sans">
                     <div class="flex items-start gap-2.5">
                         <i class="fa-solid fa-triangle-exclamation text-ceutGold-dark mt-0.5"></i>
@@ -1327,7 +1282,6 @@
     <footer class="bg-ceutBlue-dark text-slate-400 text-xs border-t-2 border-ceutGold mt-20 py-10 sm:py-14 relative overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 flex flex-col lg:flex-row items-center justify-between gap-8 relative z-10 text-center lg:text-left">
             <div class="flex items-center gap-4 sm:gap-5 flex-col sm:flex-row text-center sm:text-left">
-                <!-- Logotipo en el Footer -->
                 <div class="bg-white/10 p-3 rounded-2xl shadow-lg border-2 border-ceutGold animate-float mx-auto sm:mx-0">
                     <img src="https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Escudo Tigres" class="h-14 w-14 sm:h-16 sm:w-16 object-contain">
                 </div>
@@ -1717,6 +1671,9 @@
                 legalBasis: "LFPDPPP ART. 15 Y DECLARACION JURADA DE DOCENTE"
             };
 
+            // Guardamos el reporte enviado como referencia global para descargas en PDF
+            window.appState.lastSubmittedReport = newReport;
+
             const success = await window.submitReportToFirestore(newReport);
 
             if (success) {
@@ -1752,7 +1709,7 @@
             
             let body = `ESTIMADO MTRO. CARLOS AGUILAR SANCHEZ,
 
-POR MEDIO DE LA PRESENTE, SE REALIZA EL REPORTE PSICOPEDAGOGICO OFICIAL RESPECTO AL ALUMNO QUE SE MENCIONA A CONTINUACION. ESTE DOCUMENTO SE PROCESA DE CONFORMIDAD CON LAS DIRECTRICES DE CONFIDENCIALIDAD INSTITUCIONAL DEL CEUT Y LOS PRINCIPIOS VIGENTES DE LA LFPDPPP IN MEXICO.
+POR MEDIO DE LA PRESENTE, SE REALIZA EL REPORTE PSICOPEDAGOGICO OFICIAL RESPECTO AL ALUMNO QUE SE MENCIONA A CONTINUACION. ESTE DOCUMENTO SE PROCESA DE CONFORMIDAD CON LAS DIRECTRICES DE CONFIDENCIALIDAD INSTITUCIONAL DEL CEUT Y LOS PRINCIPIOS VIGENTES DE LA LFPDPPP EN MEXICO.
 
 === 1. DATOS DE IDENTIFICACION DEL ESTUDIANTE ===
 NOMBRE COMPLETO: ${report.studentName}
@@ -1884,7 +1841,6 @@ TIGRES CEUT — PSICOPEDAGOGIA`;
             }
 
             filteredReports.forEach(report => {
-                // Formateo de Fecha
                 let dateStr = 'RECIENTE';
                 if (report.timestamp) {
                     if (typeof report.timestamp === 'object' && report.timestamp !== null && 'seconds' in report.timestamp) {
@@ -1904,7 +1860,6 @@ TIGRES CEUT — PSICOPEDAGOGIA`;
                     }
                 }
 
-                // Generación de etiquetas visuales
                 let priorityCell = '';
                 if (report.priority.toUpperCase() === 'ALTA') {
                     priorityCell = `<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold bg-rose-100 text-rose-700 border border-rose-200"><i class="fa-solid fa-circle text-[6px] animate-pulse"></i> ALTA</span>`;
@@ -1925,7 +1880,6 @@ TIGRES CEUT — PSICOPEDAGOGIA`;
 
                 const consentBadge = `<span class="mt-1 inline-flex items-center gap-1 text-[9px] bg-ceutGold/15 text-ceutGold-dark border border-ceutGold/30 px-2 py-0.5 rounded-full font-bold"><i class="fa-solid fa-shield-halved"></i> LFPDPPP</span>`;
 
-                // VISTA 1: RENDERING EN TABLA DESKTOP
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-slate-50 transition-all border-b border-slate-100 font-sans";
                 tr.innerHTML = `
@@ -1958,7 +1912,6 @@ TIGRES CEUT — PSICOPEDAGOGIA`;
                 `;
                 tbody.appendChild(tr);
 
-                // VISTA 2: RENDERING DE TARJETAS RESPONSIVAS PARA MÓVIL
                 const card = document.createElement('div');
                 card.className = "solid-panel p-5 rounded-2xl space-y-4 border-2 border-slate-200 bg-white shadow-sm flex flex-col justify-between";
                 card.innerHTML = `
@@ -2211,14 +2164,14 @@ TIGRES CEUT — PSICOPEDAGOGIA`;
             deleteModal.classList.remove('flex');
         }
 
-        window.downloadReportPDFDirect = function() {
-            const report = window.appState.reports.find(r => r.id === activeViewReportId);
+        // FUNCIÓN CENTRALIZADA PARA LA GENERACIÓN DE ARCHIVO MEMBRETADO PDF OFICIAL
+        window.compileAndDownloadPDF = function(report) {
             if (!report) {
-                showNotification("Error", "No se ha seleccionado ningún expediente.", "error");
+                showNotification("Error", "No hay datos para compilar el PDF.", "error");
                 return;
             }
 
-            showNotification("Generando PDF", "Iniciando compilación oficial y descarga...", "success");
+            showNotification("Compilando PDF", "Iniciando compilación de hoja membretada...", "success");
 
             const dateObj = report.timestamp ? (report.timestamp.seconds ? new Date(report.timestamp.seconds * 1000) : new Date(report.timestamp)) : new Date();
             const dateStr = dateObj.toLocaleDateString('es-MX', {
@@ -2345,18 +2298,37 @@ TIGRES CEUT — PSICOPEDAGOGIA`;
 
             const opt = {
                 margin:       [5, 5, 5, 5], 
-                filename:     `Oficio_Psicopedagogico_${report.id}_${report.studentName.replace(/\s+/g, '_')}.pdf`,
+                filename:     `Acuse_Incidencia_${report.id}_${report.studentName.replace(/\s+/g, '_')}.pdf`,
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
                 jsPDF:        { unit: 'mm', format: 'letter', orientation: 'portrait' }
             };
 
             html2pdf().set(opt).from(pdfContainer).save().then(() => {
-                showNotification("Descarga Exitosa", "El documento membretado ha sido guardado localmente en formato PDF.", "success");
+                showNotification("Descarga Exitosa", "El acuse oficial ha sido descargado en formato PDF membretado.", "success");
             }).catch(err => {
                 console.error("Falla al generar PDF:", err);
-                showNotification("Falla en Generación", "No se pudo realizar el guardado de PDF.", "error");
+                showNotification("Falla en Generación", "No se pudo realizar la descarga del PDF de forma automática.", "error");
             });
+        };
+
+        // ACCIÓN PARA LA DESCARGA DIRECTA DESDE EL MODAL DE GRATITUD DEL DOCENTE
+        window.downloadSubmittedReportPDF = function() {
+            if (window.appState.lastSubmittedReport) {
+                window.compileAndDownloadPDF(window.appState.lastSubmittedReport);
+            } else {
+                showNotification("Error", "No se encontró el reporte activo para su descarga.", "error");
+            }
+        };
+
+        // ACCIÓN PARA DESCARGAR DESDE EL PANEL DE ADMINISTRACIÓN / DETALLES DEL EXPEDIENTE
+        window.downloadReportPDFDirect = function() {
+            const report = window.appState.reports.find(r => r.id === activeViewReportId);
+            if (report) {
+                window.compileAndDownloadPDF(report);
+            } else {
+                showNotification("Error", "No se ha seleccionado un reporte válido en el panel.", "error");
+            }
         };
 
         function printOfficialLetterhead() {
