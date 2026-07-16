@@ -11,7 +11,7 @@
     <link rel="apple-touch-icon" href="https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2">
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Lora:ital,wght=0,400;0,600;0,700;1,400&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Lora:ital,wght=0,400;0,600;0,700;1,400&family=Inter:wght=300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script>
@@ -48,7 +48,7 @@
             text-justify: inter-word !important;
         }
 
-        /* Animación Shimmer con colores estrictamente institucionales */
+        /* Animación Shimmer con colores strictly institucionales */
         @keyframes goldShimmer {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -116,7 +116,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, setDoc, updateDoc, addDoc, collection, onSnapshot, query, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, addDoc, collection, onSnapshot, query, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
             apiKey: "AIzaSyCVgbSlImT02t1SMJ6RljHpzpDDJPBKMxk",
@@ -133,9 +133,16 @@
             reports: [],
             isFirebaseActive: false,
             currentRole: 'WELCOME',
+            currentUserType: 'GUEST', // 'GUEST', 'ADMIN' o 'LECTOR'
+            currentLectorName: '',     // Almacena el nombre del lector autorizado activo
             db: null,
             auth: null,
             currentUser: null,
+            authorizedReaders: [
+                { id: 'reader-1', name: 'PERSONA AUTORIZADA 1', pin: '2026' },
+                { id: 'reader-2', name: 'PERSONA AUTORIZADA 2', pin: '1111' },
+                { id: 'reader-3', name: 'PERSONA AUTORIZADA 3', pin: '9999' }
+            ],
             filters: {
                 search: '',
                 priority: 'ALL',
@@ -206,6 +213,7 @@
                     window.appState.isFirebaseActive = true;
                     updateCloudStatusUI(true);
                     inicializarSuscripcionFirestore();
+                    inicializarSuscripcionLectores();
                 } else {
                     autenticarUsuario();
                 }
@@ -238,7 +246,7 @@
             onSnapshot(collectionRef, (snapshot) => {
                 const reports = [];
                 snapshot.forEach((doc) => {
-                    reports.push({ id: doc.id, ...doc.data() });
+                    reports.push({ id: doc.id, firestoreId: doc.id, ...doc.data() });
                 });
                 
                 reports.sort((a, b) => {
@@ -253,6 +261,34 @@
             }, (error) => {
                 console.error("FALLA EN LA SINCRONIZACIÓN EN TIEMPO REAL DE FIRESTORE:", error);
                 disableCloudStatusUI();
+            });
+        }
+
+        function inicializarSuscripcionLectores() {
+            const db = window.appState.db;
+            if (!db || !window.appState.currentUser) return;
+
+            const collectionRef = collection(db, 'artifacts', appId, 'public', 'data', 'readers');
+
+            onSnapshot(collectionRef, (snapshot) => {
+                const readers = [];
+                snapshot.forEach((doc) => {
+                    readers.push({ id: doc.id, ...doc.data() });
+                });
+                
+                if (readers.length > 0) {
+                    window.appState.authorizedReaders = readers;
+                } else {
+                    // Si no existen, los creamos por defecto en la nube
+                    window.appState.authorizedReaders.forEach(async (reader) => {
+                        const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'readers', reader.id);
+                        await setDoc(docRef, reader);
+                    });
+                }
+                
+                renderAuthorizedReadersPanel();
+            }, (error) => {
+                console.error("FALLA EN LA CONFIGURACIÓN DE LECTORES FIRESTORE:", error);
             });
         }
 
@@ -303,17 +339,54 @@
             return false; 
         };
 
-        window.updateReportStatusInFirestore = async function(reportId, newStatus, followUpNotes = "") {
+        window.updateReportStatusInFirestore = async function(reportId, updatedFields) {
             if (window.appState.isFirebaseActive && window.appState.db && window.appState.currentUser) {
                 try {
-                    const docRef = doc(window.appState.db, 'artifacts', appId, 'public', 'data', 'reports', reportId);
-                    await updateDoc(docRef, {
-                        status: newStatus,
-                        notes: followUpNotes
-                    });
+                    // Buscar documento por el ID descriptivo o el ID dinámico de Firestore
+                    const docToUpdate = window.appState.reports.find(r => r.id === reportId);
+                    const firestoreId = docToUpdate?.firestoreId || reportId;
+                    
+                    const docRef = doc(window.appState.db, 'artifacts', appId, 'public', 'data', 'reports', firestoreId);
+                    await updateDoc(docRef, updatedFields);
                     return true;
                 } catch (e) {
                     console.error("FALLA AL ACTUALIZAR EN FIREBASE:", e);
+                    return false;
+                }
+            }
+            return false;
+        };
+
+        window.deleteReportInFirestore = async function(reportId) {
+            if (window.appState.isFirebaseActive && window.appState.db && window.appState.currentUser) {
+                try {
+                    const docToDelete = window.appState.reports.find(r => r.id === reportId);
+                    const firestoreId = docToDelete?.firestoreId || reportId;
+
+                    const docRef = doc(window.appState.db, 'artifacts', appId, 'public', 'data', 'reports', firestoreId);
+                    await deleteDoc(docRef);
+                    return true;
+                } catch (e) {
+                    console.error("ERROR AL ELIMINAR EL REPORTE EN FIREBASE:", e);
+                    return false;
+                }
+            }
+            return false;
+        };
+
+        // Permite al Maestro Carlos guardar las tres personas autorizadas directamente en Firebase
+        window.updateAuthorizedReaderInFirestore = async function(readerId, name, pin) {
+            if (window.appState.isFirebaseActive && window.appState.db && window.appState.currentUser) {
+                try {
+                    const docRef = doc(window.appState.db, 'artifacts', appId, 'public', 'data', 'readers', readerId);
+                    await setDoc(docRef, {
+                        id: readerId,
+                        name: name.toUpperCase(),
+                        pin: pin.trim()
+                    });
+                    return true;
+                } catch (e) {
+                    console.error("FALLA AL GUARDAR LECTOR EN FIREBASE:", e);
                     return false;
                 }
             }
@@ -328,7 +401,7 @@
             <div class="flex items-center gap-6 text-center lg:text-left flex-col sm:flex-row">
                 <!-- Logotipo Principal en el Header -->
                 <div class="relative bg-white p-3 rounded-2xl shadow-gold-glow flex-shrink-0 z-50 border-2 border-ceutGold animate-float">
-                    <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview_2.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Escudo Tigres" class="h-24 w-24 object-contain block mx-auto">
+                    <img src="https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Escudo Tigres" class="h-24 w-24 object-contain block mx-auto">
                 </div>
                 <div>
                     <h1 class="text-4xl sm:text-5xl font-black tracking-tight flex flex-col sm:flex-row items-center gap-3 justify-center lg:justify-start">
@@ -375,7 +448,7 @@
                     <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
                 </span>
                 <span class="font-medium text-justified leading-relaxed text-slate-700">
-                    Conexión cifrada y segura. Procesamiento conforme a la legislación mexicana <strong class="text-ceutBlue font-bold text-xs">LFPDPPP (Art. 9, 15 y 16)</strong> para datos escolares confidenciales.
+                    Conexión de seguridad militarizada. Tratamiento psicopedagógico legal bajo la regulación <strong class="text-ceutBlue font-bold text-xs">LFPDPPP (Art. 9, 15 y 16)</strong> para protección del educando.
                 </span>
             </div>
             <div class="text-[10px] bg-ceutBlue text-white px-4 py-2 rounded-xl font-bold font-sans whitespace-nowrap shadow-sm border border-ceutGold uppercase tracking-widest">
@@ -408,17 +481,16 @@
                     </div>
                     <!-- Tarjeta con Logo Destacado en Pestaña Inicio -->
                     <div class="flex flex-col items-center justify-center bg-ceutBlue p-6 rounded-3xl border-2 border-ceutGold text-center shadow-lg relative z-20">
-                        <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview_2.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Escudo Tigres" class="relative z-20 h-32 w-32 object-contain mb-4 animate-float">
+                        <img src="https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Escudo Tigres" class="relative z-20 h-32 w-32 object-contain mb-4 animate-float">
                         <span class="text-xs font-bold tracking-widest text-ceutGold uppercase font-formal italic">Orgullo Tigre</span>
                         <span class="text-[9px] text-white/70 font-bold mt-1 tracking-widest font-sans">#SOMOSTIGRES</span>
                     </div>
                 </div>
             </div>
 
-            <!-- MARCO JURÍDICO -->
             <div class="solid-panel p-8 sm:p-12 rounded-[2rem] border-2 border-slate-200 shadow-premium relative bg-white">
                 <div class="absolute right-4 top-4 bg-white p-2 rounded-xl border border-slate-200">
-                    <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview_2.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-10 w-10 object-contain">
+                    <img src="https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-10 w-10 object-contain">
                 </div>
                 <div class="flex items-center gap-5 border-b-2 border-slate-100 pb-6 mb-8">
                     <div class="h-14 w-14 rounded-2xl bg-ceutGold/10 text-ceutGold-dark flex items-center justify-center text-2xl border-2 border-ceutGold/30">
@@ -477,7 +549,7 @@
                     </div>
                     <!-- Logotipo en Pestaña Registrar Incidencia -->
                     <div class="bg-white p-2 rounded-xl border-2 border-ceutGold shadow-md">
-                        <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview_2.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="Escudo CEUT" class="h-16 w-16 object-contain">
+                        <img src="https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="Escudo CEUT" class="h-16 w-16 object-contain">
                     </div>
                 </div>
 
@@ -611,7 +683,7 @@
                                     <label class="select-priority flex items-center justify-between p-4.5 rounded-2xl border-2 border-slate-200 bg-slate-50 cursor-pointer hover:border-rose-400 transition-all duration-300 shadow-sm" data-priority="alta">
                                         <div class="flex items-center gap-4">
                                             <div class="h-10 w-10 rounded-2xl bg-rose-50 flex items-center justify-center text-white text-sm shadow-md">
-                                                <i class="fa-solid fa-fire animate-pulse"></i>
+                                                <i class="fa-solid fa-fire animate-pulse text-rose-500"></i>
                                             </div>
                                             <div>
                                                 <span class="block text-xs font-bold text-rose-600">Prioridad Alta</span>
@@ -713,53 +785,81 @@
 
         <!-- SECCION 3: PANEL DE CONTROL -->
         <section id="section-admin" class="hidden space-y-10 fade-in-up">
+            
+            <!-- Banner informativo sobre el tipo de usuario (Admin vs Lector) -->
+            <div id="admin-user-banner" class="hidden solid-panel p-4 rounded-2xl border-2 flex items-center justify-between font-sans">
+                <!-- Llenado dinámico -->
+            </div>
+
             <div class="solid-panel p-8 rounded-[2rem] shadow-premium flex flex-col lg:flex-row lg:items-center justify-between gap-8 relative overflow-hidden bg-white">
                 <div class="flex items-center gap-6 flex-col sm:flex-row text-center sm:text-left z-10">
                     <!-- Logotipo en Pestaña Panel de Control -->
                     <div class="bg-slate-100 p-3 rounded-2xl shadow-md border-2 border-ceutGold relative z-20 animate-float">
-                        <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview_2.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="Logo Administrativo" class="h-20 w-20 object-contain block mx-auto">
+                        <img src="https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="Logo Administrativo" class="h-20 w-20 object-contain block mx-auto">
                     </div>
                     <div>
                         <h3 class="font-bold text-2xl text-slate-800 flex items-center justify-center sm:justify-start gap-3 flex-wrap font-formal">
                             <span class="gold-shimmer-text">Buzón de Incidencias Docentes</span>
                             <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border-2 border-emerald-300 font-sans">SINCRONIZADO</span>
                         </h3>
-                        <p class="text-xs sm:text-sm text-slate-600 font-bold mt-1 font-sans uppercase">Mtro. Carlos Aguilar Sánchez — Responsable de la Dirección Psicopedagógica CEUT</p>
+                        <p class="text-xs sm:text-sm text-slate-600 font-bold mt-1 font-sans uppercase" id="admin-subtitle-name">Mtro. Carlos Aguilar Sánchez — Responsable de la Dirección Psicopedagógica CEUT</p>
                         <p class="text-[10px] text-rose-600 font-bold uppercase tracking-widest mt-2 flex items-center gap-1.5 justify-center sm:justify-start font-sans"><i class="fa-solid fa-shield-halved text-sm"></i> Acceso Cifrado — Base de Datos bajo Auditoría LFPDPPP</p>
                     </div>
                 </div>
 
-                <button id="btn-sync-database" onclick="simulateReload()" class="self-center lg:self-auto bg-ceutBlue hover:bg-ceutBlue-light text-white px-6 py-4 rounded-2xl text-xs font-bold transition-all duration-200 flex items-center gap-2.5 shadow-sm hover:scale-105 z-10 font-sans border-2 border-ceutGold">
-                    <i id="reload-icon" class="fa-solid fa-rotate text-ceutGold text-sm"></i> Sincronizar Base de Datos
-                </button>
+                <div class="flex flex-wrap items-center gap-3 self-center lg:self-auto">
+                    <button onclick="printGlobalStatisticalReport()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-4 rounded-2xl text-xs font-bold transition-all duration-200 flex items-center gap-2.5 shadow-sm hover:scale-105 z-10 font-sans border-2 border-emerald-500">
+                        <i class="fa-solid fa-file-pdf text-white text-sm"></i> Oficio Estadístico Global
+                    </button>
+                    <button id="btn-sync-database" onclick="simulateReload()" class="bg-ceutBlue hover:bg-ceutBlue-light text-white px-5 py-4 rounded-2xl text-xs font-bold transition-all duration-200 flex items-center gap-2.5 shadow-sm hover:scale-105 z-10 font-sans border-2 border-ceutGold">
+                        <i id="reload-icon" class="fa-solid fa-rotate text-ceutGold text-sm"></i> Sincronizar Base de Datos
+                    </button>
+                </div>
+            </div>
+
+            <!-- SECCIÓN EXCLUSIVA DE CONTROL DE ACCESO (Habilitado solo para el Maestro Carlos Aguilar) -->
+            <div id="readers-config-section" class="solid-panel p-8 rounded-[2rem] shadow-premium bg-white relative space-y-6">
+                <div class="absolute right-4 top-4">
+                    <img src="https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-10 w-10 object-contain opacity-35">
+                </div>
+                <div>
+                    <h4 class="font-bold text-sm uppercase tracking-wider text-ceutBlue font-formal gold-shimmer-text flex items-center gap-2.5">
+                        <i class="fa-solid fa-users-gear text-ceutGold-dark"></i> Configuración de Accesos Auxiliares (Lectores Autorizados)
+                    </h4>
+                    <p class="text-xs text-slate-500 font-serif italic mt-1">Autorice el acceso a tres personas como lectores asignándoles un PIN único. Sólo usted como Director de Control puede editar los reportes.</p>
+                </div>
+
+                <div id="readers-setup-grid" class="grid grid-cols-1 lg:grid-cols-3 gap-6 font-sans">
+                    <!-- Se renderizará de forma dinámica -->
+                </div>
             </div>
 
             <!-- METRICAS -->
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 font-sans">
                 <div class="solid-panel text-slate-800 p-8 rounded-3xl bg-white relative">
                     <div class="absolute right-4 top-4">
-                        <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview_2.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-6 w-6 object-contain opacity-50">
+                        <img src="https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-6 w-6 object-contain opacity-50">
                     </div>
                     <span class="block text-[10px] uppercase tracking-widest text-slate-500 font-bold">Total de Casos</span>
                     <span class="text-5xl font-black text-ceutBlue block mt-3 font-formal gold-shimmer-text" id="metric-total">0</span>
                 </div>
                 <div class="bg-rose-50 text-rose-950 p-8 rounded-3xl border-2 border-rose-200 shadow-sm relative">
                     <div class="absolute right-4 top-4">
-                        <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview_2.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-6 w-6 object-contain opacity-30">
+                        <img src="https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-6 w-6 object-contain opacity-30">
                     </div>
                     <span class="block text-[10px] uppercase tracking-widest text-rose-700 font-bold">Prioridad Alta</span>
                     <span class="text-5xl font-bold text-rose-600 block mt-3 font-formal" id="metric-high">0</span>
                 </div>
                 <div class="bg-yellow-50 text-yellow-950 p-8 rounded-3xl border-2 border-yellow-200 shadow-sm relative">
                     <div class="absolute right-4 top-4">
-                        <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview_2.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-6 w-6 object-contain opacity-30">
+                        <img src="https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-6 w-6 object-contain opacity-30">
                     </div>
                     <span class="block text-[10px] uppercase tracking-widest text-yellow-700 font-bold">Prioridad Media</span>
                     <span class="text-5xl font-bold text-yellow-600 block mt-3 font-formal" id="metric-medium">0</span>
                 </div>
                 <div class="bg-emerald-50 text-emerald-950 p-8 rounded-3xl border-2 border-emerald-200 shadow-sm relative">
                     <div class="absolute right-4 top-4">
-                        <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview_2.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-6 w-6 object-contain opacity-30">
+                        <img src="https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-6 w-6 object-contain opacity-30">
                     </div>
                     <span class="block text-[10px] uppercase tracking-widest text-emerald-700 font-bold">Prioridad Baja</span>
                     <span class="text-5xl font-bold text-emerald-600 block mt-3 font-formal" id="metric-low">0</span>
@@ -769,7 +869,7 @@
             <!-- FILTROS -->
             <div class="solid-panel p-8 rounded-[2rem] shadow-premium space-y-5 bg-white relative">
                 <div class="absolute right-4 top-4">
-                    <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview_2.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-10 w-10 object-contain">
+                    <img src="https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-10 w-10 object-contain">
                 </div>
                 <h4 class="font-bold text-xs uppercase tracking-widest text-ceutGold-dark flex items-center gap-2 font-sans"><i class="fa-solid fa-sliders"></i> Parámetros de Búsqueda</h4>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 font-sans">
@@ -839,7 +939,7 @@
 
                 <div id="empty-state" class="hidden p-20 text-center space-y-4">
                     <div class="h-16 w-16 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center text-xl mx-auto border-2 border-slate-200">
-                        <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview_2.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-8 w-8 object-contain opacity-55 animate-pulse">
+                        <img src="https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-8 w-8 object-contain opacity-55 animate-pulse">
                     </div>
                     <p class="text-sm font-bold text-slate-800 uppercase">No se encontraron expedientes con los criterios actuales</p>
                     <p class="text-xs text-slate-500 max-w-md mx-auto text-justified font-serif uppercase">Ajuste los filtros de búsqueda o registre una incidencia desde el portal del docente.</p>
@@ -855,7 +955,7 @@
             <div class="text-white px-8 py-6 border-b-2 border-ceutGold flex items-center justify-between flex-shrink-0 relative bg-ceutBlue">
                 <div class="flex items-center gap-4 relative z-10 font-formal">
                     <div class="bg-white p-2 rounded-xl border-2 border-ceutGold flex-shrink-0">
-                        <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview_2.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="Aviso Oficial" class="h-12 w-12 object-contain">
+                        <img src="https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="Aviso Oficial" class="h-12 w-12 object-contain">
                     </div>
                     <div>
                         <h4 class="font-bold text-base tracking-wide gold-shimmer-text">Aviso de Privacidad Integral</h4>
@@ -921,7 +1021,7 @@
             <div class="text-white px-8 py-6 border-b-2 border-ceutGold flex items-center justify-between relative bg-ceutBlue">
                 <div class="flex items-center gap-4 relative z-10 font-formal">
                     <div class="bg-white p-2 rounded-xl border-2 border-ceutGold flex-shrink-0">
-                        <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview_2.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-10 w-10 object-contain">
+                        <img src="https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-10 w-10 object-contain">
                     </div>
                     <div>
                         <h4 class="font-bold text-base tracking-wide gold-shimmer-text uppercase">¡Reporte procesado con éxito!</h4>
@@ -981,11 +1081,11 @@
         </div>
     </div>
 
-    <!-- MODAL: PIN ADMINISTRADOR -->
+    <!-- MODAL: PIN DE ACCESO -->
     <div id="pinModal" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/90 hidden items-center justify-center p-4 transition-all duration-300 font-sans">
         <div class="solid-panel rounded-[2rem] max-w-sm w-full shadow-blue-glow border-2 border-ceutBlue overflow-hidden transform scale-95 transition-all duration-300 bg-white p-8 space-y-6 text-center">
             <div class="mx-auto h-20 w-20 rounded-2xl bg-slate-50 border-2 border-ceutGold flex items-center justify-center shadow-inner p-3 animate-float">
-                <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview_2.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-full w-full object-contain">
+                <img src="https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-full w-full object-contain">
             </div>
             <div class="space-y-2">
                 <h4 class="font-bold text-lg text-slate-800 font-formal gold-shimmer-text uppercase">Acceso de Dirección</h4>
@@ -1009,7 +1109,30 @@
         </div>
     </div>
 
-    <!-- MODAL: DETALLES EXPEDIENTE -->
+    <!-- MODAL: CONFIRMACIÓN DE ELIMINACIÓN -->
+    <div id="deleteConfirmModal" class="fixed inset-0 z-[60] overflow-y-auto bg-slate-900/90 hidden items-center justify-center p-4 transition-all duration-300">
+        <div class="solid-panel rounded-[2rem] max-w-sm w-full border-2 border-rose-600 bg-white p-6 space-y-6 text-center shadow-blue-glow transform scale-95 transition-all">
+            <div class="mx-auto h-16 w-16 rounded-full bg-rose-100 flex items-center justify-center text-rose-600 text-2xl border-2 border-rose-300">
+                <i class="fa-solid fa-trash-can animate-bounce"></i>
+            </div>
+            <div class="space-y-2">
+                <h4 class="font-bold text-lg text-slate-950 font-formal uppercase">¿Eliminar Expediente?</h4>
+                <p class="text-xs text-slate-600 font-serif leading-relaxed text-justified uppercase">
+                    Esta acción purgará el caso de forma permanente en los registros locales y de la nube. Esta operación no puede deshacerse.
+                </p>
+            </div>
+            <div class="flex items-center gap-3 font-sans">
+                <button onclick="closeDeleteConfirmModal()" class="w-1/2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 rounded-xl text-xs border border-slate-300 uppercase">
+                    Cancelar
+                </button>
+                <button id="btn-confirm-delete-execute" class="w-1/2 bg-rose-600 hover:bg-rose-700 text-white font-extrabold py-3 rounded-xl text-xs shadow-md uppercase">
+                    Eliminar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: DETALLES EXPEDIENTE & EDICIÓN -->
     <div id="detailsModal" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/90 hidden items-center justify-center p-4 transition-all duration-300">
         <div class="solid-panel rounded-[2rem] max-w-3xl w-full border-2 border-ceutBlue overflow-hidden transform scale-95 transition-all duration-300 flex flex-col max-h-[90vh] bg-white">
             <div id="details-header-bg" class="text-white px-8 py-5 flex items-center justify-between flex-shrink-0 relative border-b-2 border-ceutGold">
@@ -1024,8 +1147,21 @@
                     <i class="fa-solid fa-xmark text-sm"></i>
                 </button>
             </div>
+            
             <!-- DETALLES EXPEDIENTE (CAMPOS INTERNOS DEL MODAL) -->
             <div class="p-6 sm:p-8 space-y-6 overflow-y-auto flex-grow text-justified bg-white">
+                
+                <!-- Alerta Banner de Modo de Sólo Lectura dentro de los detalles -->
+                <div id="details-read-only-notice" class="hidden p-4 rounded-xl border bg-amber-50 border-ceutGold-light text-slate-800 text-xs font-sans">
+                    <div class="flex items-start gap-2.5">
+                        <i class="fa-solid fa-triangle-exclamation text-ceutGold-dark mt-0.5"></i>
+                        <div>
+                            <span class="font-bold block mb-0.5 uppercase">MODO LECTOR (CONEXIÓN SEGURA)</span>
+                            Usted tiene acceso de consulta autorizado por el Mtro. Carlos Aguilar Sánchez. El guardado y modificación de resoluciones psicopedagógicas están inhabilitados.
+                        </div>
+                    </div>
+                </div>
+
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="p-5 bg-slate-50 rounded-2xl border-2 border-slate-200 space-y-3.5 shadow-sm">
                         <h5 class="font-bold text-xs uppercase tracking-widest text-ceutGold-dark flex items-center gap-2 border-b-2 border-slate-200 pb-2 font-sans">
@@ -1034,27 +1170,33 @@
                         <div class="grid grid-cols-2 gap-3 text-xs sm:text-sm text-justified font-serif uppercase">
                             <div class="col-span-2">
                                 <span class="block text-slate-500 font-bold text-[9px] uppercase tracking-wider font-sans">Nombre Completo:</span>
-                                <span class="font-bold text-slate-900" id="details-std-name"></span>
+                                <input type="text" id="edit-std-name" oninput="window.cleanInput(this)" class="w-full mt-1 px-3 py-1.5 border border-slate-200 rounded-lg bg-white font-bold text-slate-900 uppercase">
                             </div>
                             <div>
                                 <span class="block text-slate-500 font-bold text-[9px] uppercase tracking-wider font-sans">Nivel Educativo:</span>
-                                <span class="font-medium text-slate-700" id="details-std-level"></span>
+                                <select id="edit-std-level" class="w-full mt-1 px-3 py-1.5 border border-slate-200 rounded-lg bg-white font-semibold text-slate-700">
+                                    <option value="PREPARATORIA">PREPARATORIA</option>
+                                    <option value="UNIVERSIDAD">UNIVERSIDAD</option>
+                                </select>
                             </div>
                             <div>
                                 <span class="block text-slate-500 font-bold text-[9px] uppercase tracking-wider font-sans">Modalidad:</span>
-                                <span class="font-medium text-slate-700" id="details-std-modality"></span>
+                                <input type="text" id="edit-std-modality" oninput="window.cleanInput(this)" class="w-full mt-1 px-3 py-1.5 border border-slate-200 rounded-lg bg-white font-semibold text-slate-700">
                             </div>
                             <div>
                                 <span class="block text-slate-500 font-bold text-[9px] uppercase tracking-wider font-sans">Grado y Grupo:</span>
-                                <span class="font-medium text-slate-700" id="details-std-gradegroup"></span>
+                                <div class="flex gap-2">
+                                    <input type="text" id="edit-std-grade" oninput="window.cleanInput(this)" class="w-1/2 mt-1 px-3 py-1.5 border border-slate-200 rounded-lg bg-white font-semibold text-slate-700 uppercase" placeholder="Grado">
+                                    <input type="text" id="edit-std-group" oninput="window.cleanInput(this)" class="w-1/2 mt-1 px-3 py-1.5 border border-slate-200 rounded-lg bg-white font-semibold text-slate-700 uppercase" placeholder="Grupo">
+                                </div>
                             </div>
                             <div>
                                 <span class="block text-slate-500 font-bold text-[9px] uppercase tracking-wider font-sans">Ciclo Escolar:</span>
-                                <span class="font-medium text-slate-700" id="details-std-semester"></span>
+                                <input type="text" id="edit-std-semester" oninput="window.cleanInput(this)" class="w-full mt-1 px-3 py-1.5 border border-slate-200 rounded-lg bg-white font-semibold text-slate-700 uppercase">
                             </div>
-                            <div class="col-span-2 hidden" id="details-std-career-container">
+                            <div class="col-span-2" id="edit-std-career-container">
                                 <span class="block text-slate-500 font-bold text-[9px] uppercase tracking-wider text-ceutGold-dark font-sans">Carrera Universitaria:</span>
-                                <span class="font-bold text-slate-900" id="details-std-career"></span>
+                                <input type="text" id="edit-std-career" oninput="window.cleanInput(this)" class="w-full mt-1 px-3 py-1.5 border border-ceutGold rounded-lg bg-white font-bold text-slate-900 uppercase">
                             </div>
                         </div>
                     </div>
@@ -1066,15 +1208,15 @@
                         <div class="grid grid-cols-2 gap-3 text-xs sm:text-sm text-justified font-serif uppercase">
                             <div class="col-span-2">
                                 <span class="block text-slate-500 font-bold text-[9px] uppercase tracking-wider font-sans">Nombre del Docente:</span>
-                                <span class="font-bold text-slate-900" id="details-tchr-name"></span>
+                                <input type="text" id="edit-tchr-name" oninput="window.cleanInput(this)" class="w-full mt-1 px-3 py-1.5 border border-slate-200 rounded-lg bg-white font-bold text-slate-900 uppercase">
                             </div>
                             <div class="col-span-2">
                                 <span class="block text-slate-500 font-bold text-[9px] uppercase tracking-wider font-sans">Asignatura / Materia:</span>
-                                <span class="font-medium text-slate-700" id="details-tchr-subject"></span>
+                                <input type="text" id="edit-tchr-subject" oninput="window.cleanInput(this)" class="w-full mt-1 px-3 py-1.5 border border-slate-200 rounded-lg bg-white font-semibold text-slate-700 uppercase">
                             </div>
                             <div class="col-span-2 font-sans">
                                 <span class="block text-slate-500 font-bold text-[9px] uppercase tracking-wider">Correo Electrónico:</span>
-                                <a href="#" id="details-tchr-email" class="font-bold text-ceutBlue-light hover:underline font-mono text-[11px] lowercase"></a>
+                                <input type="email" id="edit-tchr-email" class="w-full mt-1 px-3 py-1.5 border border-slate-200 rounded-lg bg-white font-medium text-slate-800 text-[11px] lowercase">
                             </div>
                         </div>
                     </div>
@@ -1088,15 +1230,23 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs sm:text-sm text-justified font-serif uppercase">
                         <div>
                             <span class="block text-slate-500 font-bold text-[9px] uppercase tracking-wider font-sans">Motivo Principal Reportado:</span>
-                            <span class="font-bold text-rose-700 bg-rose-50 px-3.5 py-1.5 rounded-lg inline-block mt-1 border-2 border-rose-200 font-sans" id="details-inc-reason"></span>
+                            <select id="edit-inc-reason" class="w-full mt-1 px-3 py-1.5 border border-slate-200 rounded-lg bg-white font-bold text-rose-700 uppercase">
+                                <option value="BAJO RENDIMIENTO ACADEMICO">BAJO RENDIMIENTO ACADEMICO</option>
+                                <option value="CONDUCTA DISRUPTIVA O DE INDISCIPLINA">CONDUCTA DISRUPTIVA O DE INDISCIPLINA</option>
+                                <option value="SITUACION SOCIOEMOCIONAL / CAMBIO DE CONDUCTA">SITUACION SOCIOEMOCIONAL / CAMBIO DE CONDUCTA</option>
+                                <option value="INASISTENCIA FRECUENTE Y AUSENTISMO">INASISTENCIA FRECUENTE Y AUSENTISMO</option>
+                            </select>
                         </div>
                         <div>
                             <span class="block text-slate-500 font-bold text-[9px] uppercase tracking-wider font-sans">Intervención Previa Docente:</span>
-                            <span class="font-medium text-slate-700 bg-slate-100 px-3.5 py-1.5 rounded-lg inline-block mt-1 border-2 border-slate-200 font-sans" id="details-inc-prior"></span>
+                            <select id="edit-inc-prior" class="w-full mt-1 px-3 py-1.5 border border-slate-200 rounded-lg bg-white font-semibold text-slate-700 uppercase">
+                                <option value="si">SÍ, DIALOGÓ</option>
+                                <option value="no">NO DIALOGÓ</option>
+                            </select>
                         </div>
-                        <div class="sm:col-span-2">
+                        <div class="sm:col-span-2 font-sans">
                             <span class="block text-slate-500 font-bold text-[9px] uppercase tracking-wider mb-2.5 font-sans">Relatoría o Descripción del Incidente:</span>
-                            <div class="p-5 bg-slate-900 rounded-2xl text-slate-100 leading-relaxed text-justified whitespace-pre-wrap text-xs sm:text-sm border-2 border-slate-800 font-mono" id="details-inc-situation"></div>
+                            <textarea id="edit-inc-situation" oninput="window.cleanInput(this)" rows="4" class="w-full rounded-xl border border-slate-200 p-4 bg-slate-900 text-slate-100 leading-relaxed text-justified whitespace-pre-wrap text-xs sm:text-sm font-mono uppercase"></textarea>
                         </div>
                     </div>
                 </div>
@@ -1123,12 +1273,20 @@
             </div>
 
             <div class="bg-slate-50 px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-t-2 border-slate-100 flex-shrink-0 font-sans">
-                <span class="text-xs text-slate-400 font-bold uppercase tracking-widest flex items-center gap-1.5"><i class="fa-solid fa-arrows-spin text-ceutGold animate-spin"></i> Sincronización Inmediata</span>
-                <div class="flex items-center gap-2.5 w-full sm:w-auto">
+                <div class="flex items-center gap-3">
+                    <button id="btn-details-delete" onclick="triggerDeleteReport()" class="bg-rose-50 hover:bg-rose-100 border border-rose-300 text-rose-700 font-bold px-4 py-3 rounded-xl text-xs flex items-center gap-2 transition-all uppercase">
+                        <i class="fa-solid fa-trash-can"></i> Eliminar
+                    </button>
+                    <button onclick="printOfficialLetterhead()" class="bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-emerald-700 font-bold px-4 py-3 rounded-xl text-xs flex items-center gap-2 transition-all uppercase">
+                        <i class="fa-solid fa-file-pdf"></i> Oficio Individual
+                    </button>
+                </div>
+                <div class="flex items-center gap-2.5 w-full sm:w-auto justify-end">
                     <button onclick="closeDetailsModal()" class="w-full sm:w-auto bg-white hover:bg-slate-100 text-slate-700 font-bold px-6 py-3 rounded-xl text-xs border-2 border-slate-200 transition-all duration-200 uppercase">
                         Cerrar
                     </button>
-                    <button onclick="saveAdminAction()" class="w-full sm:w-auto bg-gradient-to-r from-ceutGold to-ceutGold-dark text-ceutBlue-dark font-extrabold px-8 py-3 rounded-xl text-xs shadow-md transition-all duration-200 hover:scale-105 border border-ceutGold-dark uppercase">
+                    <!-- El botón de guardar cambios del administrador se desactiva si es modo LECTOR -->
+                    <button id="btn-save-admin-changes" onclick="saveAdminAction()" class="w-full sm:w-auto bg-gradient-to-r from-ceutGold to-ceutGold-dark text-ceutBlue-dark font-extrabold px-8 py-3 rounded-xl text-xs shadow-md transition-all duration-200 hover:scale-105 border border-ceutGold-dark uppercase">
                         Guardar Cambios
                     </button>
                 </div>
@@ -1142,7 +1300,7 @@
             <div class="flex items-center gap-5 flex-col sm:flex-row text-center sm:text-left">
                 <!-- Logotipo en el Footer -->
                 <div class="bg-white/10 p-3 rounded-2xl shadow-lg border-2 border-ceutGold animate-float">
-                    <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview_2.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Escudo Tigres" class="h-16 w-16 object-contain">
+                    <img src="https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Escudo Tigres" class="h-16 w-16 object-contain">
                 </div>
                 <div>
                     <p class="text-slate-300 font-serif italic text-sm text-justified uppercase">&copy; 2026 Centro Universitario Tehuacán (CEUT). Todos los derechos reservados. <span class="text-ceutGold font-bold font-sans not-italic text-xs ml-1 tracking-widest">#SOMOSTIGRES</span></p>
@@ -1210,7 +1368,7 @@
             }, 6000);
         }
 
-        // CONTROL ACCESO PIN DE ADMINISTRADOR (1015)
+        // CONTROL ACCESO PIN DE ADMINISTRADOR (1015) O LECTOR AUTORIZADO
         function requestAdminAccess() {
             if (window.appState.currentRole === 'ADMIN') {
                 return;
@@ -1229,30 +1387,39 @@
             modal.classList.remove('flex');
         }
 
-        // Validación del PIN de Administrador
+        // Validación del PIN de Administrador (Carlos: 1015) y Lectores Autorizados (3 personas)
         function submitAdminPin() {
             const pinInput = document.getElementById('adminPinInput');
             const pinVal = pinInput.value.trim();
 
             if (pinVal === '1015') {
                 closePinModal();
+                window.appState.currentUserType = 'ADMIN';
+                window.appState.currentLectorName = 'MTRO. CARLOS AGUILAR SÁNCHEZ';
                 switchRole('ADMIN');
-                showNotification("Acceso Autorizado", "Bienvenido al panel de control de la Dirección Psicopedagógica.", "success");
+                showNotification("Acceso Autorizado", "Bienvenido de vuelta, Mtro. Carlos Aguilar Sánchez (Control Total).", "success");
             } else {
-                showNotification("Acceso Denegado", "El PIN ingresado es incorrecto. Intente nuevamente.", "error");
-                pinInput.value = '';
-                pinInput.focus();
+                // Verificar si corresponde a una de las 3 personas autorizadas con rol de LECTOR
+                const matchedReader = window.appState.authorizedReaders.find(r => r.pin === pinVal && r.pin !== '');
+                
+                if (matchedReader) {
+                    closePinModal();
+                    window.appState.currentUserType = 'LECTOR';
+                    window.appState.currentLectorName = matchedReader.name;
+                    switchRole('ADMIN');
+                    showNotification("Acceso Autorizado", `Sesión de consulta iniciada como: ${matchedReader.name} (Modo Lector).`, "success");
+                } else {
+                    showNotification("Acceso Denegado", "El PIN ingresado es incorrecto o no ha sido autorizado.", "error");
+                    pinInput.value = '';
+                    pinInput.focus();
+                }
             }
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const pinInput = document.getElementById('adminPinInput');
-            if (pinInput) {
-                pinInput.addEventListener('keydown', (event) => {
-                    if (event.key === 'Enter') {
-                        submitAdminPin();
-                    }
-                });
+        document.addEventListener('keydown', (event) => {
+            const pinModal = document.getElementById('pinModal');
+            if (pinModal && !pinModal.classList.contains('hidden') && event.key === 'Enter') {
+                submitAdminPin();
             }
         });
 
@@ -1284,14 +1451,137 @@
             if (role === 'WELCOME') {
                 document.getElementById('section-welcome').classList.remove('hidden');
                 document.getElementById('btn-role-welcome').className = "px-6 py-3.5 rounded-xl text-xs font-black flex items-center gap-2.5 bg-gradient-to-r from-ceutGold to-ceutGold-dark text-ceutBlue-dark shadow-gold-glow transition-all duration-300 scale-105 font-sans border border-ceutGold-dark uppercase";
+                window.appState.currentUserType = 'GUEST';
             } else if (role === 'TEACHER') {
                 document.getElementById('section-teacher').classList.remove('hidden');
                 document.getElementById('btn-role-teacher').className = "px-6 py-3.5 rounded-xl text-xs font-black flex items-center gap-2.5 bg-gradient-to-r from-ceutGold to-ceutGold-dark text-ceutBlue-dark shadow-gold-glow transition-all duration-300 scale-105 font-sans border border-ceutGold-dark uppercase";
+                window.appState.currentUserType = 'GUEST';
             } else if (role === 'ADMIN') {
                 document.getElementById('section-admin').classList.remove('hidden');
                 document.getElementById('btn-role-admin').className = "px-6 py-3.5 rounded-xl text-xs font-black flex items-center gap-2.5 bg-gradient-to-r from-ceutGold to-ceutGold-dark text-ceutBlue-dark shadow-gold-glow transition-all duration-300 scale-105 font-sans border border-ceutGold-dark uppercase";
+                
+                // Configurar encabezados de administración según el nivel de privilegios
+                const banner = document.getElementById('admin-user-banner');
+                const subtitle = document.getElementById('admin-subtitle-name');
+                const readersSection = document.getElementById('readers-config-section');
+
+                if (window.appState.currentUserType === 'ADMIN') {
+                    banner.className = "solid-panel p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-50/50 text-slate-800 text-xs font-sans flex items-center justify-between shadow-sm";
+                    banner.innerHTML = `
+                        <div class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-user-shield text-emerald-600 text-lg"></i>
+                            <div>
+                                <span class="font-bold block uppercase text-emerald-800">SESIÓN DE ADMINISTRACIÓN COMPLETA (CONTROL TOTAL)</span>
+                                Bienvenido Mtro. Carlos Aguilar Sánchez. Tiene habilitada la edición, eliminación y gestión de accesos.
+                            </div>
+                        </div>
+                        <button onclick="switchRole('WELCOME')" class="text-xs bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-1.5 px-3 rounded-lg uppercase">Cerrar Sesión</button>
+                    `;
+                    banner.classList.remove('hidden');
+                    subtitle.innerText = `Mtro. Carlos Aguilar Sánchez — Dirección Psicopedagógica CEUT`;
+                    readersSection.classList.remove('hidden'); // Solo el maestro Carlos puede ver la configuración de accesos
+                } else if (window.appState.currentUserType === 'LECTOR') {
+                    banner.className = "solid-panel p-4 rounded-2xl border-2 border-ceutGold bg-amber-50/50 text-slate-800 text-xs font-sans flex items-center justify-between shadow-sm";
+                    banner.innerHTML = `
+                        <div class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-eye text-ceutGold-dark text-lg"></i>
+                            <div>
+                                <span class="font-bold block uppercase text-ceutGold-dark">ACCESO DE SÓLO LECTURA AUTORIZADO</span>
+                                Conectado como auxiliar: <strong class="uppercase text-ceutBlue">${window.appState.currentLectorName}</strong>. Privilegios limitados de consulta estricta.
+                            </div>
+                        </div>
+                        <button onclick="switchRole('WELCOME')" class="text-xs bg-slate-700 hover:bg-slate-800 text-white font-bold py-1.5 px-3 rounded-lg uppercase">Salir</button>
+                    `;
+                    banner.classList.remove('hidden');
+                    subtitle.innerText = `${window.appState.currentLectorName} — Personal de Consulta Autorizado`;
+                    readersSection.classList.add('hidden'); // Ocultar configuración de accesos para lectores
+                } else {
+                    banner.classList.add('hidden');
+                }
+
+                renderAuthorizedReadersPanel();
                 renderReports();
                 renderMetrics();
+            }
+        }
+
+        // Renderizar las 3 personas autorizadas y permitir al Maestro Carlos modificar sus PINs
+        function renderAuthorizedReadersPanel() {
+            const container = document.getElementById('readers-setup-grid');
+            if (!container) return;
+
+            container.innerHTML = '';
+            
+            window.appState.authorizedReaders.forEach((reader, index) => {
+                const num = index + 1;
+                container.innerHTML += `
+                    <div class="solid-panel p-5 rounded-2xl border-2 border-slate-200 bg-slate-50 relative flex flex-col justify-between shadow-sm">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between border-b-2 border-slate-200 pb-2">
+                                <span class="text-xs font-black text-ceutBlue-dark uppercase tracking-wider flex items-center gap-2">
+                                    <span class="bg-ceutGold text-ceutBlue-dark h-5.5 w-5.5 rounded-full flex items-center justify-center text-[10px] font-black">${num}</span>
+                                    Slot Autorizado
+                                </span>
+                                <span class="text-[9px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-300 px-2 py-0.5 rounded uppercase">ACTIVO</span>
+                            </div>
+
+                            <div class="space-y-3">
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Nombre Completo del Lector</label>
+                                    <input type="text" id="reader-name-${reader.id}" value="${reader.name}" oninput="window.cleanInput(this)" class="w-full rounded-lg border-2 border-slate-200 px-3 py-2 text-xs focus:ring-1 focus:ring-ceutGold focus:outline-none transition-all bg-white font-medium text-slate-800">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">PIN de Acceso (4 dígitos)</label>
+                                    <input type="text" id="reader-pin-${reader.id}" maxlength="4" placeholder="••••" value="${reader.pin}" class="w-full rounded-lg border-2 border-slate-200 px-3 py-2 text-xs text-center font-bold tracking-widest focus:ring-1 focus:ring-ceutGold focus:outline-none transition-all bg-white text-slate-800">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 mt-2">
+                            <button onclick="saveAuthorizedReader('${reader.id}')" class="w-full bg-ceutBlue hover:bg-ceutBlue-light text-white font-bold py-2 px-3 rounded-lg text-xs transition-all flex items-center justify-center gap-1.5 border border-ceutGold">
+                                <i class="fa-solid fa-floppy-disk text-ceutGold"></i> Guardar Autorización
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Guardar la persona autorizada (por el maestro Carlos)
+        async function saveAuthorizedReader(readerId) {
+            const nameInput = document.getElementById(`reader-name-${readerId}`);
+            const pinInput = document.getElementById(`reader-pin-${readerId}`);
+
+            const newName = nameInput.value.trim().toUpperCase();
+            const newPin = pinInput.value.trim();
+
+            if (newName === '' || newPin === '') {
+                showNotification("Error", "El nombre y el PIN de acceso no pueden estar vacíos.", "error");
+                return;
+            }
+
+            if (newPin.length !== 4 || isNaN(newPin)) {
+                showNotification("Error", "El PIN de acceso debe tener exactamente 4 dígitos numéricos.", "error");
+                return;
+            }
+
+            if (newPin === '1015') {
+                showNotification("Error", "No puede asignar el PIN Maestro 1015 a un lector auxiliar.", "error");
+                return;
+            }
+
+            const success = await window.updateAuthorizedReaderInFirestore(readerId, newName, newPin);
+
+            if (success) {
+                showNotification("Cambios Guardados", `Se actualizó con éxito el acceso para: ${newName}`, "success");
+            } else {
+                // Actualización local en caso de desconexión
+                const readerIndex = window.appState.authorizedReaders.findIndex(r => r.id === readerId);
+                if (readerIndex !== -1) {
+                    window.appState.authorizedReaders[readerIndex].name = newName;
+                    window.appState.authorizedReaders[readerIndex].pin = newPin;
+                }
+                showNotification("Guardado Local", `Acceso actualizado de manera local (Modo Sin Conexión).`, "success");
             }
         }
 
@@ -1349,7 +1639,7 @@
                 .replace(/[ÝÝ]/g, "Y");
         }
 
-        <!-- ENVIO DE FORMULARIO -->
+        // ENVIO DE FORMULARIO
         async function handleFormSubmission(e) {
             e.preventDefault();
             
@@ -1387,7 +1677,10 @@
 
             const situation = formatUppercaseNoAccents(document.getElementById('situationDescription').value);
 
+            const newId = `CASO-${String(window.appState.reports.length + 1).padStart(2, '0')}`;
+
             const newReport = {
+                id: newId,
                 teacherName,
                 teacherSubject,
                 teacherEmail,
@@ -1423,7 +1716,14 @@
 
                 showNotification("Registro Exitoso", "Incidencia guardada en la nube y correo despachado con éxito.", "success");
             } else {
-                showNotification("Error de Guardado", "No se pudo conectar con la nube. Asegúrese de tener acceso a internet.", "error");
+                // Almacenamiento local en caso de desconexión
+                newReport.timestamp = new Date();
+                window.appState.reports.unshift(newReport);
+                renderReports();
+                renderMetrics();
+                triggerAutomaticEmailDispatch(newReport);
+                openGratitudeModal(newReport);
+                showNotification("Guardado Local", "Sincronización en la nube inactiva, expediente resguardado en memoria temporal.", "success");
             }
 
             submitBtn.disabled = false;
@@ -1648,36 +1948,36 @@ TIGRES CEUT — PSICOPEDAGOGIA`;
 
             activeViewReportId = report.id;
 
+            // Llenar inputs editables
             document.getElementById('details-id-label').innerText = `ID: ${report.id} - REGISTRADO BAJO PROTECCION LFPDPPP`;
-            document.getElementById('details-std-name').innerText = report.studentName.toUpperCase();
-            document.getElementById('details-std-level').innerText = report.eduLevel.toUpperCase();
-            document.getElementById('details-std-modality').innerText = report.modality.toUpperCase();
-            document.getElementById('details-std-gradegroup').innerText = `${report.grade.toUpperCase()} GRUPO "${report.group.toUpperCase()}"`;
-            document.getElementById('details-std-semester').innerText = report.semester.toUpperCase();
+            document.getElementById('edit-std-name').value = report.studentName.toUpperCase();
+            document.getElementById('edit-std-level').value = report.eduLevel.toUpperCase();
+            document.getElementById('edit-std-modality').value = report.modality.toUpperCase();
+            document.getElementById('edit-std-grade').value = report.grade.toUpperCase();
+            document.getElementById('edit-std-group').value = report.group.toUpperCase();
+            document.getElementById('edit-std-semester').value = report.semester.toUpperCase();
 
-            const careerContainer = document.getElementById('details-std-career-container');
-            if (report.eduLevel.toUpperCase() === 'UNIVERSIDAD' && report.career) {
+            const careerContainer = document.getElementById('edit-std-career-container');
+            if (report.eduLevel.toUpperCase() === 'UNIVERSIDAD') {
                 careerContainer.classList.remove('hidden');
-                document.getElementById('details-std-career').innerText = report.career.toUpperCase();
+                document.getElementById('edit-std-career').value = (report.career || "").toUpperCase();
             } else {
                 careerContainer.classList.add('hidden');
+                document.getElementById('edit-std-career').value = '';
             }
 
-            document.getElementById('details-tchr-name').innerText = report.teacherName.toUpperCase();
-            document.getElementById('details-tchr-subject').innerText = (report.subject || report.teacherSubject).toUpperCase();
-            
-            const emailLink = document.getElementById('details-tchr-email');
-            emailLink.innerText = report.teacherEmail.toLowerCase();
-            emailLink.href = `mailto:${report.teacherEmail}`;
+            document.getElementById('edit-tchr-name').value = report.teacherName.toUpperCase();
+            document.getElementById('edit-tchr-subject').value = (report.subject || report.teacherSubject).toUpperCase();
+            document.getElementById('edit-tchr-email').value = report.teacherEmail.toLowerCase();
 
-            document.getElementById('details-inc-reason').innerText = report.reason.toUpperCase();
-            document.getElementById('details-inc-prior').innerText = report.priorIntervention === 'si' ? 'SI, EXISTIO DIALOGO PREVIO' : 'NO SE DIALOGO PREVIAMENTE';
-            document.getElementById('details-inc-situation').innerText = report.situation.toUpperCase();
+            document.getElementById('edit-inc-reason').value = report.reason.toUpperCase();
+            document.getElementById('edit-inc-prior').value = (report.priorIntervention || "no").toLowerCase();
+            document.getElementById('edit-inc-situation').value = report.situation.toUpperCase();
 
             const header = document.getElementById('details-header-bg');
             const badge = document.getElementById('details-priority-badge');
             
-            header.className = "px-8 py-5 flex items-center justify-between relative";
+            header.className = "px-8 py-5 flex items-center justify-between relative border-b-2 border-ceutGold";
             badge.innerText = `${report.priority.toUpperCase()} PRIORIDAD`;
 
             if (report.priority.toUpperCase() === 'ALTA') {
@@ -1707,8 +2007,49 @@ TIGRES CEUT — PSICOPEDAGOGIA`;
             }
             document.getElementById('details-timestamp').innerText = timestampText;
 
-            document.getElementById('details-action-status').value = (report.status || 'PENDIENTE').toUpperCase();
-            document.getElementById('details-action-notes').value = (report.notes || '').toUpperCase();
+            // Bloquear / Habilitar inputs del departamento según el tipo de usuario (ADMIN o LECTOR)
+            const statusSelect = document.getElementById('details-action-status');
+            const notesInput = document.getElementById('details-action-notes');
+            const saveBtn = document.getElementById('btn-save-admin-changes');
+            const deleteBtn = document.getElementById('btn-details-delete');
+            const readOnlyNotice = document.getElementById('details-read-only-notice');
+
+            statusSelect.value = (report.status || 'PENDIENTE').toUpperCase();
+            notesInput.value = (report.notes || '').toUpperCase();
+
+            // Referencia a todos los inputs editables
+            const editableInputs = [
+                'edit-std-name', 'edit-std-level', 'edit-std-modality', 
+                'edit-std-grade', 'edit-std-group', 'edit-std-semester', 
+                'edit-std-career', 'edit-tchr-name', 'edit-tchr-subject', 
+                'edit-tchr-email', 'edit-inc-reason', 'edit-inc-prior', 
+                'edit-inc-situation'
+            ];
+
+            if (window.appState.currentUserType === 'ADMIN') {
+                statusSelect.removeAttribute('disabled');
+                notesInput.removeAttribute('disabled');
+                saveBtn.classList.remove('hidden');
+                deleteBtn.classList.remove('hidden');
+                readOnlyNotice.classList.add('hidden');
+                
+                editableInputs.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.removeAttribute('disabled');
+                });
+            } else {
+                // Configuración de visualización restringida para LECTORES autorizados
+                statusSelect.setAttribute('disabled', 'true');
+                notesInput.setAttribute('disabled', 'true');
+                saveBtn.classList.add('hidden'); // Ocultar botón de guardar cambios
+                deleteBtn.classList.add('hidden'); // Ocultar botón de eliminar para lectores
+                readOnlyNotice.classList.remove('hidden'); // Mostrar aviso formal de Sólo Lectura
+                
+                editableInputs.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.setAttribute('disabled', 'true');
+                });
+            }
 
             const modal = document.getElementById('detailsModal');
             modal.classList.remove('hidden');
@@ -1725,17 +2066,814 @@ TIGRES CEUT — PSICOPEDAGOGIA`;
         async function saveAdminAction() {
             if (!activeViewReportId) return;
 
+            // Doble verificación para evitar falsificación de peticiones por JS
+            if (window.appState.currentUserType !== 'ADMIN') {
+                showNotification("Acción Bloqueada", "No posee privilegios de escritura en este departamento.", "error");
+                return;
+            }
+
             const newStatus = formatUppercaseNoAccents(document.getElementById('details-action-status').value);
             const followUpNotes = formatUppercaseNoAccents(document.getElementById('details-action-notes').value.trim());
 
-            const success = await window.updateReportStatusInFirestore(activeViewReportId, newStatus, followUpNotes);
+            // Obtener los valores editados de los inputs de datos generales
+            const studentName = formatUppercaseNoAccents(document.getElementById('edit-std-name').value.trim());
+            const eduLevel = formatUppercaseNoAccents(document.getElementById('edit-std-level').value);
+            const modality = formatUppercaseNoAccents(document.getElementById('edit-std-modality').value.trim());
+            const grade = formatUppercaseNoAccents(document.getElementById('edit-std-grade').value.trim());
+            const group = formatUppercaseNoAccents(document.getElementById('edit-std-group').value.trim());
+            const semester = formatUppercaseNoAccents(document.getElementById('edit-std-semester').value.trim());
+            const career = formatUppercaseNoAccents(document.getElementById('edit-std-career').value.trim());
+
+            const teacherName = formatUppercaseNoAccents(document.getElementById('edit-tchr-name').value.trim());
+            const teacherSubject = formatUppercaseNoAccents(document.getElementById('edit-tchr-subject').value.trim());
+            const teacherEmail = document.getElementById('edit-tchr-email').value.trim().toLowerCase();
+
+            const reason = formatUppercaseNoAccents(document.getElementById('edit-inc-reason').value);
+            const priorIntervention = document.getElementById('edit-inc-prior').value;
+            const situation = formatUppercaseNoAccents(document.getElementById('edit-inc-situation').value.trim());
+
+            if (!studentName || !teacherName || !teacherSubject || !situation) {
+                showNotification("Error de validación", "Por favor llene todos los campos obligatorios del expediente.", "error");
+                return;
+            }
+
+            const updatedFields = {
+                status: newStatus,
+                notes: followUpNotes,
+                studentName,
+                eduLevel,
+                modality,
+                grade,
+                group,
+                semester,
+                career: eduLevel === 'UNIVERSIDAD' ? career : '',
+                teacherName,
+                teacherSubject,
+                teacherEmail,
+                reason,
+                priorIntervention,
+                situation
+            };
+
+            const success = await window.updateReportStatusInFirestore(activeViewReportId, updatedFields);
 
             if (success) {
                 showNotification("Guardado", "Expediente psicopedagógico actualizado con éxito.", "success");
                 closeDetailsModal();
             } else {
-                showNotification("Falla de Guardado", "No se pudo actualizar el expediente en base de datos. Requiere conexión activa.", "error");
+                // Actualizar localmente en memoria
+                const index = window.appState.reports.findIndex(r => r.id === activeViewReportId);
+                if (index !== -1) {
+                    window.appState.reports[index] = { ...window.appState.reports[index], ...updatedFields };
+                    renderReports();
+                    renderMetrics();
+                }
+                showNotification("Guardado Local", "Expediente actualizado de forma local (Nube Sin Conexión).", "success");
+                closeDetailsModal();
             }
+        }
+
+        function triggerDeleteReport() {
+            if (window.appState.currentUserType !== 'ADMIN') {
+                showNotification("Acción Bloqueada", "No posee privilegios de eliminación.", "error");
+                return;
+            }
+            
+            const deleteModal = document.getElementById('deleteConfirmModal');
+            deleteModal.classList.remove('hidden');
+            deleteModal.classList.add('flex');
+
+            const confirmBtn = document.getElementById('btn-confirm-delete-execute');
+            confirmBtn.onclick = async () => {
+                const targetId = activeViewReportId;
+                const success = await window.deleteReportInFirestore(targetId);
+
+                if (success) {
+                    showNotification("Eliminado", "Expediente removido de la nube exitosamente.", "success");
+                } else {
+                    // Eliminación local
+                    window.appState.reports = window.appState.reports.filter(r => r.id !== targetId);
+                    renderReports();
+                    renderMetrics();
+                    showNotification("Removido Local", "Expediente eliminado de la sesión local activa.", "success");
+                }
+
+                closeDeleteConfirmModal();
+                closeDetailsModal();
+            };
+        }
+
+        function closeDeleteConfirmModal() {
+            const deleteModal = document.getElementById('deleteConfirmModal');
+            deleteModal.classList.add('hidden');
+            deleteModal.classList.remove('flex');
+        }
+
+        // GENERACIÓN EXCLUSIVA DE EXPEDIENTE PDF MEMBRETADO CON DESCARGA DIRECTA E INMEDIATA
+        window.downloadReportPDFDirect = function() {
+            const report = window.appState.reports.find(r => r.id === activeViewReportId);
+            if (!report) {
+                showNotification("Error", "No se ha seleccionado ningún expediente.", "error");
+                return;
+            }
+
+            showNotification("Generando PDF", "Iniciando compilación oficial y descarga del oficio...", "success");
+
+            const dateObj = report.timestamp ? (report.timestamp.seconds ? new Date(report.timestamp.seconds * 1000) : new Date(report.timestamp)) : new Date();
+            const dateStr = dateObj.toLocaleDateString('es-MX', {
+                year: 'numeric', month: 'long', day: 'numeric'
+            }).toUpperCase();
+
+            const folio = `CEUT-PSIC-${report.id}-${dateObj.getFullYear()}`;
+
+            // Contenedor temporal fuera de pantalla para renderizar el documento antes de pasarlo a html2pdf
+            const pdfContainer = document.createElement('div');
+            pdfContainer.style.width = '195mm';
+            pdfContainer.style.fontFamily = 'Lora, Georgia, serif';
+            pdfContainer.style.color = '#0F1332';
+            pdfContainer.style.backgroundColor = '#FFFFFF';
+            pdfContainer.style.boxSizing = 'border-box';
+            pdfContainer.style.padding = '8mm';
+            pdfContainer.style.position = 'relative';
+
+            pdfContainer.innerHTML = `
+                <!-- Borde Doble Institucional -->
+                <div style="border: 4px double #E5A900; outline: 10px solid #1E2555; outline-offset: -14px; padding: 12mm 10mm; position: relative; min-height: 250mm; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between;">
+                    
+                    <!-- Sello de agua sutil del Escudo Oficial de Tigres en el centro -->
+                    <div style="position: absolute; top: 45%; left: 50%; width: 110mm; height: 110mm; transform: translate(-50%, -50%); background: url('https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2') no-repeat center; background-size: contain; opacity: 0.05; z-index: 0; pointer-events: none;"></div>
+
+                    <div style="position: relative; z-index: 10;">
+                        <!-- Encabezado Membretado Oficial -->
+                        <table style="width: 100%; border-collapse: collapse; border-bottom: 2px solid #B28200; padding-bottom: 4mm; margin-bottom: 6mm;">
+                            <tr>
+                                <td style="width: 22mm; vertical-align: middle;">
+                                    <img src="https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2" style="width: 20mm; height: auto; display: block;" alt="CEUT Shield">
+                                </td>
+                                <td style="text-align: right; vertical-align: middle; padding-left: 5mm;">
+                                    <div style="font-family: 'Cinzel', Georgia, serif; font-size: 14pt; font-weight: 900; color: #1E2555; letter-spacing: 0.5px; margin: 0;">CENTRO UNIVERSITARIO TEHUACÁN</div>
+                                    <div style="font-size: 8.5pt; color: #B28200; font-weight: bold; letter-spacing: 0.5px; margin-top: 1mm; font-family: 'Inter', sans-serif;">DIRECCIÓN DE CONTROL ACADÉMICO Y DEPARTAMENTO PSICOPEDAGÓGICO</div>
+                                    <div style="font-size: 7.5pt; color: #475569; font-weight: bold; margin-top: 0.5mm; font-family: 'Inter', sans-serif;">PRACTICA PROFESIONAL Y RESGUARDO DE DATOS • TEHUACÁN, PUEBLA</div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- Bloque de Metadatos del Oficio Oficial -->
+                        <div style="width: 100%; text-align: right; font-size: 8.5pt; color: #334155; line-height: 1.5; margin-bottom: 6mm; font-family: 'Inter', sans-serif;">
+                            <strong>NÚMERO DE OFICIO:</strong> ${folio}<br>
+                            <strong>ASUNTO:</strong> EXPEDIENTE CONFIDENCIAL DE INTERVENCIÓN DOCENTE<br>
+                            <strong>FECHA DE EMISIÓN:</strong> TEHUACÁN, PUEBLA, A ${dateStr}
+                        </div>
+
+                        <!-- Título Principal -->
+                        <div style="font-family: 'Cinzel', Georgia, serif; font-size: 11.5pt; font-weight: bold; text-align: center; color: #1E2555; text-decoration: underline; margin-bottom: 6mm; letter-spacing: 0.5px;">
+                            EXPEDIENTE DE ATENCIÓN PSICOPEDAGÓGICA Y MEDIACIÓN ESTUDIANTIL
+                        </div>
+
+                        <!-- Párrafo Inicial Formulado Formalmente -->
+                        <div style="font-size: 9.5pt; line-height: 1.7; text-align: justify; text-justify: inter-word; margin-bottom: 5mm; text-indent: 10mm; font-family: 'Lora', Georgia, serif;">
+                            Por medio de este instrumento formal, el Departamento Psicopedagógico del <strong>Centro Universitario Tehuacán (CEUT)</strong>, bajo la titularidad técnica del <strong>Mtro. Carlos Aguilar Sánchez</strong>, deja constancia plena de la alerta académica e intervención socioemocional iniciada en torno al alumno que se detalla en el cuadro de control adjunto. El presente informe ha sido validado bajo protesta de decir verdad por el emisor docente y certificado de conformidad legal.
+                        </div>
+
+                        <!-- Cuadro de Datos de Control Académico -->
+                        <table style="width: 100%; border-collapse: collapse; margin: 5mm 0; font-size: 8.5pt; font-family: 'Inter', sans-serif;">
+                            <thead>
+                                <tr>
+                                    <th colspan="2" style="background-color: #1E2555; color: #FFFFFF; font-weight: bold; padding: 2mm 3mm; text-align: left; border: 1px solid #1E2555; font-size: 7.5pt; letter-spacing: 0.5px; text-transform: uppercase;">DATOS GENERALES DEL ALUMNO Y EXPEDIENTE</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="width: 35%; padding: 2mm 3mm; border: 1px solid #E2E8F0; background-color: #F8FAFC; font-weight: bold;">ESTUDIANTE OBSERVADO:</td>
+                                    <td style="padding: 2mm 3mm; border: 1px solid #E2E8F0; text-transform: uppercase; font-weight: bold; color: #1E2555;">${report.studentName.toUpperCase()}</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 2mm 3mm; border: 1px solid #E2E8F0; background-color: #F8FAFC; font-weight: bold;">NIVEL EDUCATIVO Y GRUPO:</td>
+                                    <td style="padding: 2mm 3mm; border: 1px solid #E2E8F0; text-transform: uppercase;">${report.eduLevel.toUpperCase()} — ${report.grade.toUpperCase()} GRUPO "${report.group.toUpperCase()}" (${report.modality.toUpperCase()})</td>
+                                </tr>
+                                ${report.career ? `
+                                <tr>
+                                    <td style="padding: 2mm 3mm; border: 1px solid #E2E8F0; background-color: #F8FAFC; font-weight: bold;">CARRERA UNIVERSITARIA:</td>
+                                    <td style="padding: 2mm 3mm; border: 1px solid #E2E8F0; text-transform: uppercase;">${report.career.toUpperCase()}</td>
+                                </tr>` : ''}
+                                <tr>
+                                    <td style="padding: 2mm 3mm; border: 1px solid #E2E8F0; background-color: #F8FAFC; font-weight: bold;">DOCENTE EMISOR / ASIGNATURA:</td>
+                                    <td style="padding: 2mm 3mm; border: 1px solid #E2E8F0; text-transform: uppercase;">${report.teacherName.toUpperCase()} (${report.teacherSubject.toUpperCase()})</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 2mm 3mm; border: 1px solid #E2E8F0; background-color: #F8FAFC; font-weight: bold;">MOTIVO DE LA ALERTA ACADÉMICA:</td>
+                                    <td style="padding: 2mm 3mm; border: 1px solid #E2E8F0; text-transform: uppercase; font-weight: bold; color: #DC2626;">${report.reason.toUpperCase()} (SEMAFORO: ${report.priority.toUpperCase()})</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 2mm 3mm; border: 1px solid #E2E8F0; background-color: #F8FAFC; font-weight: bold;">ESTADO DE SEGUIMIENTO EN CEUT:</td>
+                                    <td style="padding: 2mm 3mm; border: 1px solid #E2E8F0; font-weight: bold; color: #059669; text-transform: uppercase;">${report.status.toUpperCase()}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- Caja de Relatoría del Alumno -->
+                        <div style="border-left: 3px solid #E5A900; background-color: #FFFDF0; padding: 4mm 5mm; font-size: 9pt; line-height: 1.6; text-align: justify; text-justify: inter-word; margin: 5mm 0; font-style: italic; border-top: 1px solid #FFF7D0; border-right: 1px solid #FFF7D0; border-bottom: 1px solid #FFF7D0; font-family: 'Lora', Georgia, serif;">
+                            <strong>RELATORÍA DE HECHOS PRESENTADA POR EL DOCENTE:</strong><br>
+                            "${report.situation.toUpperCase()}"
+                        </div>
+
+                        ${report.notes ? `
+                        <!-- Caja de Notas de Intervención -->
+                        <div style="font-size: 9.5pt; line-height: 1.6; text-align: justify; text-justify: inter-word; margin-top: 4mm; margin-bottom: 5mm; font-family: 'Lora', Georgia, serif;">
+                            <strong>ACCIONES DE RESOLUCIÓN Y CONTENCIÓN IMPLEMENTADAS:</strong><br>
+                            <span style="color: #1E2555; font-weight: bold;">${report.notes.toUpperCase()}</span>
+                        </div>
+                        ` : ''}
+                    </div>
+
+                    <!-- Pie de Firma e Información Legal -->
+                    <div style="position: relative; z-index: 10;">
+                        <table style="width: 100%; border-collapse: collapse; margin-top: 10mm; margin-bottom: 4mm;">
+                            <tr>
+                                <td style="width: 50%; text-align: center; vertical-align: top;">
+                                    <div style="width: 50mm; border-bottom: 1px solid #64748B; margin: 0 auto 2mm auto;"></div>
+                                    <div style="font-size: 8.5pt; font-weight: bold; color: #0F1332; font-family: 'Inter', sans-serif;">MTRO. CARLOS AGUILAR SÁNCHEZ</div>
+                                    <div style="font-size: 7.5pt; color: #475569; font-family: 'Inter', sans-serif;">Director del Departamento Psicopedagógico CEUT</div>
+                                    <div style="font-size: 6.5pt; color: #94A3B8; margin-top: 1mm; font-family: 'Inter', sans-serif;">FIRMA DE AUTORIZACIÓN ACADÉMICA</div>
+                                </td>
+                                <td style="width: 50%; text-align: center; vertical-align: middle;">
+                                    <div style="display: inline-block; border: 2px dashed #B28200; padding: 2mm 4mm; border-radius: 2mm; background-color: #FFFDF0; font-family: 'Inter', sans-serif; font-size: 7.5pt; color: #B28200; font-weight: bold; line-height: 1.4; text-transform: uppercase;">
+                                        Sello Digital CEUT<br>
+                                        VERIFICADO & CIFRADO
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <div style="font-size: 6.5pt; color: #64748B; text-align: justify; line-height: 1.4; border-top: 1px solid #E2E8F0; padding-top: 3mm; font-family: 'Inter', sans-serif; text-transform: uppercase;">
+                            <strong>AVISO DE PROTECCIÓN DE DATOS PERSONALES (LFPDPPP):</strong> Este documento oficial contiene información sensible regulada estrictamente por los artículos 6, 9, 15 y 16 de la Ley Federal de Protección de Datos Personales en Posesión de los Particulares de los Estados Unidos Mexicanos. Se prohíbe la divulgación, revelación o distribución no autorizada de estos expedientes estudiantiles a terceros sin autorización expresa de las autoridades directivas del Centro Universitario Tehuacán.
+                        </div>
+                    </div>
+
+                </div>
+            `;
+
+            // Configuración óptima de html2pdf para mantener formato de hoja de vida / carta
+            const opt = {
+                margin:       [5, 5, 5, 5], 
+                filename:     `Oficio_Psicopedagogico_${report.id}_${report.studentName.replace(/\s+/g, '_')}.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
+                jsPDF:        { unit: 'mm', format: 'letter', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(pdfContainer).save().then(() => {
+                showNotification("Descarga Exitosa", "El documento membretado ha sido guardado localmente en formato PDF.", "success");
+            }).catch(err => {
+                console.error("Falla al generar PDF:", err);
+                showNotification("Falla en Generación", "No se pudo realizar el guardado automático de PDF.", "error");
+            });
+        };
+
+        // GENERACIÓN DE HOJA MEMBRETADA PARA IMPRESIÓN/PDF INDIVIDUAL
+        function printOfficialLetterhead() {
+            const report = window.appState.reports.find(r => r.id === activeViewReportId);
+            if (!report) return;
+
+            const printWindow = window.open('', '_blank');
+            const dateStr = new Date().toLocaleDateString('es-MX', {
+                year: 'numeric', month: 'long', day: 'numeric'
+            }).toUpperCase();
+
+            const folio = `FOLIO-${report.id}-${new Date().getFullYear()}`;
+
+            const letterheadHTML = `
+            <!DOCTYPE html>
+            <html lang="es">
+            <head>
+                <meta charset="UTF-8">
+                <title>CEUT - Oficio Oficial de Expediente: ${report.id}</title>
+                <style>
+                    @page {
+                        size: letter;
+                        margin: 0;
+                    }
+                    body {
+                        font-family: 'Georgia', 'Times New Roman', serif;
+                        color: #0F1332;
+                        background-color: #FFFFFF;
+                        margin: 0;
+                        padding: 0;
+                        box-sizing: border-box;
+                    }
+                    .document-container {
+                        width: 100%;
+                        max-width: 8.5in;
+                        height: 11in;
+                        padding: 1.2in 1in 1.2in 1in;
+                        box-sizing: border-box;
+                        position: relative;
+                        display: flex;
+                        flex-col: column;
+                        justify-content: space-between;
+                        border: 4px double #E5A900;
+                        outline: 12px solid #1E2555;
+                        outline-offset: -16px;
+                    }
+                    /* Sello de agua oficial de Tigres */
+                    .watermark {
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        width: 4.5in;
+                        height: 4.5in;
+                        transform: translate(-50%, -50%);
+                        background: url('https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2') no-repeat center;
+                        background-size: contain;
+                        opacity: 0.04;
+                        z-index: 0;
+                        pointer-events: none;
+                    }
+                    .header-table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        border-bottom: 2px solid #B28200;
+                        padding-bottom: 15px;
+                        margin-bottom: 30px;
+                        position: relative;
+                        z-index: 10;
+                    }
+                    .header-logo {
+                        width: 80px;
+                        height: auto;
+                    }
+                    .header-title-main {
+                        font-family: 'Cinzel', 'Georgia', serif;
+                        font-size: 16px;
+                        font-weight: 900;
+                        color: #1E2555;
+                        letter-spacing: 1px;
+                        text-align: right;
+                    }
+                    .header-subtitle {
+                        font-size: 10px;
+                        color: #B28200;
+                        text-align: right;
+                        font-weight: bold;
+                        letter-spacing: 0.5px;
+                        margin-top: 2px;
+                    }
+                    .metadata-section {
+                        width: 100%;
+                        font-size: 11px;
+                        text-align: right;
+                        margin-bottom: 35px;
+                        color: #334155;
+                        position: relative;
+                        z-index: 10;
+                    }
+                    .oficio-title {
+                        font-family: 'Cinzel', 'Georgia', serif;
+                        font-size: 14px;
+                        font-weight: bold;
+                        text-align: center;
+                        color: #1E2555;
+                        text-decoration: underline;
+                        margin-bottom: 30px;
+                        letter-spacing: 0.5px;
+                        position: relative;
+                        z-index: 10;
+                    }
+                    .content-paragraph {
+                        font-size: 11.5px;
+                        line-height: 1.8;
+                        text-align: justify;
+                        margin-bottom: 20px;
+                        text-indent: 35px;
+                        position: relative;
+                        z-index: 10;
+                    }
+                    .details-table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin: 25px 0;
+                        font-size: 10.5px;
+                        position: relative;
+                        z-index: 10;
+                    }
+                    .details-table th {
+                        background-color: #1E2555;
+                        color: #FFFFFF;
+                        font-weight: bold;
+                        padding: 8px 12px;
+                        text-align: left;
+                        border: 1px solid #1E2555;
+                        font-family: 'Arial', sans-serif;
+                        font-size: 9px;
+                        letter-spacing: 0.5px;
+                    }
+                    .details-table td {
+                        padding: 8px 12px;
+                        border: 1px solid #E2E8F0;
+                        color: #1E293B;
+                        background-color: #F8FAFC;
+                    }
+                    .situation-box {
+                        border-left: 3px solid #E5A900;
+                        background-color: #FFFDF0;
+                        padding: 15px;
+                        font-size: 11px;
+                        line-height: 1.6;
+                        text-align: justify;
+                        margin: 25px 0;
+                        font-style: italic;
+                        position: relative;
+                        z-index: 10;
+                    }
+                    .signature-area {
+                        width: 100%;
+                        margin-top: 60px;
+                        text-align: center;
+                        font-size: 11px;
+                        position: relative;
+                        z-index: 10;
+                    }
+                    .signature-line {
+                        width: 200px;
+                        border-bottom: 1px solid #64748B;
+                        margin: 0 auto 10px auto;
+                    }
+                    .footer-notes {
+                        font-size: 8.5px;
+                        color: #64748B;
+                        text-align: justify;
+                        line-height: 1.4;
+                        border-top: 1px solid #E2E8F0;
+                        padding-top: 12px;
+                        position: relative;
+                        z-index: 10;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="document-container">
+                    <div class="watermark"></div>
+                    <div>
+                        <table class="header-table">
+                            <tr>
+                                <td>
+                                    <img src="https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2" class="header-logo" alt="CEUT">
+                                </td>
+                                <td>
+                                    <div class="header-title-main">CENTRO UNIVERSITARIO TEHUACÁN</div>
+                                    <div class="header-subtitle">DIRECCIÓN DE CONTROL ACADÉMICO Y PSICOPEDAGOGÍA</div>
+                                    <div class="header-subtitle" style="color: #475569;">TEHUACÁN, PUEBLA, MÉXICO</div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <div class="metadata-section">
+                            <strong>NÚMERO DE OFICIO:</strong> ${folio}<br>
+                            <strong>ASUNTO:</strong> EXPEDIENTE DE INTERVENCIÓN DOCENTE<br>
+                            <strong>FECHA DE EMISIÓN:</strong> ${dateStr}
+                        </div>
+
+                        <div class="oficio-title">EXPEDIENTE PSICOPEDAGÓGICO DE ACCIÓN PREVENTIVA</div>
+
+                        <div class="content-paragraph">
+                            Por medio de la presente instrumentación oficial, el Departamento Psicopedagógico y de Control Docente del <strong>Centro Universitario Tehuacán (CEUT)</strong>, bajo la dirección técnica y académica del <strong>Mtro. Carlos Aguilar Sánchez</strong>, hace constar el reporte de incidencia registrado de forma confidencial para el seguimiento correspondiente.
+                        </div>
+
+                        <table class="details-table">
+                            <tr>
+                                <th colspan="2">DATOS DE IDENTIFICACIÓN DE LAS PARTES</th>
+                            </tr>
+                            <tr>
+                                <td style="width: 35%;"><strong>ESTUDIANTE EVALUADO:</strong></td>
+                                <td>${report.studentName.toUpperCase()}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>NIVEL EDUCATIVO Y GRUPO:</strong></td>
+                                <td>${report.eduLevel.toUpperCase()} - ${report.grade.toUpperCase()} GRUPO "${report.group.toUpperCase()}" (${report.modality.toUpperCase()})</td>
+                            </tr>
+                            ${report.career ? `<tr><td><strong>CARRERA UNIVERSITARIA:</strong></td><td>${report.career.toUpperCase()}</td></tr>` : ''}
+                            <tr>
+                                <td><strong>DOCENTE REDACTOR:</strong></td>
+                                <td>${report.teacherName.toUpperCase()} (${report.teacherSubject.toUpperCase()})</td>
+                            </tr>
+                            <tr>
+                                <td><strong>MOTIVO ACADÉMICO / SEMÁFORO:</strong></td>
+                                <td><strong>${report.reason.toUpperCase()} (PRIORIDAD ${report.priority.toUpperCase()})</strong></td>
+                            </tr>
+                            <tr>
+                                <td><strong>ESTADO GENERAL DEL CASO:</strong></td>
+                                <td><strong>${report.status.toUpperCase()}</strong></td>
+                            </tr>
+                        </table>
+
+                        <div class="situation-box">
+                            <strong>RELATORÍA DE LOS HECHOS DECLARADOS:</strong><br>
+                            "${report.situation.toUpperCase()}"
+                        </div>
+                        
+                        ${report.notes ? `
+                        <div class="content-paragraph">
+                            <strong>RESOLUCIÓN DE INTERVENCIÓN ADJUNTA:</strong><br>
+                            ${report.notes.toUpperCase()}
+                        </div>
+                        ` : ''}
+                    </div>
+
+                    <div>
+                        <div class="signature-area">
+                            <div class="signature-line"></div>
+                            <strong>MTRO. CARLOS AGUILAR SÁNCHEZ</strong><br>
+                            Responsable del Departamento Psicopedagógico CEUT
+                            <br><span style="font-size: 8px; color: #94A3B8;">DOCUMENTO AUTENTICADO DE FORMA DIGITAL</span>
+                        </div>
+
+                        <div class="footer-notes">
+                            <strong>CONVENIO JURÍDICO DE PRIVACIDAD:</strong> Este oficio contiene datos personales clasificados como Sensibles bajo la legislación civil de los Estados Unidos Mexicanos y los artículos 9, 15 y 16 de la Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP). Queda estrictamente prohibida la reproducción, copia o divulgación no autorizada de este documento por parte de cualquier persona directiva, académica o administrativa ajena a la Dirección Psicopedagógica.
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    window.onload = function() {
+                        window.print();
+                    };
+                <\/script>
+            </body>
+            </html>
+            `;
+
+            printWindow.document.open();
+            printWindow.document.write(letterheadHTML);
+            printWindow.document.close();
+        }
+
+        // GENERACIÓN DE REPORTE ESTADÍSTICO GLOBAL EN HOJA MEMBRETADA
+        function printGlobalStatisticalReport() {
+            const reports = window.appState.reports || [];
+            if (reports.length === 0) {
+                showNotification("Error", "No existen registros para compilar en la estadística global.", "error");
+                return;
+            }
+
+            const printWindow = window.open('', '_blank');
+            const dateStr = new Date().toLocaleDateString('es-MX', {
+                year: 'numeric', month: 'long', day: 'numeric'
+            }).toUpperCase();
+
+            // Cálculos Estadísticos
+            const total = reports.length;
+            const high = reports.filter(r => r.priority.toUpperCase() === 'ALTA').length;
+            const medium = reports.filter(r => r.priority.toUpperCase() === 'MEDIA').length;
+            const low = reports.filter(r => r.priority.toUpperCase() === 'BAJA').length;
+
+            const prep = reports.filter(r => r.eduLevel.toUpperCase() === 'PREPARATORIA').length;
+            const univ = reports.filter(r => r.eduLevel.toUpperCase() === 'UNIVERSIDAD').length;
+
+            const resueltos = reports.filter(r => r.status.toUpperCase() === 'RESUELTO').length;
+            const enProceso = reports.filter(r => r.status.toUpperCase() === 'EN PROCESO').length;
+            const pendientes = reports.filter(r => r.status.toUpperCase() === 'PENDIENTE').length;
+
+            let tableRows = '';
+            reports.forEach((r, idx) => {
+                tableRows += `
+                    <tr>
+                        <td style="text-align:center;">${idx+1}</td>
+                        <td><strong>${r.studentName.toUpperCase()}</strong></td>
+                        <td>${r.eduLevel.toUpperCase()}</td>
+                        <td>${r.reason.toUpperCase()}</td>
+                        <td style="text-align:center;"><strong>${r.priority.toUpperCase()}</strong></td>
+                        <td style="text-align:center;">${r.status.toUpperCase()}</td>
+                    </tr>
+                `;
+            });
+
+            const statsHTML = `
+            <!DOCTYPE html>
+            <html lang="es">
+            <head>
+                <meta charset="UTF-8">
+                <title>CEUT - Oficio Estadístico Global</title>
+                <style>
+                    @page {
+                        size: letter;
+                        margin: 0;
+                    }
+                    body {
+                        font-family: 'Georgia', 'Times New Roman', serif;
+                        color: #0F1332;
+                        background-color: #FFFFFF;
+                        margin: 0;
+                        padding: 0;
+                    }
+                    .document-container {
+                        width: 100%;
+                        max-width: 8.5in;
+                        min-height: 11in;
+                        padding: 1.2in 1in 1.2in 1in;
+                        box-sizing: border-box;
+                        position: relative;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-between;
+                        border: 4px double #E5A900;
+                        outline: 12px solid #1E2555;
+                        outline-offset: -16px;
+                    }
+                    .watermark {
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        width: 4.5in;
+                        height: 4.5in;
+                        transform: translate(-50%, -50%);
+                        background: url('https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2') no-repeat center;
+                        background-size: contain;
+                        opacity: 0.03;
+                        z-index: 0;
+                        pointer-events: none;
+                    }
+                    .header-table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        border-bottom: 2px solid #B28200;
+                        padding-bottom: 15px;
+                        margin-bottom: 30px;
+                    }
+                    .header-logo {
+                        width: 80px;
+                        height: auto;
+                    }
+                    .header-title-main {
+                        font-family: 'Cinzel', 'Georgia', serif;
+                        font-size: 16px;
+                        font-weight: 900;
+                        color: #1E2555;
+                        letter-spacing: 1px;
+                        text-align: right;
+                    }
+                    .header-subtitle {
+                        font-size: 10px;
+                        color: #B28200;
+                        text-align: right;
+                        font-weight: bold;
+                        letter-spacing: 0.5px;
+                        margin-top: 2px;
+                    }
+                    .oficio-title {
+                        font-family: 'Cinzel', 'Georgia', serif;
+                        font-size: 14px;
+                        font-weight: bold;
+                        text-align: center;
+                        color: #1E2555;
+                        text-decoration: underline;
+                        margin-bottom: 25px;
+                    }
+                    .stats-grid-table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin-bottom: 25px;
+                        font-size: 11px;
+                    }
+                    .stats-grid-table td {
+                        padding: 10px;
+                        border: 1px solid #CBD5E1;
+                        background-color: #F8FAFC;
+                    }
+                    .stats-badge-card {
+                        font-size: 14px;
+                        font-weight: bold;
+                        color: #1E2555;
+                        text-align: center;
+                    }
+                    .list-table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        font-size: 9px;
+                        margin-bottom: 30px;
+                    }
+                    .list-table th {
+                        background-color: #1E2555;
+                        color: #FFFFFF;
+                        padding: 6px;
+                        border: 1px solid #1E2555;
+                        font-family: 'Arial', sans-serif;
+                    }
+                    .list-table td {
+                        padding: 5px 8px;
+                        border: 1px solid #E2E8F0;
+                    }
+                    .signature-area {
+                        width: 100%;
+                        margin-top: 40px;
+                        text-align: center;
+                        font-size: 11px;
+                    }
+                    .signature-line {
+                        width: 200px;
+                        border-bottom: 1px solid #64748B;
+                        margin: 0 auto 10px auto;
+                    }
+                    .footer-notes {
+                        font-size: 8.5px;
+                        color: #64748B;
+                        text-align: justify;
+                        line-height: 1.4;
+                        border-top: 1px solid #E2E8F0;
+                        padding-top: 12px;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="document-container">
+                    <div class="watermark"></div>
+                    <div>
+                        <table class="header-table">
+                            <tr>
+                                <td>
+                                    <img src="https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2" class="header-logo" alt="CEUT">
+                                </td>
+                                <td>
+                                    <div class="header-title-main">CENTRO UNIVERSITARIO TEHUACÁN</div>
+                                    <div class="header-subtitle">DIRECCIÓN DE CONTROL ACADÉMICO Y PSICOPEDAGOGÍA</div>
+                                    <div class="header-subtitle" style="color: #475569;">REPORTE ESTADÍSTICO DE RENDIMIENTO</div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <div class="oficio-title">INFORME ESTADÍSTICO DE ALERTAS PSICOPEDAGÓGICAS</div>
+
+                        <div style="font-size: 11px; line-height: 1.6; text-align: justify; margin-bottom: 20px;">
+                            Por medio del presente balance formal, el Departamento de Control Académico del <strong>CEUT</strong>, dirigido por el <strong>Mtro. Carlos Aguilar Sánchez</strong>, presenta la distribución numérica de las alertas recopiladas hasta la fecha: <strong>${dateStr}</strong>.
+                        </div>
+
+                        <!-- Grid de Métricas Formales -->
+                        <table class="stats-grid-table">
+                            <tr>
+                                <td style="width: 50%;">
+                                    <strong>CONSOLIDADO DE PRIORIDAD:</strong><br>
+                                    • PRIORIDAD ALTA: <span style="color:#DC2626; font-weight:bold;">${high} CASOS</span><br>
+                                    • PRIORIDAD MEDIA: <span style="color:#D97706; font-weight:bold;">${medium} CASOS</span><br>
+                                    • PRIORIDAD BAJA: <span style="color:#059669; font-weight:bold;">${low} CASOS</span>
+                                </td>
+                                <td>
+                                    <strong>DISTRIBUCIÓN POR NIVEL:</strong><br>
+                                    • PREPARATORIA: <strong>${prep} CASOS</strong><br>
+                                    • UNIVERSIDAD: <strong>${univ} CASOS</strong><br><br>
+                                    <strong>TOTAL ACUMULADO: <span class="stats-badge-card">${total} EXPEDIENTES</span></strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <strong>ESTADO DE LOS TRATAMIENTOS:</strong><br>
+                                    • PENDIENTES: <strong>${pendientes}</strong> | • EN PROCESO: <strong>${enProceso}</strong> | • RESUELTOS: <strong>${resueltos} (EFICACIA: ${total ? Math.round((resueltos/total)*100) : 0}%)</strong>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <div style="font-size: 10px; font-weight: bold; color: #1E2555; margin-bottom: 10px; font-family: 'Arial', sans-serif;">
+                            DESGLOSE GENERAL DE EXPEDIENTES BAJO SEGUIMIENTO:
+                        </div>
+
+                        <table class="list-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 5%;">#</th>
+                                    <th style="width: 25%;">ESTUDIANTE</th>
+                                    <th style="width: 15%;">NIVEL</th>
+                                    <th style="width: 35%;">MOTIVO PRINCIPAL</th>
+                                    <th style="width: 10%;">PRIORIDAD</th>
+                                    <th style="width: 10%;">ESTADO</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${tableRows}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div>
+                        <div class="signature-area">
+                            <div class="signature-line"></div>
+                            <strong>MTRO. CARLOS AGUILAR SÁNCHEZ</strong><br>
+                            Director del Departamento Psicopedagógico CEUT
+                        </div>
+
+                        <div class="footer-notes">
+                            <strong>CONVENIO DE CONFIDENCIALIDAD ESTADÍSTICA:</strong> Este balance se emite con fines de auditoría y mejora académica del Centro Universitario Tehuacán. La información de los nombres y motivos recopilados se clasifica como estrictamente reservada y confidencial conforme a lo estipulado por la Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP).
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    window.onload = function() {
+                        window.print();
+                    };
+                <\/script>
+            </body>
+            </html>
+            `;
+
+            printWindow.document.open();
+            printWindow.document.write(statsHTML);
+            printWindow.document.close();
         }
 
         window.onload = function() {
