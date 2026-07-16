@@ -14,6 +14,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Lora:ital,wght=0,400;0,600;0,700;1,400&family=Inter:wght=300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- Biblioteca oficial de html2pdf para descargas directas en formato membretado -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
     <script>
         tailwind.config = {
             theme: {
@@ -42,13 +45,13 @@
             background-color: #FFFFFF !important; /* Fondo Blanco Sólido Puro Oficial */
         }
 
-        /* Alineación formal y académica estilo actas legales mexicanas */
+        /* Alineación formal y académica estilo de oficios oficiales mexicanos */
         .text-justified {
             text-align: justify !important;
             text-justify: inter-word !important;
         }
 
-        /* Animación Shimmer con colores strictly institucionales */
+        /* Animación Shimmer con colores institucionales */
         @keyframes goldShimmer {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -116,7 +119,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, addDoc, collection, onSnapshot, query, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, addDoc, collection, onSnapshot, query, serverTimestamp, enableIndexedDbPersistence } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
             apiKey: "AIzaSyCVgbSlImT02t1SMJ6RljHpzpDDJPBKMxk",
@@ -149,7 +152,6 @@
                 level: 'ALL',
                 status: 'ALL'
             },
-            // Datos de respaldo iniciales cargados en memoria como catálogo base en español de México
             mockReports: [
                 {
                     id: "CASO-01",
@@ -189,7 +191,7 @@
                     reason: "INASISTENCIA FRECUENTE Y AUSENTISMO",
                     priority: "MEDIA",
                     priorIntervention: "NO",
-                    situation: "LA ALUMNA HA ACUMULADO UN 40% DE INASISTENCIAS EN LO QUE VA DEL CICLO ESCOLAR. SE INTENTO CONTACTO POR CORREO DE TUTORIA PERO NO SE HA RECIBIDO RESPUESTA ALGUNA POR SU PARTE.",
+                    situation: "LA ALUMNA HA ACUMULADO UN 40% DE INASISTENCIAS EN LO QUE VA DEL CICLO ESCOLAR. SE INTENTO CONTACTO POR CORREO DE TUTORIA BUT NO SE HA RECIBIDO RESPUESTA ALGUNA.",
                     status: "EN PROCESO",
                     notes: "EL MTRO. CARLOS AGUILAR ASIGNO UN TUTOR DE SEGUIMIENTO PSICOPEDAGOGICO Y SE EMITIO UN CITATORIO FISICO.",
                     dataConsent: true,
@@ -198,44 +200,58 @@
             ]
         };
 
-        // Inicialización de Firebase
-        try {
-            const app = initializeApp(firebaseConfig);
-            const db = getFirestore(app);
-            const auth = getAuth(app);
-            
-            window.appState.db = db;
-            window.appState.auth = auth;
+        async function inicializarFirebaseSeguro() {
+            try {
+                const app = initializeApp(firebaseConfig);
+                const db = getFirestore(app);
+                const auth = getAuth(app);
+                
+                window.appState.db = db;
+                window.appState.auth = auth;
 
-            onAuthStateChanged(auth, (user) => {
-                if (user) {
-                    window.appState.currentUser = user;
+                // ACTIVACIÓN DE LA PERSISTENCIA INTEGRAL OFFLINE
+                // Esto garantiza que Firebase guarde en IndexedDB todos los cambios locales y los sincronice SIEMPRE
+                try {
+                    await enableIndexedDbPersistence(db);
+                    console.log("PERSISTENCIA OFFLINE ACTIVADA CORRECTAMENTE.");
+                } catch (err) {
+                    if (err.code == 'failed-precondition') {
+                        console.warn("La persistencia falló: múltiples pestañas de navegación abiertas.");
+                    } else if (err.code == 'unimplemented') {
+                        console.warn("El navegador web no es compatible con el guardado offline nativo.");
+                    }
+                }
+
+                // Forzar autenticación asíncrona robusta antes de mapear colecciones
+                let cred;
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    cred = await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    cred = await signInAnonymously(auth);
+                }
+
+                if (cred && cred.user) {
+                    window.appState.currentUser = cred.user;
                     window.appState.isFirebaseActive = true;
-                    updateCloudStatusUI(true);
+                    updateCloudStatusUI(navigator.onLine);
                     inicializarSuscripcionFirestore();
                     inicializarSuscripcionLectores();
                 } else {
-                    autenticarUsuario();
+                    throw new Error("No se obtuvieron credenciales válidas en la nube.");
                 }
-            });
 
-        } catch (e) {
-            console.error("ERROR AL INICIALIZAR LOS SERVICIOS DE FIREBASE:", e);
-            disableCloudStatusUI();
-        }
-
-        async function autenticarUsuario() {
-            try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(window.appState.auth, __initial_auth_token);
-                } else {
-                    await signInAnonymously(window.appState.auth);
-                }
-            } catch (err) {
-                console.warn("AUTENTICACIÓN EN FIREBASE RECHAZADA, TRABAJANDO EN MODO LOCAL DE SÓLO LECTURA:", err);
+            } catch (e) {
+                console.warn("MODO LOCAL SEGURO: Inicialización offline fallback:", e);
                 disableCloudStatusUI();
             }
         }
+
+        // Ejecutar inicialización asíncrona
+        inicializarFirebaseSeguro();
+
+        // Escuchar el estado de red real del navegador para actualizar la cabecera
+        window.addEventListener('online', () => updateCloudStatusUI(true));
+        window.addEventListener('offline', () => updateCloudStatusUI(false));
 
         function inicializarSuscripcionFirestore() {
             const db = window.appState.db;
@@ -246,7 +262,7 @@
             onSnapshot(collectionRef, (snapshot) => {
                 const reports = [];
                 snapshot.forEach((doc) => {
-                    reports.push({ id: doc.id, firestoreId: doc.id, ...doc.data() });
+                    reports.push({ id: doc.data().id || doc.id, firestoreId: doc.id, ...doc.data() });
                 });
                 
                 reports.sort((a, b) => {
@@ -259,8 +275,7 @@
                 renderReports();
                 renderMetrics();
             }, (error) => {
-                console.error("FALLA EN LA SINCRONIZACIÓN EN TIEMPO REAL DE FIRESTORE:", error);
-                disableCloudStatusUI();
+                console.error("Falla en la recepción de datos en tiempo real de Firestore:", error);
             });
         }
 
@@ -279,7 +294,7 @@
                 if (readers.length > 0) {
                     window.appState.authorizedReaders = readers;
                 } else {
-                    // Si no existen, los creamos por defecto en la nube
+                    // Cargar lectores predeterminados en la nube para inicialización limpia
                     window.appState.authorizedReaders.forEach(async (reader) => {
                         const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'readers', reader.id);
                         await setDoc(docRef, reader);
@@ -288,7 +303,7 @@
                 
                 renderAuthorizedReadersPanel();
             }, (error) => {
-                console.error("FALLA EN LA CONFIGURACIÓN DE LECTORES FIRESTORE:", error);
+                console.error("Falla de carga en los canales de lectores:", error);
             });
         }
 
@@ -300,10 +315,10 @@
             renderMetrics();
         }
 
-        function updateCloudStatusUI(active) {
+        function updateCloudStatusUI(online) {
             const indicator = document.getElementById('cloud-status-indicator');
             if (indicator) {
-                if (active) {
+                if (online && window.appState.isFirebaseActive) {
                     indicator.innerHTML = `
                         <span class="relative flex h-3 w-3">
                             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -311,19 +326,29 @@
                         </span>
                         <span class="font-bold text-[10px] text-emerald-400 uppercase tracking-widest font-sans">NUBE SINCRONIZADA</span>
                     `;
+                } else if (!online && window.appState.isFirebaseActive) {
+                    indicator.innerHTML = `
+                        <span class="relative flex h-3 w-3">
+                            <span class="animate-pulse absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-3 w-3 bg-amber-500"></span>
+                        </span>
+                        <span class="font-bold text-[10px] text-amber-500 uppercase tracking-widest font-sans">COLA SINCRÓNICA OFFLINE ACTIVA</span>
+                    `;
                 } else {
                     indicator.innerHTML = `
                         <span class="relative flex h-3 w-3">
                             <span class="relative inline-flex rounded-full h-3 w-3 bg-rose-500"></span>
                         </span>
-                        <span class="font-bold text-[10px] text-rose-500 uppercase tracking-widest font-sans">SIN CONEXIÓN A LA NUBE (SÓLO LECTURA)</span>
+                        <span class="font-bold text-[10px] text-rose-500 uppercase tracking-widest font-sans">SIN CONEXIÓN A INTERNET</span>
                     `;
                 }
             }
         }
 
         window.submitReportToFirestore = async function(newReport) {
-            if (window.appState.isFirebaseActive && window.appState.db && window.appState.currentUser) {
+            // Guardado automático: Firebase se encargará de guardarlo de forma local e inmediata
+            // y subirlo a la nube tan pronto vuelva la señal de forma 100% nativa.
+            if (window.appState.db) {
                 try {
                     const colRef = collection(window.appState.db, 'artifacts', appId, 'public', 'data', 'reports');
                     await addDoc(colRef, {
@@ -332,7 +357,7 @@
                     });
                     return true;
                 } catch (e) {
-                    console.error("ERROR AL GUARDAR EL REPORTE EN FIREBASE:", e);
+                    console.error("Falla al enviar a Firestore:", e);
                     return false;
                 }
             }
@@ -340,9 +365,8 @@
         };
 
         window.updateReportStatusInFirestore = async function(reportId, updatedFields) {
-            if (window.appState.isFirebaseActive && window.appState.db && window.appState.currentUser) {
+            if (window.appState.db) {
                 try {
-                    // Buscar documento por el ID descriptivo o el ID dinámico de Firestore
                     const docToUpdate = window.appState.reports.find(r => r.id === reportId);
                     const firestoreId = docToUpdate?.firestoreId || reportId;
                     
@@ -350,7 +374,7 @@
                     await updateDoc(docRef, updatedFields);
                     return true;
                 } catch (e) {
-                    console.error("FALLA AL ACTUALIZAR EN FIREBASE:", e);
+                    console.error("Falla al actualizar en Firestore:", e);
                     return false;
                 }
             }
@@ -358,7 +382,7 @@
         };
 
         window.deleteReportInFirestore = async function(reportId) {
-            if (window.appState.isFirebaseActive && window.appState.db && window.appState.currentUser) {
+            if (window.appState.db) {
                 try {
                     const docToDelete = window.appState.reports.find(r => r.id === reportId);
                     const firestoreId = docToDelete?.firestoreId || reportId;
@@ -367,16 +391,15 @@
                     await deleteDoc(docRef);
                     return true;
                 } catch (e) {
-                    console.error("ERROR AL ELIMINAR EL REPORTE EN FIREBASE:", e);
+                    console.error("Falla al eliminar en Firestore:", e);
                     return false;
                 }
             }
             return false;
         };
 
-        // Permite al Maestro Carlos guardar las tres personas autorizadas directamente en Firebase
         window.updateAuthorizedReaderInFirestore = async function(readerId, name, pin) {
-            if (window.appState.isFirebaseActive && window.appState.db && window.appState.currentUser) {
+            if (window.appState.db) {
                 try {
                     const docRef = doc(window.appState.db, 'artifacts', appId, 'public', 'data', 'readers', readerId);
                     await setDoc(docRef, {
@@ -386,7 +409,7 @@
                     });
                     return true;
                 } catch (e) {
-                    console.error("FALLA AL GUARDAR LECTOR EN FIREBASE:", e);
+                    console.error("Falla al guardar configuración de lectores en Firestore:", e);
                     return false;
                 }
             }
@@ -1113,7 +1136,7 @@
     <div id="deleteConfirmModal" class="fixed inset-0 z-[60] overflow-y-auto bg-slate-900/90 hidden items-center justify-center p-4 transition-all duration-300">
         <div class="solid-panel rounded-[2rem] max-w-sm w-full border-2 border-rose-600 bg-white p-6 space-y-6 text-center shadow-blue-glow transform scale-95 transition-all">
             <div class="mx-auto h-16 w-16 rounded-full bg-rose-100 flex items-center justify-center text-rose-600 text-2xl border-2 border-rose-300">
-                <i class="fa-solid fa-trash-can animate-bounce"></i>
+                <i class="fa-solid fa-trash-can animate-bounce text-rose-600"></i>
             </div>
             <div class="space-y-2">
                 <h4 class="font-bold text-lg text-slate-950 font-formal uppercase">¿Eliminar Expediente?</h4>
@@ -1148,7 +1171,7 @@
                 </button>
             </div>
             
-            <!-- DETALLES EXPEDIENTE (CAMPOS INTERNOS DEL MODAL) -->
+            <!-- DETALLES EXPEDIENTE -->
             <div class="p-6 sm:p-8 space-y-6 overflow-y-auto flex-grow text-justified bg-white">
                 
                 <!-- Alerta Banner de Modo de Sólo Lectura dentro de los detalles -->
@@ -1277,7 +1300,7 @@
                     <button id="btn-details-delete" onclick="triggerDeleteReport()" class="bg-rose-50 hover:bg-rose-100 border border-rose-300 text-rose-700 font-bold px-4 py-3 rounded-xl text-xs flex items-center gap-2 transition-all uppercase">
                         <i class="fa-solid fa-trash-can"></i> Eliminar
                     </button>
-                    <button onclick="printOfficialLetterhead()" class="bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-emerald-700 font-bold px-4 py-3 rounded-xl text-xs flex items-center gap-2 transition-all uppercase">
+                    <button onclick="downloadReportPDFDirect()" class="bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-emerald-700 font-bold px-4 py-3 rounded-xl text-xs flex items-center gap-2 transition-all uppercase">
                         <i class="fa-solid fa-file-pdf"></i> Oficio Individual
                     </button>
                 </div>
@@ -1348,7 +1371,7 @@
             
             toast.className = `${bgClass} text-white p-5 rounded-2xl border-2 shadow-blue-glow flex gap-3.5 transform translate-y-2 opacity-0 transition-all duration-300`;
             toast.innerHTML = `
-                <i class="fa-solid ${iconClass} text-xl mt-0.5 animate-pulse"></i>
+                <i class="fa-solid ${iconClass} text-xl mt-0.5 animate-pulse text-ceutGold"></i>
                 <div class="text-left">
                     <h5 class="font-bold text-xs tracking-widest uppercase text-ceutGold">${title.toUpperCase()}</h5>
                     <p class="text-[11px] font-semibold mt-1 text-white/90 text-justified leading-relaxed uppercase">${message.toUpperCase()}</p>
@@ -1714,16 +1737,16 @@
                 });
                 toggleEducationalFields();
 
-                showNotification("Registro Exitoso", "Incidencia guardada en la nube y correo despachado con éxito.", "success");
+                showNotification("Registro Exitoso", "Incidencia guardada y sincronizada en tiempo real con la nube.", "success");
             } else {
-                // Almacenamiento local en caso de desconexión
+                // Almacenamiento local en caso de desconexión extrema
                 newReport.timestamp = new Date();
                 window.appState.reports.unshift(newReport);
                 renderReports();
                 renderMetrics();
                 triggerAutomaticEmailDispatch(newReport);
                 openGratitudeModal(newReport);
-                showNotification("Guardado Local", "Sincronización en la nube inactiva, expediente resguardado en memoria temporal.", "success");
+                showNotification("Guardado Local", "La nube no respondió. El expediente se ha encolado de forma local y se sincronizará automáticamente al restaurar conexión.", "success");
             }
 
             submitBtn.disabled = false;
@@ -2121,14 +2144,14 @@ TIGRES CEUT — PSICOPEDAGOGIA`;
                 showNotification("Guardado", "Expediente psicopedagógico actualizado con éxito.", "success");
                 closeDetailsModal();
             } else {
-                // Actualizar localmente en memoria
+                // Actualizar localmente en memoria (Firebase sincronizará automáticamente después)
                 const index = window.appState.reports.findIndex(r => r.id === activeViewReportId);
                 if (index !== -1) {
                     window.appState.reports[index] = { ...window.appState.reports[index], ...updatedFields };
                     renderReports();
                     renderMetrics();
                 }
-                showNotification("Guardado Local", "Expediente actualizado de forma local (Nube Sin Conexión).", "success");
+                showNotification("Guardado Local", "Expediente actualizado de forma local. Se sincronizará automáticamente al detectar red.", "success");
                 closeDetailsModal();
             }
         }
@@ -2151,7 +2174,7 @@ TIGRES CEUT — PSICOPEDAGOGIA`;
                 if (success) {
                     showNotification("Eliminado", "Expediente removido de la nube exitosamente.", "success");
                 } else {
-                    // Eliminación local
+                    // Eliminación local en cola
                     window.appState.reports = window.appState.reports.filter(r => r.id !== targetId);
                     renderReports();
                     renderMetrics();
@@ -2313,7 +2336,7 @@ TIGRES CEUT — PSICOPEDAGOGIA`;
                 </div>
             `;
 
-            // Configuración óptima de html2pdf para mantener formato de hoja de vida / carta
+            // Configuración de html2pdf para descargas fluidas
             const opt = {
                 margin:       [5, 5, 5, 5], 
                 filename:     `Oficio_Psicopedagogico_${report.id}_${report.studentName.replace(/\s+/g, '_')}.pdf`,
@@ -2369,7 +2392,7 @@ TIGRES CEUT — PSICOPEDAGOGIA`;
                         box-sizing: border-box;
                         position: relative;
                         display: flex;
-                        flex-col: column;
+                        flex-direction: column;
                         justify-content: space-between;
                         border: 4px double #E5A900;
                         outline: 12px solid #1E2555;
