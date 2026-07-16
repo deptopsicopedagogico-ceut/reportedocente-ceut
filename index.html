@@ -973,7 +973,7 @@
                 <div>
                     <h5 class="font-bold text-ceutBlue uppercase tracking-widest text-xs mb-2 font-sans">2. Tratamiento de Datos Personales Sensibles</h5>
                     <p class="text-justified text-slate-600">
-                        Se hace constar que los datos relativos a conductas disruptivas o de salud emocional se clasifican legalmente en México como **Datos Personales Sensibles** (Art. 3 Fracc. VI LFPDPPP). Para garantizar su absoluta protección, el CEUT ha implementado esquemas de seguridad lógica y cifrado de base de datos que impiden que esta información sea difundida o expuesta de manera deliberada a terceros sin consentimiento.
+                        Se hace constar que los datos relativos a conductas disruptivas o de salud emocional se clasifican legalmente en México como **Datos Personales Sensibles** (Art. 3 Fracc. VI LFPDPPP). Para garantizar su absoluta protección, el CEUT ha implementado esquemas de seguridad lógica y cifrado de base de datos que impiden que esta información sea difusión o expuesta de manera deliberada a terceros sin consentimiento.
                     </p>
                 </div>
 
@@ -1023,7 +1023,7 @@
                 <div class="space-y-3">
                     <h3 class="text-xl sm:text-2xl font-black text-ceutBlue font-formal gold-shimmer-text">¡Muchas gracias por su compromiso docente!</h3>
                     <p class="text-xs sm:text-sm text-slate-600 leading-relaxed text-justified font-serif p-4 bg-[#FFFDF0] rounded-2xl border-2 border-ceutGold/30">
-                        Su incidencia ha sido guardada de forma segura en nuestro expediente digital confidencial. **Ya puede descargar su oficio membretado oficial** con el folio único de registro.
+                        Su incidencia ha sido guardada de forma segura en nuestro expediente digital confidencial. **Ya puede descargar su oficio membretado oficial de una sola hoja** con el folio único de registro.
                     </p>
                 </div>
 
@@ -1031,9 +1031,9 @@
                 <div class="p-4 bg-slate-50 rounded-2xl border-2 border-ceutBlue/30 space-y-3.5">
                     <p class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center justify-center gap-1.5"><i class="fa-solid fa-download text-ceutGold-dark"></i> Documentación formal instantánea</p>
                     <button onclick="downloadSubmittedReportPDF()" class="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white font-extrabold px-6 py-3.5 rounded-xl text-xs shadow-md transition-all duration-200 hover:scale-105 flex items-center justify-center gap-2 uppercase min-h-[44px]">
-                        <i class="fa-solid fa-file-pdf text-base"></i> DESCARGAR OFICIO EN PDF
+                        <i class="fa-solid fa-file-pdf text-base"></i> DESCARGAR OFICIO (1 HOJA)
                     </button>
-                    <p class="text-[10px] text-slate-500 italic">Este PDF oficial constituye el acuse membretado formal de entrega para su expediente personal.</p>
+                    <p class="text-[10px] text-slate-500 italic">Este PDF constituye el acuse membretado formal de entrega para su expediente personal.</p>
                 </div>
 
                 <div class="space-y-4 text-left text-xs sm:text-sm border-t-2 border-slate-100 pt-4 bg-white">
@@ -1271,7 +1271,6 @@
         </div>
     </div>
 
-    <!-- PIE DE PAGINA -->
     <footer class="bg-ceutBlue-dark text-slate-400 text-xs border-t-2 border-ceutGold mt-20 py-10 sm:py-14 relative overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 flex flex-col lg:flex-row items-center justify-between gap-8 relative z-10 text-center lg:text-left">
             <div class="flex items-center gap-4 sm:gap-5 flex-col sm:flex-row text-center sm:text-left">
@@ -1280,7 +1279,7 @@
                 </div>
                 <div>
                     <p class="text-slate-300 font-serif italic text-sm text-justified uppercase">&copy; 2026 Centro Universitario Tehuacán (CEUT). Todos los derechos reservados. <span class="text-ceutGold font-bold font-sans not-italic text-xs ml-1 tracking-widest">#SOMOSTIGRES</span></p>
-                    <p class="text-[11px] text-slate-400 mt-2 max-w-2xl text-justified leading-relaxed font-serif uppercase">Plataforma digital para la gestión de de incidencias docentes y la intervención psicopedagógica confidencial. Cumple rigurosamente con la legislación de datos personales de los Estados Unidos Mexicanos.</p>
+                    <p class="text-[11px] text-slate-400 mt-2 max-w-2xl text-justified leading-relaxed font-serif uppercase">Plataforma digital para la gestión de incidencias docentes y la intervención psicopedagógica confidencial. Cumple rigurosamente con la legislación de datos personales de los Estados Unidos Mexicanos.</p>
                 </div>
             </div>
             <div class="flex flex-wrap gap-5 justify-center lg:justify-end text-[11px] font-bold tracking-widest uppercase font-sans">
@@ -2107,14 +2106,14 @@
             deleteModal.classList.remove('flex');
         }
 
-        // FUNCIÓN CENTRALIZADA PARA LA GENERACIÓN DE ARCHIVO MEMBRETADO PDF OFICIAL
+        // GENERACIÓN EXCLUSIVA DE EXPEDIENTE PDF MEMBRETADO CON DESCARGA DIRECTA E INMEDIATA (FIJADO A 1 HOJA CARTA)
         window.compileAndDownloadPDF = function(report) {
             if (!report) {
                 showNotification("Error", "No hay datos para compilar el PDF.", "error");
                 return;
             }
 
-            showNotification("Compilando PDF", "Iniciando compilación de hoja membretada...", "success");
+            showNotification("Compilando PDF", "Iniciando compilación de hoja membretada única...", "success");
 
             const dateObj = report.timestamp ? (report.timestamp.seconds ? new Date(report.timestamp.seconds * 1000) : new Date(report.timestamp)) : new Date();
             const dateStr = dateObj.toLocaleDateString('es-MX', {
@@ -2123,111 +2122,127 @@
 
             const folio = report.id || `CEUT-PSIC-TEMP`;
 
+            // Creamos un wrapper contenedor invisible en el Viewport real para evitar el renderizado en blanco
+            const wrapper = document.createElement('div');
+            wrapper.style.position = 'absolute';
+            wrapper.style.top = '0';
+            wrapper.style.left = '0';
+            wrapper.style.width = '100%';
+            wrapper.style.height = '0';
+            wrapper.style.overflow = 'hidden';
+            wrapper.style.zIndex = '-99999';
+
             const pdfContainer = document.createElement('div');
-            // Estilos para garantizar que se procese visiblemente para el motor de captura de html2pdf
             pdfContainer.style.width = '195mm';
-            pdfContainer.style.fontFamily = 'Lora, Georgia, serif';
-            pdfContainer.style.color = '#0F1332';
-            pdfContainer.style.backgroundColor = '#FFFFFF';
+            pdfContainer.style.height = '258mm'; // Altura ideal para Carta (Letter) restando márgenes
             pdfContainer.style.boxSizing = 'border-box';
-            pdfContainer.style.padding = '10mm';
-            pdfContainer.style.position = 'fixed';
-            pdfContainer.style.left = '-9999px'; // Posicionamiento fuera de pantalla pero acoplado al DOM
-            pdfContainer.style.top = '0';
-            pdfContainer.style.zIndex = '-9999';
+            pdfContainer.style.backgroundColor = '#FFFFFF';
+            pdfContainer.style.color = '#0F1332';
+            pdfContainer.style.fontFamily = 'Lora, Georgia, serif';
+            pdfContainer.style.position = 'relative';
 
             pdfContainer.innerHTML = `
-                <div style="border: 4px double #E5A900; outline: 10px solid #1E2555; outline-offset: -14px; padding: 12mm 10mm; position: relative; min-height: 250mm; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between;">
+                <!-- Borde Doble Institucional - Flexbox para empujar contenido al ras -->
+                <div style="border: 3px double #E5A900; outline: 10px solid #1E2555; outline-offset: -13px; padding: 15px 20px; height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; background-color: #FFFFFF; position: relative;">
                     
-                    <div style="position: absolute; top: 45%; left: 50%; width: 110mm; height: 110mm; transform: translate(-50%, -50%); background: url('https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2') no-repeat center; background-size: contain; opacity: 0.05; z-index: 0; pointer-events: none;"></div>
+                    <!-- Sello de agua sutil del Escudo Oficial de Tigres en el centro -->
+                    <div style="position: absolute; top: 45%; left: 50%; width: 100mm; height: 100mm; transform: translate(-50%, -50%); background: url('https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2') no-repeat center; background-size: contain; opacity: 0.05; z-index: 0; pointer-events: none;"></div>
 
                     <div style="position: relative; z-index: 10;">
-                        <table style="width: 100%; border-collapse: collapse; border-bottom: 2px solid #B28200; padding-bottom: 4mm; margin-bottom: 6mm;">
+                        <!-- Encabezado Membretado Oficial -->
+                        <table style="width: 100%; border-collapse: collapse; border-bottom: 2px solid #B28200; padding-bottom: 8px; margin-bottom: 12px;">
                             <tr>
-                                <td style="width: 22mm; vertical-align: middle;">
-                                    <img src="https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2" style="width: 20mm; height: auto; display: block;" alt="CEUT Shield">
+                                <td style="width: 18mm; vertical-align: middle; padding-bottom: 6px;">
+                                    <img src="https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2" style="width: 16mm; height: auto; display: block;" alt="CEUT Shield" crossOrigin="anonymous">
                                 </td>
-                                <td style="text-align: right; vertical-align: middle; padding-left: 5mm;">
-                                    <div style="font-family: 'Cinzel', Georgia, serif; font-size: 14pt; font-weight: 900; color: #1E2555; letter-spacing: 0.5px; margin: 0;">CENTRO UNIVERSITARIO TEHUACÁN</div>
-                                    <div style="font-size: 8.5pt; color: #B28200; font-weight: bold; letter-spacing: 0.5px; margin-top: 1mm; font-family: 'Inter', sans-serif;">DIRECCIÓN DE CONTROL ACADÉMICO Y DEPARTAMENTO PSICOPEDAGÓGICO</div>
-                                    <div style="font-size: 7.5pt; color: #475569; font-weight: bold; margin-top: 0.5mm; font-family: 'Inter', sans-serif;">PRACTICA PROFESIONAL Y RESGUARDO DE DATOS • TEHUACÁN, PUEBLA</div>
+                                <td style="text-align: right; vertical-align: middle; padding-left: 15px; padding-bottom: 6px;">
+                                    <div style="font-family: 'Cinzel', Georgia, serif; font-size: 13pt; font-weight: 900; color: #1E2555; letter-spacing: 0.5px; margin: 0;">CENTRO UNIVERSITARIO TEHUACÁN</div>
+                                    <div style="font-size: 8pt; color: #B28200; font-weight: bold; letter-spacing: 0.5px; margin-top: 2px; font-family: 'Inter', sans-serif;">DIRECCIÓN DE CONTROL ACADÉMICO Y DEPARTAMENTO PSICOPEDAGÓGICO</div>
+                                    <div style="font-size: 7pt; color: #475569; font-weight: bold; margin-top: 1px; font-family: 'Inter', sans-serif;">PRACTICA PROFESIONAL Y RESGUARDO DE DATOS • TEHUACÁN, PUEBLA</div>
                                 </td>
                             </tr>
                         </table>
 
-                        <div style="width: 100%; text-align: right; font-size: 8.5pt; color: #334155; line-height: 1.5; margin-bottom: 6mm; font-family: 'Inter', sans-serif;">
-                            <strong>NÚMERO DE FOLIO:</strong> ${folio}<br>
+                        <!-- Bloque de Metadatos del Oficio Oficial -->
+                        <div style="width: 100%; text-align: right; font-size: 8pt; color: #334155; line-height: 1.4; margin-bottom: 12px; font-family: 'Inter', sans-serif;">
+                            <strong>NÚMERO DE OFICIO:</strong> ${folio}<br>
                             <strong>ASUNTO:</strong> EXPEDIENTE CONFIDENCIAL DE INTERVENCIÓN DOCENTE<br>
                             <strong>FECHA DE EMISIÓN:</strong> TEHUACÁN, PUEBLA, A ${dateStr}
                         </div>
 
-                        <div style="font-family: 'Cinzel', Georgia, serif; font-size: 11.5pt; font-weight: bold; text-align: center; color: #1E2555; text-decoration: underline; margin-bottom: 6mm; letter-spacing: 0.5px;">
+                        <!-- Título Principal -->
+                        <div style="font-family: 'Cinzel', Georgia, serif; font-size: 10pt; font-weight: bold; text-align: center; color: #1E2555; text-decoration: underline; margin-bottom: 12px; letter-spacing: 0.5px;">
                             EXPEDIENTE DE ATENCIÓN PSICOPEDAGÓGICA Y MEDIACIÓN ESTUDIANTIL
                         </div>
 
-                        <div style="font-size: 9.5pt; line-height: 1.7; text-align: justify; text-justify: inter-word; margin-bottom: 5mm; text-indent: 10mm; font-family: 'Lora', Georgia, serif;">
+                        <!-- Párrafo Inicial Formulado Formalmente -->
+                        <div style="font-size: 9pt; line-height: 1.5; text-align: justify; margin-bottom: 12px; text-indent: 15px; font-family: 'Lora', Georgia, serif;">
                             Por medio de este instrumento formal, el Departamento Psicopedagógico del <strong>Centro Universitario Tehuacán (CEUT)</strong>, bajo la titularidad técnica del <strong>Mtro. Carlos Aguilar Sánchez</strong>, deja constancia plena de la alerta académica e intervención socioemocional iniciada en torno al alumno que se detalla en el cuadro de control adjunto. El presente informe ha sido validado bajo protesta de decir verdad por el emisor docente y certificado de conformidad legal.
                         </div>
 
-                        <table style="width: 100%; border-collapse: collapse; margin: 5mm 0; font-size: 8.5pt; font-family: 'Inter', sans-serif;">
+                        <!-- Cuadro de Datos de Control Académico -->
+                        <table style="width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 8pt; font-family: 'Inter', sans-serif;">
                             <thead>
                                 <tr>
-                                    <th colspan="2" style="background-color: #1E2555; color: #FFFFFF; font-weight: bold; padding: 2mm 3mm; text-align: left; border: 1px solid #1E2555; font-size: 7.5pt; letter-spacing: 0.5px; text-transform: uppercase;">DATOS GENERALES DEL ALUMNO Y EXPEDIENTE</th>
+                                    <th colspan="2" style="background-color: #1E2555; color: #FFFFFF; font-weight: bold; padding: 5px 8px; text-align: left; border: 1px solid #1E2555; font-size: 8pt; letter-spacing: 0.5px; text-transform: uppercase;">DATOS GENERALES DEL ALUMNO Y EXPEDIENTE</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td style="width: 35%; padding: 2mm 3mm; border: 1px solid #E2E8F0; background-color: #F8FAFC; font-weight: bold;">ESTUDIANTE OBSERVADO:</td>
-                                    <td style="padding: 2mm 3mm; border: 1px solid #E2E8F0; text-transform: uppercase; font-weight: bold; color: #1E2555;">${(report.studentName || "").toUpperCase()}</td>
+                                    <td style="width: 35%; padding: 5px 8px; border: 1px solid #E2E8F0; background-color: #F8FAFC; font-weight: bold;">ESTUDIANTE OBSERVADO:</td>
+                                    <td style="padding: 5px 8px; border: 1px solid #E2E8F0; text-transform: uppercase; font-weight: bold; color: #1E2555;">${(report.studentName || "").toUpperCase()}</td>
                                 </tr>
                                 <tr>
-                                    <td style="padding: 2mm 3mm; border: 1px solid #E2E8F0; background-color: #F8FAFC; font-weight: bold;">NIVEL EDUCATIVO Y GRUPO:</td>
-                                    <td style="padding: 2mm 3mm; border: 1px solid #E2E8F0; text-transform: uppercase;">${(report.eduLevel || "").toUpperCase()} — ${(report.grade || "").toUpperCase()} GRUPO "${(report.group || "").toUpperCase()}" (${(report.modality || "").toUpperCase()})</td>
+                                    <td style="padding: 5px 8px; border: 1px solid #E2E8F0; background-color: #F8FAFC; font-weight: bold;">NIVEL EDUCATIVO Y GRUPO:</td>
+                                    <td style="padding: 5px 8px; border: 1px solid #E2E8F0; text-transform: uppercase;">${(report.eduLevel || "").toUpperCase()} — ${(report.grade || "").toUpperCase()} GRUPO "${(report.group || "").toUpperCase()}" (${(report.modality || "").toUpperCase()})</td>
                                 </tr>
-                                ${report.career ? `
+                                ${(report.career) ? `
                                 <tr>
-                                    <td style="padding: 2mm 3mm; border: 1px solid #E2E8F0; background-color: #F8FAFC; font-weight: bold;">CARRERA UNIVERSITARIA:</td>
-                                    <td style="padding: 2mm 3mm; border: 1px solid #E2E8F0; text-transform: uppercase;">${report.career.toUpperCase()}</td>
+                                    <td style="padding: 5px 8px; border: 1px solid #E2E8F0; background-color: #F8FAFC; font-weight: bold;">CARRERA UNIVERSITARIA:</td>
+                                    <td style="padding: 5px 8px; border: 1px solid #E2E8F0; text-transform: uppercase;">${report.career.toUpperCase()}</td>
                                 </tr>` : ''}
                                 <tr>
-                                    <td style="padding: 2mm 3mm; border: 1px solid #E2E8F0; background-color: #F8FAFC; font-weight: bold;">DOCENTE EMISOR / ASIGNATURA:</td>
-                                    <td style="padding: 2mm 3mm; border: 1px solid #E2E8F0; text-transform: uppercase;">${(report.teacherName || "").toUpperCase()} (${(report.teacherSubject || "").toUpperCase()})</td>
+                                    <td style="padding: 5px 8px; border: 1px solid #E2E8F0; background-color: #F8FAFC; font-weight: bold;">DOCENTE EMISOR / ASIGNATURA:</td>
+                                    <td style="padding: 5px 8px; border: 1px solid #E2E8F0; text-transform: uppercase;">${(report.teacherName || "").toUpperCase()} (${(report.teacherSubject || "").toUpperCase()})</td>
                                 </tr>
                                 <tr>
-                                    <td style="padding: 2mm 3mm; border: 1px solid #E2E8F0; background-color: #F8FAFC; font-weight: bold;">MOTIVO DE LA ALERTA ACADÉMICA:</td>
-                                    <td style="padding: 2mm 3mm; border: 1px solid #E2E8F0; text-transform: uppercase; font-weight: bold; color: #DC2626;">${(report.reason || "").toUpperCase()} (SEMAFORO: ${(report.priority || "").toUpperCase()})</td>
+                                    <td style="padding: 5px 8px; border: 1px solid #E2E8F0; background-color: #F8FAFC; font-weight: bold;">MOTIVO DE LA ALERTA ACADÉMICA:</td>
+                                    <td style="padding: 5px 8px; border: 1px solid #E2E8F0; text-transform: uppercase; font-weight: bold; color: #DC2626;">${(report.reason || "").toUpperCase()} (SEMAFORO: ${(report.priority || "").toUpperCase()})</td>
                                 </tr>
                                 <tr>
-                                    <td style="padding: 2mm 3mm; border: 1px solid #E2E8F0; background-color: #F8FAFC; font-weight: bold;">ESTADO DE SEGUIMIENTO EN CEUT:</td>
-                                    <td style="padding: 2mm 3mm; border: 1px solid #E2E8F0; font-weight: bold; color: #059669; text-transform: uppercase;">${(report.status || "PENDIENTE").toUpperCase()}</td>
+                                    <td style="padding: 5px 8px; border: 1px solid #E2E8F0; background-color: #F8FAFC; font-weight: bold;">ESTADO DE SEGUIMIENTO EN CEUT:</td>
+                                    <td style="padding: 5px 8px; border: 1px solid #E2E8F0; font-weight: bold; color: #059669; text-transform: uppercase;">${(report.status || "PENDIENTE").toUpperCase()}</td>
                                 </tr>
                             </tbody>
                         </table>
 
-                        <div style="border-left: 3px solid #E5A900; background-color: #FFFDF0; padding: 4mm 5mm; font-size: 9pt; line-height: 1.6; text-align: justify; text-justify: inter-word; margin: 5mm 0; border-top: 1px solid #FFF7D0; border-right: 1px solid #FFF7D0; border-bottom: 1px solid #FFF7D0; font-family: 'Lora', Georgia, serif;">
+                        <!-- Caja de Relatoría del Alumno (Con control de altura máximo de 52mm para blindaje a pág 2) -->
+                        <div style="border-left: 3px solid #E5A900; background-color: #FFFDF0; padding: 10px 12px; font-size: 8.5pt; line-height: 1.5; text-align: justify; margin: 10px 0; border-top: 1px solid #FFF7D0; border-right: 1px solid #FFF7D0; border-bottom: 1px solid #FFF7D0; font-family: 'Lora', Georgia, serif; max-height: 52mm; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 9; -webkit-box-orient: vertical;">
                             <strong>RELATORÍA DE HECHOS PRESENTADA POR EL DOCENTE:</strong><br>
-                            <span style="display: block; margin-top: 1.5mm; white-space: pre-wrap; text-transform: uppercase;">"${report.situation || "SIN ESPECIFICAR"}"</span>
+                            <span style="display: block; margin-top: 3px; white-space: pre-wrap; text-transform: uppercase;">"${report.situation || "SIN ESPECIFICAR"}"</span>
                         </div>
 
                         ${report.notes ? `
-                        <div style="font-size: 9.5pt; line-height: 1.6; text-align: justify; text-justify: inter-word; margin-top: 4mm; margin-bottom: 5mm; font-family: 'Lora', Georgia, serif;">
+                        <!-- Caja de Notas de Intervención (Compacta) -->
+                        <div style="font-size: 8.5pt; line-height: 1.5; text-align: justify; margin-top: 8px; margin-bottom: 8px; font-family: 'Lora', Georgia, serif; max-height: 20mm; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;">
                             <strong>ACCIONES DE RESOLUCIÓN Y CONTENCIÓN IMPLEMENTADAS:</strong><br>
                             <span style="color: #1E2555; font-weight: bold;">${report.notes.toUpperCase()}</span>
                         </div>
                         ` : ''}
                     </div>
 
-                    <div>
-                        <table style="width: 100%; border-collapse: collapse; margin-top: 10mm; margin-bottom: 4mm;">
+                    <!-- Pie de Firma e Información Legal (Empujado abajo del todo con margin-top: auto) -->
+                    <div style="position: relative; z-index: 10; margin-top: auto;">
+                        <table style="width: 100%; border-collapse: collapse; margin-top: 10px; margin-bottom: 8px;">
                             <tr>
                                 <td style="width: 50%; text-align: center; vertical-align: top;">
-                                    <div style="width: 50mm; border-bottom: 1px solid #64748B; margin: 0 auto 2mm auto;"></div>
-                                    <div style="font-size: 8.5pt; font-weight: bold; color: #0F1332; font-family: 'Inter', sans-serif;">MTRO. CARLOS AGUILAR SÁNCHEZ</div>
-                                    <div style="font-size: 7.5pt; color: #475569; font-family: 'Inter', sans-serif;">Director del Departamento Psicopedagógico CEUT</div>
-                                    <div style="font-size: 6.5pt; color: #94A3B8; margin-top: 1mm; font-family: 'Inter', sans-serif;">FIRMA DE AUTORIZACIÓN ACADÉMICA</div>
+                                    <div style="width: 150px; border-bottom: 1px solid #64748B; margin: 0 auto 6px auto;"></div>
+                                    <div style="font-size: 8pt; font-weight: bold; color: #0F1332; font-family: 'Inter', sans-serif;">MTRO. CARLOS AGUILAR SÁNCHEZ</div>
+                                    <div style="font-size: 7pt; color: #475569; font-family: 'Inter', sans-serif;">Director del Departamento Psicopedagógico CEUT</div>
+                                    <div style="font-size: 6pt; color: #94A3B8; margin-top: 2px; font-family: 'Inter', sans-serif;">FIRMA DE AUTORIZACIÓN ACADÉMICA</div>
                                 </td>
                                 <td style="width: 50%; text-align: center; vertical-align: middle;">
-                                    <div style="display: inline-block; border: 2px dashed #B28200; padding: 2mm 4mm; border-radius: 2mm; background-color: #FFFDF0; font-family: 'Inter', sans-serif; font-size: 7.5pt; color: #B28200; font-weight: bold; line-height: 1.4; text-transform: uppercase;">
+                                    <div style="display: inline-block; border: 2px dashed #B28200; padding: 5px 12px; border-radius: 4px; background-color: #FFFDF0; font-family: 'Inter', sans-serif; font-size: 7pt; color: #B28200; font-weight: bold; line-height: 1.3; text-transform: uppercase;">
                                         Sello Digital CEUT<br>
                                         VERIFICADO & CIFRADO
                                     </div>
@@ -2235,7 +2250,7 @@
                             </tr>
                         </table>
 
-                        <div style="font-size: 6.5pt; color: #64748B; text-align: justify; line-height: 1.4; border-top: 1px solid #E2E8F0; padding-top: 3mm; font-family: 'Inter', sans-serif; text-transform: uppercase;">
+                        <div style="font-size: 6.5pt; color: #64748B; text-align: justify; line-height: 1.3; border-top: 1px solid #E2E8F0; padding-top: 6px; font-family: 'Inter', sans-serif; text-transform: uppercase;">
                             <strong>AVISO DE PROTECCIÓN DE DATOS PERSONALES (LFPDPPP):</strong> Este documento oficial contiene información sensible regulada estrictamente por los artículos 6, 9, 15 y 16 de la Ley Federal de Protección de Datos Personales en Posesión de los Particulares de los Estados Unidos Mexicanos. Se prohíbe la divulgación, revelación o distribución no autorizada de estos expedientes estudiantiles a terceros sin autorización expresa de las autoridades directivas del Centro Universitario Tehuacán.
                         </div>
                     </div>
@@ -2243,28 +2258,38 @@
                 </div>
             `;
 
-            // IMPORTANTE: Acoplamos el contenedor al DOM del documento para que el renderizador virtual pueda calcular los estilos y textos fluidos sin quedar vacío
-            document.body.appendChild(pdfContainer);
+            wrapper.appendChild(pdfContainer);
+            document.body.appendChild(wrapper);
 
             const opt = {
-                margin:       [5, 5, 5, 5], 
+                margin:       [10, 10, 10, 10], 
                 filename:     `Oficio_Incidencia_${report.id}_${report.studentName.replace(/\s+/g, '_')}.pdf`,
                 image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
+                html2canvas:  { 
+                    scale: 2, 
+                    useCORS: true, 
+                    letterRendering: true,
+                    allowTaint: true,
+                    logging: false,
+                    scrollX: 0,
+                    scrollY: 0
+                },
                 jsPDF:        { unit: 'mm', format: 'letter', orientation: 'portrait' }
             };
 
-            // Ejecutamos la promesa y eliminamos limpiamente el contenedor después de la descarga
-            html2pdf().set(opt).from(pdfContainer).save().then(() => {
-                document.body.removeChild(pdfContainer);
-                showNotification("Descarga Exitosa", `El oficio oficial con folio ${folio} ha sido descargado en formato PDF.`, "success");
-            }).catch(err => {
-                console.error("Falla al generar PDF:", err);
-                if (pdfContainer.parentNode) {
-                    document.body.removeChild(pdfContainer);
-                }
-                showNotification("Falla en Generación", "No se pudo realizar la descarga del PDF de forma automática.", "error");
-            });
+            // Pequeña pausa asíncrona de 600ms para asegurar la carga del logotipo y fuentes tipográficas antes de capturar el canvas
+            setTimeout(() => {
+                html2pdf().set(opt).from(pdfContainer).save().then(() => {
+                    document.body.removeChild(wrapper);
+                    showNotification("Descarga Exitosa", `El oficio oficial de una hoja con folio ${report.id} ha sido descargado en formato PDF.`, "success");
+                }).catch(err => {
+                    console.error("Falla al generar PDF:", err);
+                    if (wrapper.parentNode) {
+                        document.body.removeChild(wrapper);
+                    }
+                    showNotification("Falla en Generación", "No se pudo realizar la descarga del PDF de forma automática.", "error");
+                });
+            }, 600);
         };
 
         // ACCIÓN PARA LA DESCARGA DIRECTA DESDE EL MODAL DE GRATITUD DEL DOCENTE
