@@ -2124,29 +2124,32 @@
 
             // Creamos un wrapper contenedor invisible en el Viewport real para evitar el renderizado en blanco
             const wrapper = document.createElement('div');
-            wrapper.style.position = 'absolute';
+            wrapper.style.position = 'fixed';
             wrapper.style.top = '0';
             wrapper.style.left = '0';
-            wrapper.style.width = '100%';
-            wrapper.style.height = '0';
+            wrapper.style.width = '100vw';
+            wrapper.style.height = '100vh';
             wrapper.style.overflow = 'hidden';
+            wrapper.style.pointerEvents = 'none';
             wrapper.style.zIndex = '-99999';
             wrapper.style.display = 'flex';
             wrapper.style.justifyContent = 'center';
+            wrapper.style.alignItems = 'center';
 
+            // Lienzo exacto en dimensiones físicas de papel Carta (Letter)
             const pdfContainer = document.createElement('div');
-            pdfContainer.style.width = '195.9mm'; // Ancho imprimible óptimo para Carta (Letter)
-            pdfContainer.style.height = '259.4mm'; // Altura imprimible óptima para Carta (Letter)
+            pdfContainer.style.width = '215.9mm'; 
+            pdfContainer.style.height = '279.4mm'; 
+            pdfContainer.style.padding = '15mm'; // Margen interno seguro de protección para que no se pierdan los bordes
             pdfContainer.style.boxSizing = 'border-box';
             pdfContainer.style.backgroundColor = '#FFFFFF';
             pdfContainer.style.color = '#0F1332';
             pdfContainer.style.fontFamily = 'Lora, Georgia, serif';
             pdfContainer.style.position = 'relative';
-            pdfContainer.style.margin = '0 auto'; // Centrado horizontal estricto
 
             pdfContainer.innerHTML = `
                 <!-- Borde Doble Institucional - Flexbox para empujar contenido al ras -->
-                <div style="border: 3px double #E5A900; outline: 10px solid #1E2555; outline-offset: -13px; padding: 15px 20px; height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; background-color: #FFFFFF; position: relative;">
+                <div style="border: 3px double #E5A900; outline: 10px solid #1E2555; outline-offset: -13px; padding: 20px 25px; height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; background-color: #FFFFFF; position: relative;">
                     
                     <!-- Sello de agua sutil del Escudo Oficial de Tigres en el centro absoluto -->
                     <div style="position: absolute; top: 50%; left: 50%; width: 100mm; height: 100mm; transform: translate(-50%, -50%); background: url('https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2') no-repeat center; background-size: contain; opacity: 0.05; z-index: 0; pointer-events: none;"></div>
@@ -2265,7 +2268,7 @@
             document.body.appendChild(wrapper);
 
             const opt = {
-                margin:       [10, 10, 10, 10], 
+                margin:       0, // Dejamos el margen en cero para delegar el centrado total y los márgenes en el HTML/CSS
                 filename:     `Oficio_Incidencia_${report.id}_${report.studentName.replace(/\s+/g, '_')}.pdf`,
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { 
