@@ -2102,11 +2102,11 @@
 
         function closeDeleteConfirmModal() {
             const deleteModal = document.getElementById('deleteConfirmModal');
-            deleteModal.classList.add('hidden');
+            deleteModal.add('hidden');
             deleteModal.classList.remove('flex');
         }
 
-        // GENERACIÓN EXCLUSIVA DE EXPEDIENTE PDF MEMBRETADO CON DESCARGA DIRECTA E INMEDIATA (FIJADO A 1 HOJA CARTA)
+        // GENERACIÓN EXCLUSIVA DE EXPEDIENTE PDF MEMBRETADO CON DESCARGA DIRECTA E INMEDIATA (FIJADO A 1 HOJA CARTA CENTRADA)
         window.compileAndDownloadPDF = function(report) {
             if (!report) {
                 showNotification("Error", "No hay datos para compilar el PDF.", "error");
@@ -2131,22 +2131,25 @@
             wrapper.style.height = '0';
             wrapper.style.overflow = 'hidden';
             wrapper.style.zIndex = '-99999';
+            wrapper.style.display = 'flex';
+            wrapper.style.justifyContent = 'center';
 
             const pdfContainer = document.createElement('div');
-            pdfContainer.style.width = '195mm';
-            pdfContainer.style.height = '258mm'; // Altura ideal para Carta (Letter) restando márgenes
+            pdfContainer.style.width = '195.9mm'; // Ancho imprimible óptimo para Carta (Letter)
+            pdfContainer.style.height = '259.4mm'; // Altura imprimible óptima para Carta (Letter)
             pdfContainer.style.boxSizing = 'border-box';
             pdfContainer.style.backgroundColor = '#FFFFFF';
             pdfContainer.style.color = '#0F1332';
             pdfContainer.style.fontFamily = 'Lora, Georgia, serif';
             pdfContainer.style.position = 'relative';
+            pdfContainer.style.margin = '0 auto'; // Centrado horizontal estricto
 
             pdfContainer.innerHTML = `
                 <!-- Borde Doble Institucional - Flexbox para empujar contenido al ras -->
                 <div style="border: 3px double #E5A900; outline: 10px solid #1E2555; outline-offset: -13px; padding: 15px 20px; height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; background-color: #FFFFFF; position: relative;">
                     
-                    <!-- Sello de agua sutil del Escudo Oficial de Tigres en el centro -->
-                    <div style="position: absolute; top: 45%; left: 50%; width: 100mm; height: 100mm; transform: translate(-50%, -50%); background: url('https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2') no-repeat center; background-size: contain; opacity: 0.05; z-index: 0; pointer-events: none;"></div>
+                    <!-- Sello de agua sutil del Escudo Oficial de Tigres en el centro absoluto -->
+                    <div style="position: absolute; top: 50%; left: 50%; width: 100mm; height: 100mm; transform: translate(-50%, -50%); background: url('https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2') no-repeat center; background-size: contain; opacity: 0.05; z-index: 0; pointer-events: none;"></div>
 
                     <div style="position: relative; z-index: 10;">
                         <!-- Encabezado Membretado Oficial -->
