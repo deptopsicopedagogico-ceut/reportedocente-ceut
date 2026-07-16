@@ -900,7 +900,7 @@
                     <table class="w-full text-left border-collapse">
                         <thead>
                             <tr class="bg-slate-50 text-[10px] font-bold text-slate-500 uppercase tracking-wider border-b-2 border-slate-200">
-                                <th class="px-8 py-4.5">Estudiante / Nivel</th>
+                                <th class="px-8 py-4.5">Folio / Estudiante</th>
                                 <th class="px-8 py-4.5">Fecha</th>
                                 <th class="px-8 py-4.5">Prioridad</th>
                                 <th class="px-8 py-4.5">Motivo del Reporte</th>
@@ -1023,7 +1023,7 @@
                 <div class="space-y-3">
                     <h3 class="text-xl sm:text-2xl font-black text-ceutBlue font-formal gold-shimmer-text">¡Muchas gracias por su compromiso docente!</h3>
                     <p class="text-xs sm:text-sm text-slate-600 leading-relaxed text-justified font-serif p-4 bg-[#FFFDF0] rounded-2xl border-2 border-ceutGold/30">
-                        Su incidencia ha sido guardada de forma segura en nuestro expediente digital confidencial. Se ha abierto el gestor de correo para que envíe la plantilla formal del caso. Además, **ya puede descargar su oficio membretado oficial**.
+                        Su incidencia ha sido guardada de forma segura en nuestro expediente digital confidencial. **Ya puede descargar su oficio membretado oficial** con el folio único de registro.
                     </p>
                 </div>
 
@@ -1050,13 +1050,6 @@
                             <span>Se citará y brindará **contención socioemocional** personalizada al alumno reportado.</span>
                         </li>
                     </ul>
-                </div>
-
-                <div class="bg-ceutBlue/5 p-4 rounded-xl border border-ceutGold/30 flex flex-col gap-2 items-center text-center">
-                    <span class="text-[9px] uppercase font-bold text-slate-500 tracking-widest font-sans">Si su navegador bloqueó el correo automático, puede copiarlo aquí:</span>
-                    <button onclick="copyMailBody()" class="bg-ceutGold hover:bg-ceutGold-light text-ceutBlue-dark px-4 py-2.5 rounded-xl text-xs font-black transition-all shadow-sm flex items-center gap-1.5 font-sans border border-ceutGold-dark uppercase min-h-[44px]">
-                        <i class="fa-regular fa-copy"></i> Copiar Cuerpo del Correo
-                    </button>
                 </div>
             </div>
 
@@ -1308,7 +1301,17 @@
         };
 
         let activeViewReportId = null;
-        let currentMailBodyText = "";
+
+        // Generador de Folio Único Oficial para cada Reporte
+        function generateUniqueFolio() {
+            const year = new Date().getFullYear();
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // Evitamos 'I', 'O', '1', '0' por legibilidad formal
+            let randomPart = '';
+            for (let i = 0; i < 4; i++) {
+                randomPart += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return `CEUT-${year}-${randomPart}`;
+        }
 
         function showNotification(title, message, type = 'success') {
             const containerId = 'toast-container';
@@ -1637,7 +1640,7 @@
             const career = formatUppercaseNoAccents(document.getElementById('career').value);
 
             const reasonEl = document.querySelector('input[name="incidentReason"]:checked');
-            const reason = reasonEl ? formatUppercaseNoAccents(reasonEl.value) : "NO ESPECIFICADO";
+            const reason = reasonEl ? formatUppercaseNoAccents(reasonEl.value) : "BAJO RENDIMIENTO ACADEMICO";
 
             const priorityEl = document.querySelector('input[name="priority"]:checked');
             const priority = priorityEl ? priorityEl.value : "baja";
@@ -1647,7 +1650,8 @@
 
             const situation = formatUppercaseNoAccents(document.getElementById('situationDescription').value);
 
-            const newId = `CASO-${String(window.appState.reports.length + 1).padStart(2, '0')}`;
+            // Se genera un folio institucional único oficial
+            const newId = generateUniqueFolio();
 
             const newReport = {
                 id: newId,
@@ -1677,7 +1681,6 @@
             const success = await window.submitReportToFirestore(newReport);
 
             if (success) {
-                triggerAutomaticEmailDispatch(newReport);
                 openGratitudeModal(newReport);
 
                 document.getElementById('reportForm').reset();
@@ -1687,64 +1690,18 @@
                 });
                 toggleEducationalFields();
 
-                showNotification("Registro Exitoso", "Incidencia guardada y sincronizada en tiempo real con la nube.", "success");
+                showNotification("Registro Exitoso", `Incidencia con Folio ${newId} guardada y sincronizada.`, "success");
             } else {
                 newReport.timestamp = new Date();
                 window.appState.reports.unshift(newReport);
                 renderReports();
                 renderMetrics();
-                triggerAutomaticEmailDispatch(newReport);
                 openGratitudeModal(newReport);
-                showNotification("Guardado Local", "La nube no respondió. El expediente se ha encolado de forma local.", "success");
+                showNotification("Guardado Local", `Folio ${newId} registrado de manera local (Modo Sin Conexión).`, "success");
             }
 
             submitBtn.disabled = false;
             submitBtn.innerHTML = `<span>Registrar Reporte</span> <i class="fa-solid fa-paper-plane"></i>`;
-        }
-
-        function triggerAutomaticEmailDispatch(report) {
-            const to = "DEPTOPSICOPEDAGOGICO@CEUT.EDU.MX";
-            const cc = "LUZ.ORTEGA@CEUT.EDU.MX, MIROSLAVA.HOYOS@CEUT.EDU.MX, SAMUEL.ROLDAN@CEUT.EDU.MX";
-            const subject = `EXPEDIENTE CONFIDENCIAL: REPORTE DE INCIDENCIA - PRIORIDAD ${report.priority.toUpperCase()} - ${report.studentName} (${report.eduLevel})`;
-            
-            let body = `ESTIMADO MTRO. CARLOS AGUILAR SANCHEZ,
-
-POR MEDIO DE LA PRESENTE, SE REALIZA EL REPORTE PSICOPEDAGOGICO OFICIAL RESPECTO AL ALUMNO QUE SE MENCIONA A CONTINUACION. ESTE DOCUMENTO SE PROCESA DE CONFORMIDAD CON LAS DIRECTRICES DE CONFIDENCIALIDAD INSTITUCIONAL DEL CEUT Y LOS PRINCIPIOS VIGENTES DE LA LFPDPPP EN MEXICO.
-
-=== 1. DATOS DE IDENTIFICACION DEL ESTUDIANTE ===
-NOMBRE COMPLETO: ${report.studentName}
-NIVEL EDUCATIVO: ${report.eduLevel}
-MODALIDAD: ${report.modality}
-GRADO Y GRUPO: ${report.grade} GRUPO "${report.group}"
-CICLO ESCOLAR: ${report.semester}
-${report.eduLevel === 'UNIVERSIDAD' ? `CARRERA: ${report.career}\n` : ''}
-=== 2. DETALLES DE LA INCIDENCIA (CONFIDENCIAL) ===
-MOTIVO PRINCIPAL: ${report.reason}
-SEMAFORO DE PRIORIDAD DETERMINADO POR DOCENTE: ${report.priority.toUpperCase()}
-¿INTERVENCION DOCENTE PREVIA?: ${report.priorIntervention.toUpperCase()}
-
-NARRATIVA DESCRIPTIVA DEL CASO:
-"${report.situation}"
-
-=== 3. DATOS DEL DOCENTE EMISOR ===
-NOMBRE: ${report.teacherName}
-MATERIA/ASIGNATURA: ${report.teacherSubject}
-EMAIL DE CONTACTO: ${report.teacherEmail}
-
-=== 4. CLAUSULA DE PRIVACIDAD ===
-SE HACE CONSTAR QUE EL EMISOR DE ESTE REPORTE HA ACEPTADO LOS CONVENIOS DE CONFIDENCIALIDAD Y TRATAMIENTO PSICOPEDAGOGICO DEL CEUT. LA INFORMACION CONTENIDA TIENE CARACTER DE DATO PERSONAL SENSIBLE Y NO DEBE SER DIVULGADA SIN APEGO A LOS DERECHOS ARCO DE LAS PARTES.
-
-ATENTAMENTE,
-${report.teacherName}
-TIGRES CEUT — PSICOPEDAGOGIA`;
-
-            currentMailBodyText = body;
-
-            const encodedSubject = encodeURIComponent(subject);
-            const encodedBody = encodeURIComponent(body);
-            const mailtoUrl = `mailto:${to}?cc=${cc}&subject=${encodedSubject}&body=${encodedBody}`;
-            
-            window.location.href = mailtoUrl;
         }
 
         function openGratitudeModal(report) {
@@ -1758,22 +1715,6 @@ TIGRES CEUT — PSICOPEDAGOGIA`;
             modal.classList.add('hidden');
             modal.classList.remove('flex');
             switchRole('WELCOME');
-        }
-
-        function copyMailBody() {
-            const tempTextArea = document.createElement("textarea");
-            tempTextArea.value = currentMailBodyText;
-            document.body.appendChild(tempTextArea);
-            tempTextArea.select();
-            
-            try {
-                document.execCommand('copy');
-                showNotification("Copiado con Éxito", "Cuerpo del correo copiado al portapapeles institucional.", "success");
-            } catch (err) {
-                showNotification("Error", "No se pudo copiar de forma automática.", "error");
-            }
-            
-            document.body.removeChild(tempTextArea);
         }
 
         function applyFilters() {
@@ -1822,7 +1763,7 @@ TIGRES CEUT — PSICOPEDAGOGIA`;
             const reports = window.appState.reports || [];
 
             const filteredReports = reports.filter(report => {
-                const searchStr = `${report.studentName} ${report.teacherName} ${report.subject || report.teacherSubject || ''} ${report.career || ''}`.toUpperCase();
+                const searchStr = `${report.id} ${report.studentName} ${report.teacherName} ${report.subject || report.teacherSubject || ''} ${report.career || ''}`.toUpperCase();
                 const matchesSearch = searchStr.includes(filters.search.toUpperCase());
                 const matchesLevel = filters.level === 'ALL' || report.eduLevel.toUpperCase() === filters.level.toUpperCase();
                 const matchesPriority = filters.priority === 'ALL' || report.priority.toUpperCase() === filters.priority.toUpperCase();
@@ -1884,7 +1825,8 @@ TIGRES CEUT — PSICOPEDAGOGIA`;
                 tr.className = "hover:bg-slate-50 transition-all border-b border-slate-100 font-sans";
                 tr.innerHTML = `
                     <td class="px-8 py-4.5">
-                        <p class="font-bold text-slate-950 text-xs">${report.studentName.toUpperCase()}</p>
+                        <p class="font-bold text-slate-900 text-[10px] tracking-wider mb-0.5 bg-slate-100 px-2 py-1 rounded-md inline-block border border-slate-200 font-mono">${report.id}</p>
+                        <p class="font-bold text-slate-950 text-xs mt-1">${report.studentName.toUpperCase()}</p>
                         <p class="text-[10px] text-ceutGold-dark font-bold uppercase tracking-wider mt-0.5">${report.eduLevel.toUpperCase()} | ${report.modality.toUpperCase()}</p>
                     </td>
                     <td class="px-8 py-4.5 text-[11px] font-semibold text-slate-500 whitespace-nowrap uppercase">
@@ -1917,7 +1859,8 @@ TIGRES CEUT — PSICOPEDAGOGIA`;
                 card.innerHTML = `
                     <div class="flex justify-between items-start gap-2 border-b border-slate-100 pb-3">
                         <div class="truncate">
-                            <h5 class="font-bold text-slate-950 text-sm uppercase truncate">${report.studentName.toUpperCase()}</h5>
+                            <span class="font-bold text-slate-950 text-[10px] font-mono bg-slate-100 border border-slate-200 px-2 py-0.5 rounded">${report.id}</span>
+                            <h5 class="font-bold text-slate-950 text-sm uppercase mt-1.5 truncate">${report.studentName.toUpperCase()}</h5>
                             <p class="text-[9px] text-ceutGold-dark font-bold uppercase tracking-wider mt-0.5">${report.eduLevel.toUpperCase()} | ${report.modality.toUpperCase()}</p>
                         </div>
                         <div class="flex flex-col items-end gap-1.5 flex-shrink-0">
@@ -2178,16 +2121,20 @@ TIGRES CEUT — PSICOPEDAGOGIA`;
                 year: 'numeric', month: 'long', day: 'numeric'
             }).toUpperCase();
 
-            const folio = `CEUT-PSIC-${report.id}-${dateObj.getFullYear()}`;
+            const folio = report.id || `CEUT-PSIC-TEMP`;
 
             const pdfContainer = document.createElement('div');
+            // Estilos para garantizar que se procese visiblemente para el motor de captura de html2pdf
             pdfContainer.style.width = '195mm';
             pdfContainer.style.fontFamily = 'Lora, Georgia, serif';
             pdfContainer.style.color = '#0F1332';
             pdfContainer.style.backgroundColor = '#FFFFFF';
             pdfContainer.style.boxSizing = 'border-box';
-            pdfContainer.style.padding = '8mm';
-            pdfContainer.style.position = 'relative';
+            pdfContainer.style.padding = '10mm';
+            pdfContainer.style.position = 'fixed';
+            pdfContainer.style.left = '-9999px'; // Posicionamiento fuera de pantalla pero acoplado al DOM
+            pdfContainer.style.top = '0';
+            pdfContainer.style.zIndex = '-9999';
 
             pdfContainer.innerHTML = `
                 <div style="border: 4px double #E5A900; outline: 10px solid #1E2555; outline-offset: -14px; padding: 12mm 10mm; position: relative; min-height: 250mm; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between;">
@@ -2209,7 +2156,7 @@ TIGRES CEUT — PSICOPEDAGOGIA`;
                         </table>
 
                         <div style="width: 100%; text-align: right; font-size: 8.5pt; color: #334155; line-height: 1.5; margin-bottom: 6mm; font-family: 'Inter', sans-serif;">
-                            <strong>NÚMERO DE OFICIO:</strong> ${folio}<br>
+                            <strong>NÚMERO DE FOLIO:</strong> ${folio}<br>
                             <strong>ASUNTO:</strong> EXPEDIENTE CONFIDENCIAL DE INTERVENCIÓN DOCENTE<br>
                             <strong>FECHA DE EMISIÓN:</strong> TEHUACÁN, PUEBLA, A ${dateStr}
                         </div>
@@ -2231,11 +2178,11 @@ TIGRES CEUT — PSICOPEDAGOGIA`;
                             <tbody>
                                 <tr>
                                     <td style="width: 35%; padding: 2mm 3mm; border: 1px solid #E2E8F0; background-color: #F8FAFC; font-weight: bold;">ESTUDIANTE OBSERVADO:</td>
-                                    <td style="padding: 2mm 3mm; border: 1px solid #E2E8F0; text-transform: uppercase; font-weight: bold; color: #1E2555;">${report.studentName.toUpperCase()}</td>
+                                    <td style="padding: 2mm 3mm; border: 1px solid #E2E8F0; text-transform: uppercase; font-weight: bold; color: #1E2555;">${(report.studentName || "").toUpperCase()}</td>
                                 </tr>
                                 <tr>
                                     <td style="padding: 2mm 3mm; border: 1px solid #E2E8F0; background-color: #F8FAFC; font-weight: bold;">NIVEL EDUCATIVO Y GRUPO:</td>
-                                    <td style="padding: 2mm 3mm; border: 1px solid #E2E8F0; text-transform: uppercase;">${report.eduLevel.toUpperCase()} — ${report.grade.toUpperCase()} GRUPO "${report.group.toUpperCase()}" (${report.modality.toUpperCase()})</td>
+                                    <td style="padding: 2mm 3mm; border: 1px solid #E2E8F0; text-transform: uppercase;">${(report.eduLevel || "").toUpperCase()} — ${(report.grade || "").toUpperCase()} GRUPO "${(report.group || "").toUpperCase()}" (${(report.modality || "").toUpperCase()})</td>
                                 </tr>
                                 ${report.career ? `
                                 <tr>
@@ -2244,22 +2191,22 @@ TIGRES CEUT — PSICOPEDAGOGIA`;
                                 </tr>` : ''}
                                 <tr>
                                     <td style="padding: 2mm 3mm; border: 1px solid #E2E8F0; background-color: #F8FAFC; font-weight: bold;">DOCENTE EMISOR / ASIGNATURA:</td>
-                                    <td style="padding: 2mm 3mm; border: 1px solid #E2E8F0; text-transform: uppercase;">${report.teacherName.toUpperCase()} (${report.teacherSubject.toUpperCase()})</td>
+                                    <td style="padding: 2mm 3mm; border: 1px solid #E2E8F0; text-transform: uppercase;">${(report.teacherName || "").toUpperCase()} (${(report.teacherSubject || "").toUpperCase()})</td>
                                 </tr>
                                 <tr>
                                     <td style="padding: 2mm 3mm; border: 1px solid #E2E8F0; background-color: #F8FAFC; font-weight: bold;">MOTIVO DE LA ALERTA ACADÉMICA:</td>
-                                    <td style="padding: 2mm 3mm; border: 1px solid #E2E8F0; text-transform: uppercase; font-weight: bold; color: #DC2626;">${report.reason.toUpperCase()} (SEMAFORO: ${report.priority.toUpperCase()})</td>
+                                    <td style="padding: 2mm 3mm; border: 1px solid #E2E8F0; text-transform: uppercase; font-weight: bold; color: #DC2626;">${(report.reason || "").toUpperCase()} (SEMAFORO: ${(report.priority || "").toUpperCase()})</td>
                                 </tr>
                                 <tr>
                                     <td style="padding: 2mm 3mm; border: 1px solid #E2E8F0; background-color: #F8FAFC; font-weight: bold;">ESTADO DE SEGUIMIENTO EN CEUT:</td>
-                                    <td style="padding: 2mm 3mm; border: 1px solid #E2E8F0; font-weight: bold; color: #059669; text-transform: uppercase;">${report.status.toUpperCase()}</td>
+                                    <td style="padding: 2mm 3mm; border: 1px solid #E2E8F0; font-weight: bold; color: #059669; text-transform: uppercase;">${(report.status || "PENDIENTE").toUpperCase()}</td>
                                 </tr>
                             </tbody>
                         </table>
 
-                        <div style="border-left: 3px solid #E5A900; background-color: #FFFDF0; padding: 4mm 5mm; font-size: 9pt; line-height: 1.6; text-align: justify; text-justify: inter-word; margin: 5mm 0; font-style: italic; border-top: 1px solid #FFF7D0; border-right: 1px solid #FFF7D0; border-bottom: 1px solid #FFF7D0; font-family: 'Lora', Georgia, serif;">
+                        <div style="border-left: 3px solid #E5A900; background-color: #FFFDF0; padding: 4mm 5mm; font-size: 9pt; line-height: 1.6; text-align: justify; text-justify: inter-word; margin: 5mm 0; border-top: 1px solid #FFF7D0; border-right: 1px solid #FFF7D0; border-bottom: 1px solid #FFF7D0; font-family: 'Lora', Georgia, serif;">
                             <strong>RELATORÍA DE HECHOS PRESENTADA POR EL DOCENTE:</strong><br>
-                            "${report.situation.toUpperCase()}"
+                            <span style="display: block; margin-top: 1.5mm; white-space: pre-wrap; text-transform: uppercase;">"${report.situation || "SIN ESPECIFICAR"}"</span>
                         </div>
 
                         ${report.notes ? `
@@ -2296,18 +2243,26 @@ TIGRES CEUT — PSICOPEDAGOGIA`;
                 </div>
             `;
 
+            // IMPORTANTE: Acoplamos el contenedor al DOM del documento para que el renderizador virtual pueda calcular los estilos y textos fluidos sin quedar vacío
+            document.body.appendChild(pdfContainer);
+
             const opt = {
                 margin:       [5, 5, 5, 5], 
-                filename:     `Acuse_Incidencia_${report.id}_${report.studentName.replace(/\s+/g, '_')}.pdf`,
+                filename:     `Oficio_Incidencia_${report.id}_${report.studentName.replace(/\s+/g, '_')}.pdf`,
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
                 jsPDF:        { unit: 'mm', format: 'letter', orientation: 'portrait' }
             };
 
+            // Ejecutamos la promesa y eliminamos limpiamente el contenedor después de la descarga
             html2pdf().set(opt).from(pdfContainer).save().then(() => {
-                showNotification("Descarga Exitosa", "El acuse oficial ha sido descargado en formato PDF membretado.", "success");
+                document.body.removeChild(pdfContainer);
+                showNotification("Descarga Exitosa", `El oficio oficial con folio ${folio} ha sido descargado en formato PDF.`, "success");
             }).catch(err => {
                 console.error("Falla al generar PDF:", err);
+                if (pdfContainer.parentNode) {
+                    document.body.removeChild(pdfContainer);
+                }
                 showNotification("Falla en Generación", "No se pudo realizar la descarga del PDF de forma automática.", "error");
             });
         };
@@ -2330,280 +2285,6 @@ TIGRES CEUT — PSICOPEDAGOGIA`;
                 showNotification("Error", "No se ha seleccionado un reporte válido en el panel.", "error");
             }
         };
-
-        function printOfficialLetterhead() {
-            const report = window.appState.reports.find(r => r.id === activeViewReportId);
-            if (!report) return;
-
-            const printWindow = window.open('', '_blank');
-            const dateStr = new Date().toLocaleDateString('es-MX', {
-                year: 'numeric', month: 'long', day: 'numeric'
-            }).toUpperCase();
-
-            const folio = `FOLIO-${report.id}-${new Date().getFullYear()}`;
-
-            const letterheadHTML = `
-            <!DOCTYPE html>
-            <html lang="es">
-            <head>
-                <meta charset="UTF-8">
-                <title>CEUT - Oficio Oficial de Expediente: ${report.id}</title>
-                <style>
-                    @page {
-                        size: letter;
-                        margin: 0;
-                    }
-                    body {
-                        font-family: 'Georgia', 'Times New Roman', serif;
-                        color: #0F1332;
-                        background-color: #FFFFFF;
-                        margin: 0;
-                        padding: 0;
-                        box-sizing: border-box;
-                    }
-                    .document-container {
-                        width: 100%;
-                        max-width: 8.5in;
-                        height: 11in;
-                        padding: 1.2in 1in 1.2in 1in;
-                        box-sizing: border-box;
-                        position: relative;
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: space-between;
-                        border: 4px double #E5A900;
-                        outline: 12px solid #1E2555;
-                        outline-offset: -16px;
-                    }
-                    .watermark {
-                        position: absolute;
-                        top: 50%;
-                        left: 50%;
-                        width: 4.5in;
-                        height: 4.5in;
-                        transform: translate(-50%, -50%);
-                        background: url('https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2') no-repeat center;
-                        background-size: contain;
-                        opacity: 0.04;
-                        z-index: 0;
-                        pointer-events: none;
-                    }
-                    .header-table {
-                        width: 100%;
-                        border-collapse: collapse;
-                        border-bottom: 2px solid #B28200;
-                        padding-bottom: 15px;
-                        margin-bottom: 30px;
-                        position: relative;
-                        z-index: 10;
-                    }
-                    .header-logo {
-                        width: 80px;
-                        height: auto;
-                    }
-                    .header-title-main {
-                        font-family: 'Cinzel', 'Georgia', serif;
-                        font-size: 16px;
-                        font-weight: 900;
-                        color: #1E2555;
-                        letter-spacing: 1px;
-                        text-align: right;
-                    }
-                    .header-subtitle {
-                        font-size: 10px;
-                        color: #B28200;
-                        text-align: right;
-                        font-weight: bold;
-                        letter-spacing: 0.5px;
-                        margin-top: 2px;
-                    }
-                    .metadata-section {
-                        width: 100%;
-                        font-size: 11px;
-                        text-align: right;
-                        margin-bottom: 35px;
-                        color: #334155;
-                        position: relative;
-                        z-index: 10;
-                    }
-                    .oficio-title {
-                        font-family: 'Cinzel', 'Georgia', serif;
-                        font-size: 14px;
-                        font-weight: bold;
-                        text-align: center;
-                        color: #1E2555;
-                        text-decoration: underline;
-                        margin-bottom: 30px;
-                        letter-spacing: 0.5px;
-                        position: relative;
-                        z-index: 10;
-                    }
-                    .content-paragraph {
-                        font-size: 11.5px;
-                        line-height: 1.8;
-                        text-align: justify;
-                        margin-bottom: 20px;
-                        text-indent: 35px;
-                        position: relative;
-                        z-index: 10;
-                    }
-                    .details-table {
-                        width: 100%;
-                        border-collapse: collapse;
-                        margin: 25px 0;
-                        font-size: 10.5px;
-                        position: relative;
-                        z-index: 10;
-                    }
-                    .details-table th {
-                        background-color: #1E2555;
-                        color: #FFFFFF;
-                        font-weight: bold;
-                        padding: 8px 12px;
-                        text-align: left;
-                        border: 1px solid #1E2555;
-                        font-family: 'Arial', sans-serif;
-                        font-size: 9px;
-                        letter-spacing: 0.5px;
-                    }
-                    .details-table td {
-                        padding: 8px 12px;
-                        border: 1px solid #E2E8F0;
-                        color: #1E293B;
-                        background-color: #F8FAFC;
-                    }
-                    .situation-box {
-                        border-left: 3px solid #E5A900;
-                        background-color: #FFFDF0;
-                        padding: 15px;
-                        font-size: 11px;
-                        line-height: 1.6;
-                        text-align: justify;
-                        margin: 25px 0;
-                        font-style: italic;
-                        position: relative;
-                        z-index: 10;
-                    }
-                    .signature-area {
-                        width: 100%;
-                        margin-top: 60px;
-                        text-align: center;
-                        font-size: 11px;
-                        position: relative;
-                        z-index: 10;
-                    }
-                    .signature-line {
-                        width: 200px;
-                        border-bottom: 1px solid #64748B;
-                        margin: 0 auto 10px auto;
-                    }
-                    .footer-notes {
-                        font-size: 8.5px;
-                        color: #64748B;
-                        text-align: justify;
-                        line-height: 1.4;
-                        border-top: 1px solid #E2E8F0;
-                        padding-top: 12px;
-                        position: relative;
-                        z-index: 10;
-                    }
-                </style>
-            </head>
-            <body>
-                <div class="document-container">
-                    <div class="watermark"></div>
-                    <div>
-                        <table class="header-table">
-                            <tr>
-                                <td>
-                                    <img src="https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2" class="header-logo" alt="CEUT">
-                                </td>
-                                <td>
-                                    <div class="header-title-main">CENTRO UNIVERSITARIO TEHUACÁN</div>
-                                    <div class="header-subtitle">DIRECCIÓN DE CONTROL ACADÉMICO Y PSICOPEDAGOGÍA</div>
-                                    <div class="header-subtitle" style="color: #475569;">TEHUACÁN, PUEBLA, MÉXICO</div>
-                                </td>
-                            </tr>
-                        </table>
-
-                        <div class="metadata-section">
-                            <strong>NÚMERO DE OFICIO:</strong> ${folio}<br>
-                            <strong>ASUNTO:</strong> EXPEDIENTE DE INTERVENCIÓN DOCENTE<br>
-                            <strong>FECHA DE EMISIÓN:</strong> ${dateStr}
-                        </div>
-
-                        <div class="oficio-title">EXPEDIENTE PSICOPEDAGÓGICO DE ACCIÓN PREVENTIVA</div>
-
-                        <div class="content-paragraph">
-                            Por medio de la presente instrumentación oficial, el Departamento Psicopedagógico y de Control Docente del <strong>Centro Universitario Tehuacán (CEUT)</strong>, bajo la dirección técnica y académica del <strong>Mtro. Carlos Aguilar Sánchez</strong>, hace constar el reporte de incidencia registrado de forma confidencial para el seguimiento correspondiente.
-                        </div>
-
-                        <table class="details-table">
-                            <tr>
-                                <th colspan="2">DATOS DE IDENTIFICACIÓN DE LAS PARTES</th>
-                            </tr>
-                            <tr>
-                                <td style="width: 35%;"><strong>ESTUDIANTE EVALUADO:</strong></td>
-                                <td>${report.studentName.toUpperCase()}</td>
-                            </tr>
-                            <tr>
-                                <td><strong>NIVEL EDUCATIVO Y GRUPO:</strong></td>
-                                <td>${report.eduLevel.toUpperCase()} - ${report.grade.toUpperCase()} GRUPO "${report.group.toUpperCase()}" (${report.modality.toUpperCase()})</td>
-                            </tr>
-                            ${report.career ? `<tr><td><strong>CARRERA UNIVERSITARIA:</strong></td><td>${report.career.toUpperCase()}</td></tr>` : ''}
-                            <tr>
-                                <td><strong>DOCENTE REDACTOR:</strong></td>
-                                <td>${report.teacherName.toUpperCase()} (${report.teacherSubject.toUpperCase()})</td>
-                            </tr>
-                            <tr>
-                                <td><strong>MOTIVO ACADÉMICO / SEMÁFORO:</strong></td>
-                                <td><strong>${report.reason.toUpperCase()} (PRIORIDAD ${report.priority.toUpperCase()})</strong></td>
-                            </tr>
-                            <tr>
-                                <td><strong>ESTADO GENERAL DEL CASO:</strong></td>
-                                <td><strong>${report.status.toUpperCase()}</strong></td>
-                            </tr>
-                        </table>
-
-                        <div class="situation-box">
-                            <strong>RELATORÍA DE LOS HECHOS DECLARADOS:</strong><br>
-                            "${report.situation.toUpperCase()}"
-                        </div>
-                        
-                        ${report.notes ? `
-                        <div class="content-paragraph">
-                            <strong>RESOLUCIÓN DE INTERVENCIÓN ADJUNTA:</strong><br>
-                            ${report.notes.toUpperCase()}
-                        </div>
-                        ` : ''}
-                    </div>
-
-                    <div>
-                        <div class="signature-area">
-                            <div class="signature-line"></div>
-                            <strong>MTRO. CARLOS AGUILAR SÁNCHEZ</strong><br>
-                            Responsable del Departamento Psicopedagógico CEUT
-                            <br><span style="font-size: 8px; color: #94A3B8;">DOCUMENTO AUTENTICADO DE FORMA DIGITAL</span>
-                        </div>
-
-                        <div class="footer-notes">
-                            <strong>CONVENIO JURÍDICO DE PRIVACIDAD:</strong> Este oficio contiene datos personales clasificados como Sensibles bajo la legislación civil de los Estados Unidos Mexicanos y los artículos 9, 15 y 16 de la Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP). Queda estrictamente prohibida la reproducción, copia o divulgación no autorizada de este documento por parte de cualquier persona directiva, académica o administrativa ajena a la Dirección Psicopedagógica.
-                        </div>
-                    </div>
-                </div>
-                <script>
-                    window.onload = function() {
-                        window.print();
-                    };
-                <\/script>
-            </body>
-            </html>
-            `;
-
-            printWindow.document.open();
-            printWindow.document.write(letterheadHTML);
-            printWindow.document.close();
-        }
 
         function printGlobalStatisticalReport() {
             const reports = window.appState.reports || [];
@@ -2634,6 +2315,7 @@ TIGRES CEUT — PSICOPEDAGOGIA`;
                 tableRows += `
                     <tr>
                         <td style="text-align:center;">${idx+1}</td>
+                        <td style="font-family: monospace; font-weight: bold;">${r.id}</td>
                         <td><strong>${r.studentName.toUpperCase()}</strong></td>
                         <td>${r.eduLevel.toUpperCase()}</td>
                         <td>${r.reason.toUpperCase()}</td>
@@ -2833,8 +2515,9 @@ TIGRES CEUT — PSICOPEDAGOGIA`;
                             <thead>
                                 <tr>
                                     <th style="width: 5%;">#</th>
-                                    <th style="width: 25%;">ESTUDIANTE</th>
-                                    <th style="width: 15%;">NIVEL</th>
+                                    <th style="width: 10%;">FOLIO</th>
+                                    <th style="width: 20%;">ESTUDIANTE</th>
+                                    <th style="width: 10%;">NIVEL</th>
                                     <th style="width: 35%;">MOTIVO PRINCIPAL</th>
                                     <th style="width: 10%;">PRIORIDAD</th>
                                     <th style="width: 10%;">ESTADO</th>
