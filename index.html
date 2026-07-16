@@ -24,12 +24,7 @@
                         'ceutBlue-dark': '#0F1332',  // Fondo Profundo Premium
                         'ceutGold': '#E5A900',       // Amarillo Oro Institucional del Escudo
                         'ceutGold-light': '#F5B800', // Oro medio oficial
-                        'ceutGold-dark': '#B28200',  // Sombra de Oro institucional
-                    },
-                    boxShadow: {
-                        'premium': '0 10px 30px rgba(15, 19, 50, 0.05)',
-                        'gold-glow': '0 4px 20px rgba(229, 169, 0, 0.2)',
-                        'blue-glow': '0 12px 40px rgba(30, 37, 85, 0.2)'
+                        'ceutGold-dark': '#B28200',  // Sombra de Oro institucional (para lectura sobre blanco)
                     }
                 }
             }
@@ -132,82 +127,61 @@
         window.appState = {
             reports: [],
             isFirebaseActive: false,
-            currentRole: 'welcome',
+            currentRole: 'WELCOME',
             db: null,
             auth: null,
             currentUser: null,
             filters: {
                 search: '',
-                priority: 'all',
-                level: 'all',
-                status: 'all'
+                priority: 'ALL',
+                level: 'ALL',
+                status: 'ALL'
             },
+            // Datos de respaldo iniciales cargados en memoria como catálogo base
             mockReports: [
                 {
-                    id: "caso-01",
+                    id: "CASO-01",
                     timestamp: new Date(Date.now() - 3600000 * 2),
-                    teacherName: "Profra. María Elena López",
-                    teacherEmail: "maria.lopez@ceut.edu.mx",
-                    subject: "Matemáticas II",
-                    studentName: "Juan Pablo Gómez Ruiz",
-                    eduLevel: "Preparatoria",
-                    modality: "Escolarizada",
+                    teacherName: "PROFRA. MARIA ELENA LOPEZ",
+                    teacherEmail: "MARIA.LOPEZ@CEUT.EDU.MX",
+                    subject: "MATEMATICAS II",
+                    studentName: "JUAN PABLO GOMEZ RUIZ",
+                    eduLevel: "PREPARATORIA",
+                    modality: "ESCOLARIZADA",
                     grade: "2",
                     group: "A",
-                    semester: "Segundo",
+                    semester: "SEGUNDO",
                     career: "",
-                    reason: "Bajo rendimiento académico",
-                    priority: "alta",
-                    priorIntervention: "si",
-                    situation: "El alumno ha reprobado los últimos tres parciales de álgebra básica. No entrega tareas y muestra apatía durante las sesiones de resolución de ejercicios prácticos en el salón de clases.",
-                    status: "Pendiente",
-                    notes: "Se agendó llamada telefónica con los padres de familia para el viernes por la tarde.",
+                    reason: "BAJO RENDIMIENTO ACADEMICO",
+                    priority: "ALTA",
+                    priorIntervention: "SI",
+                    situation: "EL ALUMNO HA REPROBADO LOS ULTIMOS TRES PARCIALES DE ALGEBRA BASICA. NO ENTREGA TAREAS Y MUESTRA APATIA DURANTE LAS SESIONES DE RESOLUCION DE EJERCICIOS PRACTICOS EN EL SALON DE CLASES.",
+                    status: "PENDIENTE",
+                    notes: "SE AGENDO LLAMADA TELEFONICA CON LOS PADRES DE FAMILIA PARA EL VIERNES POR LA TARDE.",
                     dataConsent: true,
-                    legalBasis: "LFPDPPP Art. 15 - Fines de evaluación escolar y apoyo académico"
+                    legalBasis: "LFPDPPP ART. 15 - FINES DE EVALUACION ESCOLAR Y APOYO ACADEMICO"
                 },
                 {
-                    id: "caso-02",
+                    id: "CASO-02",
                     timestamp: new Date(Date.now() - 3600000 * 5),
-                    teacherName: "Mtro. Roberto Torres",
-                    teacherEmail: "roberto.torres@ceut.edu.mx",
-                    subject: "Introducción al Derecho",
-                    studentName: "Diana Valeria Martínez Cruz",
-                    eduLevel: "Universidad",
-                    modality: "Mixta",
+                    teacherName: "MTRO. ROBERTO TORRES",
+                    teacherEmail: "ROBERTO.TORRES@CEUT.EDU.MX",
+                    subject: "INTRODUCCION AL DERECHO",
+                    studentName: "DIANA VALERIA MARTINEZ CRUZ",
+                    eduLevel: "UNIVERSIDAD",
+                    modality: "MIXTA",
                     grade: "5",
                     group: "B",
-                    semester: "Quinto",
-                    career: "Licenciatura en Derecho",
-                    reason: "Inasistencia frecuente y ausentismo",
-                    priority: "media",
-                    priorIntervention: "no",
-                    situation: "La alumna ha acumulado un 40% de inasistencias en lo que va del ciclo escolar. Se intentó contacto por correo de tutoría pero no se ha recibido respuesta alguna por su parte.",
-                    status: "En Proceso",
-                    notes: "El Mtro. Carlos Aguilar asignó tutor de seguimiento psicopedagógico y citatorio físico.",
+                    semester: "QUINTO",
+                    career: "LICENCIA EN DERECHO",
+                    reason: "INASISTENCIA FRECUENTE Y AUSENTISMO",
+                    priority: "MEDIA",
+                    priorIntervention: "NO",
+                    situation: "LA ALUMNA HA ACUMULADO UN 40% DE INASISTENCIAS EN LO QUE VA DEL CICLO ESCOLAR. SE INTENTO CONTACTO POR CORREO DE TUTORIA PERO NO SE HA RECIBIDO RESPUESTA ALGUNA POR SU PARTE.",
+                    status: "EN PROCESO",
+                    notes: "EL MTRO. CARLOS AGUILAR ASIGNO TUTOR DE SEGUIMIENTO PSICOPEDAGOGICO Y CITATORIO FISICO.",
                     dataConsent: true,
-                    legalBasis: "LFPDPPP Art. 15"
-                },
-                {
-                    id: "caso-03",
-                    timestamp: new Date(Date.now() - 3600000 * 24),
-                    teacherName: "Dra. Sofía Mendoza",
-                    teacherEmail: "sofia.mendoza@ceut.edu.mx",
-                    subject: "Psicología General",
-                    studentName: "Carlos Eduardo Ortiz",
-                    eduLevel: "Universidad",
-                    modality: "Escolarizada",
-                    grade: "1",
-                    group: "A",
-                    semester: "Primero",
-                    career: "Licenciatura en Psicología",
-                    reason: "Situación socioemocional / cambio de conducta",
-                    priority: "alta",
-                    priorIntervention: "si",
-                    situation: "Se le observa sumamente ansioso durante clases, con llanto espontáneo en dos ocasiones durante esta semana. Al dialogar con él de forma privada menciona una fuerte crisis familiar actual que afecta su estabilidad emocional.",
-                    status: "Resuelto",
-                    notes: "Atendido directamente en el departamento psicopedagógico. Se canalizó a terapia externa y se acordaron flexibilidades académicas temporales para evitar reprobación.",
-                    dataConsent: true,
-                    legalBasis: "LFPDPPP Art. 9 - Consentimiento de datos sensibles para tutoría escolar"
+                    legalBasis: "LFPDPPP ART. 15"
                 }
             ]
         };
@@ -225,6 +199,7 @@
                 if (user) {
                     window.appState.currentUser = user;
                     window.appState.isFirebaseActive = true;
+                    updateCloudStatusUI(true);
                     inicializarSuscripcionFirestore();
                 } else {
                     autenticarUsuario();
@@ -232,8 +207,8 @@
             });
 
         } catch (e) {
-            console.error("Error al inicializar los servicios de Firebase:", e);
-            useFallbackMockData();
+            console.error("ERROR AL INICIALIZAR LOS SERVICIOS DE FIREBASE:", e);
+            disableCloudStatusUI();
         }
 
         async function autenticarUsuario() {
@@ -244,8 +219,8 @@
                     await signInAnonymously(window.appState.auth);
                 }
             } catch (err) {
-                console.warn("Autenticación Firebase rechazazada, usando persistencia local:", err);
-                useFallbackMockData();
+                console.warn("AUTENTICACION FIREBASE RECHAZADA, TRABAJANDO EN MODO LOCAL DE SOLO LECTURA:", err);
+                disableCloudStatusUI();
             }
         }
 
@@ -271,29 +246,43 @@
                 renderReports();
                 renderMetrics();
             }, (error) => {
-                console.error("Falla en la sincronización en tiempo real de Firestore:", error);
-                useFallbackMockData();
+                console.error("FALLA EN LA SINCRONIZACION EN TIEMPO REAL DE FIRESTORE:", error);
+                disableCloudStatusUI();
             });
         }
 
-        function useFallbackMockData() {
+        function disableCloudStatusUI() {
             window.appState.isFirebaseActive = false;
-            const stored = localStorage.getItem('ceut_reports');
-            if (stored) {
-                try {
-                    window.appState.reports = JSON.parse(stored);
-                } catch(e) {
-                    window.appState.reports = window.appState.mockReports;
-                }
-            } else {
-                window.appState.reports = window.appState.mockReports;
-                localStorage.setItem('ceut_reports', JSON.stringify(window.appState.mockReports));
-            }
+            updateCloudStatusUI(false);
+            window.appState.reports = window.appState.mockReports;
             renderReports();
             renderMetrics();
         }
 
+        function updateCloudStatusUI(active) {
+            const indicator = document.getElementById('cloud-status-indicator');
+            if (indicator) {
+                if (active) {
+                    indicator.innerHTML = `
+                        <span class="relative flex h-3 w-3">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                        </span>
+                        <span class="font-bold text-[10px] text-emerald-400 uppercase tracking-widest font-sans">NUBE SINCRONIZADA</span>
+                    `;
+                } else {
+                    indicator.innerHTML = `
+                        <span class="relative flex h-3 w-3">
+                            <span class="relative inline-flex rounded-full h-3 w-3 bg-rose-500"></span>
+                        </span>
+                        <span class="font-bold text-[10px] text-rose-500 uppercase tracking-widest font-sans">SIN CONEXION A LA NUBE (SOLO LECTURA)</span>
+                    `;
+                }
+            }
+        }
+
         window.submitReportToFirestore = async function(newReport) {
+            // Guardado estricto en la nube, se eliminó el fallback a localStorage
             if (window.appState.isFirebaseActive && window.appState.db && window.appState.currentUser) {
                 try {
                     const colRef = collection(window.appState.db, 'artifacts', appId, 'public', 'data', 'reports');
@@ -303,41 +292,27 @@
                     });
                     return true;
                 } catch (e) {
-                    console.error("Error guardando reporte en Firebase Firestore, recurriendo a local:", e);
+                    console.error("ERROR GUARDANDO REPORTE EN FIREBASE:", e);
+                    return false;
                 }
             }
-            
-            newReport.id = 'reporte-' + Date.now();
-            newReport.timestamp = new Date().toISOString();
-            window.appState.reports.unshift(newReport);
-            localStorage.setItem('ceut_reports', JSON.stringify(window.appState.reports));
-            renderReports();
-            renderMetrics();
-            return true;
+            return false; // Retorna falso inmediatamente si no está conectado a la nube
         };
 
         window.updateReportStatusInFirestore = async function(reportId, newStatus, followUpNotes = "") {
-            const index = window.appState.reports.findIndex(r => r.id === reportId);
-            if (index !== -1) {
-                if (window.appState.isFirebaseActive && window.appState.db && window.appState.currentUser) {
-                    try {
-                        const docRef = doc(window.appState.db, 'artifacts', appId, 'public', 'data', 'reports', reportId);
-                        await updateDoc(docRef, {
-                            status: newStatus,
-                            notes: followUpNotes
-                        });
-                        return true;
-                    } catch (e) {
-                        console.error("Falla al actualizar estatus en Firebase:", e);
-                    }
+            // Edición estricta en la nube
+            if (window.appState.isFirebaseActive && window.appState.db && window.appState.currentUser) {
+                try {
+                    const docRef = doc(window.appState.db, 'artifacts', appId, 'public', 'data', 'reports', reportId);
+                    await updateDoc(docRef, {
+                        status: newStatus,
+                        notes: followUpNotes
+                    });
+                    return true;
+                } catch (e) {
+                    console.error("FALLA AL ACTUALIZAR EN FIREBASE:", e);
+                    return false;
                 }
-                
-                window.appState.reports[index].status = newStatus;
-                window.appState.reports[index].notes = followUpNotes;
-                localStorage.setItem('ceut_reports', JSON.stringify(window.appState.reports));
-                renderReports();
-                renderMetrics();
-                return true;
             }
             return false;
         };
@@ -349,37 +324,46 @@
         <div class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-center justify-between gap-8 relative z-10">
             <div class="flex items-center gap-6 text-center lg:text-left flex-col sm:flex-row">
                 <!-- Logotipo Principal en el Header -->
-                <div class="relative bg-white/10 p-3 rounded-2xl shadow-gold-glow flex-shrink-0 z-50 border-2 border-ceutGold animate-float">
+                <div class="relative bg-white p-3 rounded-2xl shadow-gold-glow flex-shrink-0 z-50 border-2 border-ceutGold animate-float">
                     <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Escudo Tigres" class="h-24 w-24 object-contain block mx-auto">
                 </div>
                 <div>
                     <h1 class="text-4xl sm:text-5xl font-black tracking-tight flex flex-col sm:flex-row items-center gap-3 justify-center lg:justify-start">
                         <span class="font-formal gold-shimmer-text">CEUT TIGRES</span>
                     </h1>
-                    <span class="inline-block text-xs font-bold bg-ceutGold text-ceutBlue-dark px-4 py-1.5 rounded-full shadow-lg border border-ceutGold-dark tracking-widest font-sans mt-2">
-                        DEPARTAMENTO PSICOPEDAGÓGICO
-                    </span>
+                    <div class="flex flex-wrap items-center justify-center lg:justify-start gap-3 mt-2">
+                        <span class="inline-block text-xs font-bold bg-ceutGold text-ceutBlue-dark px-4 py-1.5 rounded-full shadow-lg border border-ceutGold-dark tracking-widest font-sans">
+                            DEPARTAMENTO PSICOPEDAGÓGICO
+                        </span>
+                        <!-- Indicador visual de Sincronización en la Nube -->
+                        <div id="cloud-status-indicator" class="flex items-center gap-2 bg-ceutBlue-dark border border-ceutGold/30 px-3.5 py-1.5 rounded-full">
+                            <span class="relative flex h-2 w-2">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2 w-2 bg-yellow-500"></span>
+                            </span>
+                            <span class="font-bold text-[9px] text-ceutGold font-sans tracking-wider">CONECTANDO...</span>
+                        </div>
+                    </div>
                     <p class="text-xs sm:text-sm text-slate-300 mt-3 font-serif tracking-wide max-w-2xl text-justified leading-relaxed italic">
                         Infraestructura digital de alta gama para el registro en tiempo real de incidencias escolares, protegida bajo cumplimiento estricto de la Ley Federal de Protección de Datos Personales (LFPDPPP).
                     </p>
                 </div>
             </div>
 
-            <div class="flex flex-wrap items-center justify-center gap-2 bg-ceutBlue-dark/90 p-2.5 rounded-2xl border-2 border-ceutGold/30 shadow-inner">
-                <button id="btn-role-welcome" onclick="switchRole('welcome')" class="px-6 py-3.5 rounded-xl text-xs font-bold flex items-center gap-2.5 transition-all duration-300 font-sans text-slate-300 hover:text-white hover:bg-white/10">
-                    <i class="fa-solid fa-house-user text-ceutGold"></i> Inicio
+            <div class="flex flex-wrap items-center justify-center gap-2 bg-ceutBlue-dark p-2.5 rounded-2xl border-2 border-ceutGold/30 shadow-inner">
+                <button id="btn-role-welcome" onclick="switchRole('WELCOME')" class="px-6 py-3.5 rounded-xl text-xs font-bold flex items-center gap-2.5 transition-all duration-300 font-sans text-slate-300 hover:text-white hover:bg-white/10">
+                    <i class="fa-solid fa-house-user text-ceutGold"></i> INICIO
                 </button>
-                <button id="btn-role-teacher" onclick="switchRole('teacher')" class="px-6 py-3.5 rounded-xl text-xs font-bold flex items-center gap-2.5 transition-all duration-300 font-sans text-slate-300 hover:text-white hover:bg-white/10">
-                    <i class="fa-solid fa-pen-nib text-ceutGold"></i> Registrar Incidencia
+                <button id="btn-role-teacher" onclick="switchRole('TEACHER')" class="px-6 py-3.5 rounded-xl text-xs font-bold flex items-center gap-2.5 transition-all duration-300 font-sans text-slate-300 hover:text-white hover:bg-white/10">
+                    <i class="fa-solid fa-pen-nib text-ceutGold"></i> REGISTRAR INCIDENCIA
                 </button>
                 <button id="btn-role-admin" onclick="requestAdminAccess()" class="px-6 py-3.5 rounded-xl text-xs font-bold flex items-center gap-2.5 transition-all duration-300 font-sans text-slate-300 hover:text-white hover:bg-white/10">
-                    <i class="fa-solid fa-shield-halved text-ceutGold"></i> Panel de Control
+                    <i class="fa-solid fa-shield-halved text-ceutGold"></i> PANEL DE CONTROL
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- Subheader completamente sólido sin difuminados blancos o transparentes -->
     <div class="bg-[#FFFDF0] border-b border-ceutGold/30 px-4 py-3.5 text-xs z-10 font-serif">
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
             <div class="flex items-center gap-3 text-slate-700 w-full sm:w-auto">
@@ -388,7 +372,7 @@
                     <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
                 </span>
                 <span class="font-medium text-justified leading-relaxed text-slate-700">
-                    Conexión Cifrada y Segura. Procesamiento conforme a la ley mexicana <strong class="text-ceutBlue font-bold text-xs">LFPDPPP (Art. 9, 15 y 16)</strong> para datos escolares confidenciales.
+                    Conexión cifrada y segura. Procesamiento conforme a la ley mexicana <strong class="text-ceutBlue font-bold text-xs">LFPDPPP (Art. 9, 15 y 16)</strong> para datos escolares confidenciales.
                 </span>
             </div>
             <div class="text-[10px] bg-ceutBlue text-white px-4 py-2 rounded-xl font-bold font-sans whitespace-nowrap shadow-sm border border-ceutGold uppercase tracking-widest">
@@ -399,7 +383,7 @@
 
     <main class="flex-grow max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-10 z-20">
 
-        <!-- SECCIÓN 1: INICIO (Pestaña Inicio) -->
+        <!-- SECCION 1: INICIO -->
         <section id="section-welcome" class="space-y-10 fade-in-up">
             <div class="solid-panel rounded-[2rem] p-8 sm:p-14 relative overflow-hidden border-2 border-ceutBlue/30 bg-ceutBlue-dark text-white">
                 <div class="grid grid-cols-1 lg:grid-cols-4 gap-10 items-center relative z-10">
@@ -410,11 +394,11 @@
                         <h2 class="text-4xl sm:text-5xl font-extrabold tracking-tight leading-none text-white font-formal">
                             Gestión Inteligente de Incidencias en Tiempo Real
                         </h2>
-                        <p class="text-sm sm:text-base text-slate-300 leading-relaxed text-justified font-medium">
+                        <p class="text-sm sm:text-base text-slate-300 leading-relaxed text-justified font-medium font-serif">
                             La excelencia y el bienestar de los estudiantes en el **Centro Universitario Tehuacán (CEUT)** se fortalecen a través del diálogo continuo y la detección oportuna de necesidades académicas y socioemocionales. Esta plataforma de alta gama recopila de manera segura los reportes docentes para canalizarlos directamente al Departamento Psicopedagógico a cargo del <strong class="text-ceutGold font-semibold">Mtro. Carlos Aguilar Sánchez</strong>.
                         </p>
                         <div class="flex flex-wrap gap-4 pt-4">
-                            <button onclick="switchRole('teacher')" class="bg-gradient-to-r from-ceutGold to-ceutGold-dark hover:from-ceutGold-dark hover:to-ceutGold text-ceutBlue-dark font-extrabold px-8 py-4 rounded-2xl text-xs uppercase tracking-wider shadow-gold-glow flex items-center gap-3 transition-all duration-300 hover:scale-105 font-sans border-2 border-ceutGold-dark">
+                            <button onclick="switchRole('TEACHER')" class="bg-gradient-to-r from-ceutGold to-ceutGold-dark hover:from-ceutGold-dark hover:to-ceutGold text-ceutBlue-dark font-extrabold px-8 py-4 rounded-2xl text-xs uppercase tracking-wider shadow-gold-glow flex items-center gap-3 transition-all duration-300 hover:scale-105 font-sans border-2 border-ceutGold-dark">
                                 Redactar Incidencia Docente <i class="fa-solid fa-arrow-right-long text-sm animate-pulse"></i>
                             </button>
                         </div>
@@ -428,8 +412,11 @@
                 </div>
             </div>
 
-            <!-- Marco Jurídico Justificado - LFPDPPP (Sólido y Limpio) -->
+            <!-- MARCO JURIDICO -->
             <div class="solid-panel p-8 sm:p-12 rounded-[2rem] border-2 border-slate-200 shadow-premium relative bg-white">
+                <div class="absolute right-4 top-4 bg-white p-2 rounded-xl border border-slate-200">
+                    <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-10 w-10 object-contain">
+                </div>
                 <div class="flex items-center gap-5 border-b-2 border-slate-100 pb-6 mb-8">
                     <div class="h-14 w-14 rounded-2xl bg-ceutGold/10 text-ceutGold-dark flex items-center justify-center text-2xl border-2 border-ceutGold/30">
                         <i class="fa-solid fa-gavel"></i>
@@ -458,13 +445,13 @@
                         </p>
                         <p class="text-justified">
                             <strong class="text-slate-800 block font-bold text-sm mb-1.5"><i class="fa-solid fa-user-check text-ceutGold mr-1"></i> Deber de Confidencialidad (Art. 21):</strong> 
-                            Todo miembro docente y administrativo del CEUT se compromete solemnemente a guardar secreto profesional sobre los expedientes resguardados en esta plataforma. El quebrantamiento de esta cláusula acarreará las sanciones internas y penales previstas en la normatividad escolar de nuestro país.
+                            Todo miembro docente y administrativo del CEUT se compromete solemnemente a guardar secreto profesional sobre los expedientes resguardados en esta plataforma. El quebrantamiento de esta cláusula acarreará las Sanciones internas y penales previstas en la normatividad escolar de nuestro país.
                         </p>
                     </div>
                 </div>
 
                 <div class="mt-10 pt-6 border-t-2 border-slate-100 flex flex-col sm:flex-row gap-5 items-center justify-between">
-                    <button onclick="openPrivacyNotice()" class="bg-gradient-to-r from-ceutGold to-ceutGold-dark text-ceutBlue-dark hover:scale-105 transition-all duration-300 text-xs font-bold px-6 py-3.5 rounded-2xl flex items-center gap-2.5 shadow-md border border-ceutGold-dark">
+                    <button onclick="openPrivacyNotice()" class="bg-gradient-to-r from-ceutGold to-ceutGold-dark text-ceutBlue-dark hover:scale-105 transition-all duration-300 text-xs font-bold px-6 py-3.5 rounded-2xl flex items-center gap-2.5 shadow-md border border-ceutGold-dark font-sans">
                         <i class="fa-solid fa-file-shield text-sm"></i> Aviso de Privacidad Completo (Derechos ARCO)
                     </button>
                     <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest flex items-center gap-1.5 font-sans"><i class="fa-solid fa-medal text-emerald-500 text-sm"></i> Sistema de Cumplimiento Certificado</span>
@@ -472,7 +459,7 @@
             </div>
         </section>
 
-        <!-- SECCIÓN 2: REGISTRAR INCIDENCIA (Pestaña Registro) -->
+        <!-- SECCION 2: REGISTRAR INCIDENCIA -->
         <section id="section-teacher" class="hidden space-y-8 fade-in-up">
             <div class="solid-panel rounded-[2rem] overflow-hidden">
                 <div class="text-white px-8 py-8 flex items-center justify-between relative border-b-2 border-ceutGold bg-ceutBlue">
@@ -482,18 +469,18 @@
                         </div>
                         <div>
                             <h3 class="font-bold text-xl font-formal tracking-wide gold-shimmer-text">Formulario Oficial de Registro de Incidencias</h3>
-                            <p class="text-xs text-slate-300 mt-1 italic">Proporcione información detallada para el seguimiento del expediente estudiantil.</p>
+                            <p class="text-xs text-slate-300 mt-1 italic font-serif">Proporcione información detallada para el seguimiento del expediente estudiantil.</p>
                         </div>
                     </div>
                     <!-- Logotipo en Pestaña Registrar Incidencia -->
-                    <div class="bg-white/10 p-2 rounded-xl border-2 border-ceutGold shadow-md">
+                    <div class="bg-white p-2 rounded-xl border-2 border-ceutGold shadow-md">
                         <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="Escudo CEUT" class="h-16 w-16 object-contain">
                     </div>
                 </div>
 
                 <form id="reportForm" onsubmit="handleFormSubmission(event)" class="p-6 sm:p-12 space-y-10 bg-white">
                     
-                    <!-- Bloque 1: Datos del Docente -->
+                    <!-- BLOQUE 1: DATOS DEL DOCENTE -->
                     <div class="space-y-5">
                         <div class="flex flex-wrap items-center justify-between gap-3 border-b-2 border-slate-100 pb-3">
                             <h4 class="font-bold text-xs uppercase tracking-widest text-ceutGold-dark flex items-center gap-2.5 font-sans">
@@ -503,21 +490,21 @@
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 font-sans">
                             <div>
-                                <label class="block text-xs font-bold text-ceutBlue mb-2">Nombre Completo del Docente <span class="text-ceutGold font-black">*</span></label>
+                                <label class="block text-xs font-bold text-ceutGold-dark mb-2 uppercase">Nombre Completo del Docente <span class="text-ceutGold font-black">*</span></label>
                                 <input type="text" id="teacherName" required placeholder="Ej. Profra. María Elena López" class="w-full rounded-xl border-2 border-slate-200 px-4 py-3.5 text-xs focus:ring-2 focus:ring-ceutGold focus:border-ceutGold focus:outline-none transition-all shadow-sm bg-slate-50 text-slate-800 font-medium">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-ceutBlue mb-2">Asignatura o Materia <span class="text-ceutGold font-black">*</span></label>
+                                <label class="block text-xs font-bold text-ceutGold-dark mb-2 uppercase">Asignatura o Materia <span class="text-ceutGold font-black">*</span></label>
                                 <input type="text" id="teacherSubject" required placeholder="Ej. Matemáticas II" class="w-full rounded-xl border-2 border-slate-200 px-4 py-3.5 text-xs focus:ring-2 focus:ring-ceutGold focus:border-ceutGold focus:outline-none transition-all shadow-sm bg-slate-50 text-slate-800 font-medium">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-ceutBlue mb-2">Correo Electrónico Institucional <span class="text-ceutGold font-black">*</span></label>
+                                <label class="block text-xs font-bold text-ceutGold-dark mb-2 uppercase">Correo Electrónico Institucional <span class="text-ceutGold font-black">*</span></label>
                                 <input type="email" id="teacherEmail" required placeholder="docente@ceut.edu.mx" class="w-full rounded-xl border-2 border-slate-200 px-4 py-3.5 text-xs focus:ring-2 focus:ring-ceutGold focus:border-ceutGold focus:outline-none transition-all shadow-sm bg-slate-50 text-slate-800 font-medium">
                             </div>
                         </div>
                     </div>
 
-                    <!-- Bloque 2: Datos del Alumno -->
+                    <!-- BLOQUE 2: DATOS DEL ALUMNO -->
                     <div class="space-y-5 pt-3">
                         <div class="flex flex-wrap items-center justify-between gap-3 border-b-2 border-slate-100 pb-3">
                             <h4 class="font-bold text-xs uppercase tracking-widest text-ceutGold-dark flex items-center gap-2.5 font-sans">
@@ -527,11 +514,11 @@
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 font-sans">
                             <div class="md:col-span-2">
-                                <label class="block text-xs font-bold text-ceutBlue mb-2">Nombre Completo del Alumno <span class="text-ceutGold font-black">*</span></label>
+                                <label class="block text-xs font-bold text-ceutGold-dark mb-2 uppercase">Nombre Completo del Alumno <span class="text-ceutGold font-black">*</span></label>
                                 <input type="text" id="studentName" required placeholder="Escriba el nombre completo del estudiante" class="w-full rounded-xl border-2 border-slate-200 px-4 py-3.5 text-xs focus:ring-2 focus:ring-ceutGold focus:border-ceutGold focus:outline-none transition-all shadow-sm bg-slate-50 text-slate-800 font-medium">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-ceutBlue mb-2">Nivel Educativo <span class="text-ceutGold font-black">*</span></label>
+                                <label class="block text-xs font-bold text-ceutGold-dark mb-2 uppercase">Nivel Educativo <span class="text-ceutGold font-black">*</span></label>
                                 <select id="eduLevel" required onchange="toggleEducationalFields()" class="w-full rounded-xl border-2 border-slate-200 px-4 py-3.5 text-xs focus:ring-2 focus:ring-ceutGold focus:border-ceutGold focus:outline-none bg-slate-50 text-slate-800 transition-all shadow-sm font-bold">
                                     <option value="" disabled selected>Seleccione nivel...</option>
                                     <option value="Preparatoria">Preparatoria / Bachillerato</option>
@@ -539,7 +526,7 @@
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-ceutBlue mb-2">Modalidad <span class="text-ceutGold font-black">*</span></label>
+                                <label class="block text-xs font-bold text-ceutGold-dark mb-2 uppercase">Modalidad <span class="text-ceutGold font-black">*</span></label>
                                 <select id="modality" required class="w-full rounded-xl border-2 border-slate-200 px-4 py-3.5 text-xs focus:ring-2 focus:ring-ceutGold focus:border-ceutGold focus:outline-none bg-slate-50 text-slate-800 transition-all shadow-sm font-bold">
                                     <option value="" disabled selected>Seleccione modalidad...</option>
                                     <option value="Escolarizada">Escolarizada (Presencial)</option>
@@ -550,25 +537,25 @@
 
                         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 font-sans">
                             <div>
-                                <label class="block text-xs font-bold text-ceutBlue mb-2">Grado / Semestre <span class="text-ceutGold font-black">*</span></label>
+                                <label class="block text-xs font-bold text-ceutGold-dark mb-2 uppercase">Grado / Semestre <span class="text-ceutGold font-black">*</span></label>
                                 <input type="text" id="grade" required placeholder="Ej. Segundo, Cuarto" class="w-full rounded-xl border-2 border-slate-200 px-4 py-3.5 text-xs focus:ring-2 focus:ring-ceutGold focus:border-ceutGold focus:outline-none transition-all shadow-sm bg-slate-50 text-slate-800 font-medium">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-ceutBlue mb-2">Grupo <span class="text-ceutGold font-black">*</span></label>
+                                <label class="block text-xs font-bold text-ceutGold-dark mb-2 uppercase">Grupo <span class="text-ceutGold font-black">*</span></label>
                                 <input type="text" id="group" required placeholder="Ej. A, B" class="w-full rounded-xl border-2 border-slate-200 px-4 py-3.5 text-xs focus:ring-2 focus:ring-ceutGold focus:border-ceutGold focus:outline-none transition-all shadow-sm bg-slate-50 text-slate-800 font-medium">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-ceutBlue mb-2">Ciclo Escolar / Semestre <span class="text-ceutGold font-black">*</span></label>
+                                <label class="block text-xs font-bold text-ceutGold-dark mb-2 uppercase">Ciclo Escolar / Semestre <span class="text-ceutGold font-black">*</span></label>
                                 <input type="text" id="semester" required placeholder="Ej. 2026-2027" class="w-full rounded-xl border-2 border-slate-200 px-4 py-3.5 text-xs focus:ring-2 focus:ring-ceutGold focus:border-ceutGold focus:outline-none transition-all shadow-sm bg-slate-50 text-slate-800 font-medium">
                             </div>
                             <div id="div-career" class="hidden">
-                                <label class="block text-xs font-bold text-ceutGold mb-2">Carrera (Universidad) <span class="text-ceutGold font-black">*</span></label>
+                                <label class="block text-xs font-bold text-ceutGold-dark mb-2 uppercase">Carrera (Universidad) <span class="text-ceutGold font-black">*</span></label>
                                 <input type="text" id="career" placeholder="Ej. Licenciatura en Derecho" class="w-full rounded-xl border-2 border-ceutGold px-4 py-3.5 text-xs focus:ring-2 focus:ring-ceutGold focus:border-ceutGold focus:outline-none transition-all shadow-sm bg-white text-slate-800 font-medium">
                             </div>
                         </div>
                     </div>
 
-                    <!-- Bloque 3: Motivo y Semáforo de Prioridad -->
+                    <!-- BLOQUE 3: MOTIVO Y SEMAFORO DE PRIORIDAD -->
                     <div class="space-y-5 pt-3">
                         <div class="flex flex-wrap items-center justify-between gap-3 border-b-2 border-slate-100 pb-3">
                             <h4 class="font-bold text-xs uppercase tracking-widest text-ceutGold-dark flex items-center gap-2.5 font-sans">
@@ -579,7 +566,7 @@
                         
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
                             <div class="space-y-4">
-                                <label class="block text-xs font-extrabold text-ceutBlue font-sans">Seleccione el Motivo Principal <span class="text-ceutGold font-black">*</span></label>
+                                <label class="block text-xs font-extrabold text-ceutGold-dark font-sans uppercase">Seleccione el Motivo Principal <span class="text-ceutGold font-black">*</span></label>
                                 <div class="grid grid-cols-1 gap-3.5">
                                     <label class="hover-gold-grow flex items-start gap-4 p-4.5 bg-slate-50 rounded-2xl border-2 border-slate-200 cursor-pointer shadow-sm">
                                         <input type="radio" name="incidentReason" value="Bajo rendimiento académico" required class="mt-1 h-4.5 w-4.5 text-ceutBlue focus:ring-ceutGold">
@@ -600,7 +587,7 @@
                                         <div>
                                             <span class="block text-xs font-bold text-slate-800 font-sans flex items-center gap-2">
                                                 Situación socioemocional / cambio de conducta 
-                                                <span class="bg-rose-100 text-rose-800 text-[8px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider border border-rose-300 whitespace-nowrap">Datos Sensibles</span>
+                                                <span class="bg-rose-100 text-rose-800 text-[8px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider border border-rose-300/50 whitespace-nowrap">Datos Sensibles</span>
                                             </span>
                                             <span class="block text-[11px] text-slate-600 mt-1 leading-normal text-justified font-serif">Requiere estricta discreción escolar para protección de salud psicológica bajo la LFPDPPP (Art. 9).</span>
                                         </div>
@@ -616,11 +603,11 @@
                             </div>
 
                             <div class="space-y-4">
-                                <label class="block text-xs font-extrabold text-ceutBlue font-sans">Semáforo de Prioridad Estimado <span class="text-ceutGold font-black">*</span></label>
+                                <label class="block text-xs font-extrabold text-ceutGold-dark font-sans uppercase">Semáforo de Prioridad Estimado <span class="text-ceutGold font-black">*</span></label>
                                 <div class="grid grid-cols-1 gap-4 font-sans">
                                     <label class="select-priority flex items-center justify-between p-4.5 rounded-2xl border-2 border-slate-200 bg-slate-50 cursor-pointer hover:border-rose-400 transition-all duration-300 shadow-sm" data-priority="alta">
                                         <div class="flex items-center gap-4">
-                                            <div class="h-10 w-10 rounded-2xl bg-rose-600 flex items-center justify-center text-white text-sm shadow-md">
+                                            <div class="h-10 w-10 rounded-2xl bg-rose-500 flex items-center justify-center text-white text-sm shadow-md">
                                                 <i class="fa-solid fa-fire animate-pulse"></i>
                                             </div>
                                             <div>
@@ -661,7 +648,7 @@
                         </div>
                     </div>
 
-                    <!-- Bloque 4: Intervención y Narrativa -->
+                    <!-- BLOQUE 4: INTERVENCION Y NARRATIVA -->
                     <div class="space-y-5 pt-3">
                         <div class="flex flex-wrap items-center justify-between gap-3 border-b-2 border-slate-100 pb-3">
                             <h4 class="font-bold text-xs uppercase tracking-widest text-ceutGold-dark flex items-center gap-2.5 font-sans">
@@ -673,15 +660,15 @@
                         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                             <div class="space-y-4 bg-slate-50 p-6 rounded-2xl border-2 border-slate-200 shadow-sm flex flex-col justify-between">
                                 <div>
-                                    <label class="block text-xs font-bold text-ceutBlue mb-3 text-justified font-sans">¿Ha entablado un diálogo previo con el alumno sobre este incidente? <span class="text-ceutGold font-black">*</span></label>
+                                    <label class="block text-xs font-bold text-ceutGold-dark mb-3 text-justified font-sans uppercase">¿Ha entablado un diálogo previo con el alumno sobre este incidente? <span class="text-ceutGold font-black">*</span></label>
                                     <div class="flex items-center gap-6 font-sans">
                                         <label class="flex items-center gap-2.5 cursor-pointer">
                                             <input type="radio" name="priorIntervention" value="si" required class="h-5 w-5 text-ceutGold focus:ring-ceutGold">
-                                            <span class="text-xs font-bold text-slate-800">Sí, se dialogó</span>
+                                            <span class="text-xs font-bold text-slate-800 uppercase">Sí, se dialogó</span>
                                         </label>
                                         <label class="flex items-center gap-2.5 cursor-pointer">
                                             <input type="radio" name="priorIntervention" value="no" class="h-5 w-5 text-ceutGold focus:ring-ceutGold">
-                                            <span class="text-xs font-bold text-slate-800">No se dialogó</span>
+                                            <span class="text-xs font-bold text-slate-800 uppercase">No se dialogó</span>
                                         </label>
                                     </div>
                                 </div>
@@ -691,18 +678,18 @@
                             </div>
 
                             <div class="lg:col-span-2 space-y-2">
-                                <label class="block text-xs font-bold text-ceutBlue font-sans">Descripción Narrativa de la Situación <span class="text-ceutGold font-black">*</span></label>
+                                <label class="block text-xs font-bold text-ceutGold-dark font-sans uppercase">Descripción Narrativa de la Situación <span class="text-ceutGold font-black">*</span></label>
                                 <textarea id="situationDescription" required rows="5" placeholder="Detalle con total respeto y objetividad la relatoría de los hechos, fechas críticas de la incidencia identificada y conductas observadas..." class="w-full rounded-2xl border-2 border-slate-200 p-5 text-xs sm:text-sm focus:ring-2 focus:ring-ceutGold focus:border-ceutGold focus:outline-none transition-all shadow-sm bg-slate-50 font-serif text-slate-800 font-medium"></textarea>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Certificación y Consentimiento LFPDPPP -->
+                    <!-- CERTIFICACION DE DATOS -->
                     <div class="bg-ceutBlue/5 p-6 sm:p-8 rounded-3xl border-2 border-dashed border-ceutGold space-y-4">
                         <div class="flex items-start gap-4">
                             <input type="checkbox" id="legalConsentCheckbox" required class="mt-1.5 h-5 w-5 text-ceutBlue focus:ring-ceutGold rounded border-slate-300 bg-white">
                             <div>
-                                <label for="legalConsentCheckbox" class="block text-xs font-bold text-ceutBlue cursor-pointer uppercase tracking-widest leading-relaxed font-sans">
+                                <label for="legalConsentCheckbox" class="block text-xs font-bold text-ceutGold-dark cursor-pointer uppercase tracking-widest leading-relaxed font-sans">
                                     Certificación de Confidencialidad y Veracidad de la Información (LFPDPPP) *
                                 </label>
                                 <p class="text-[11px] sm:text-xs text-slate-600 mt-2.5 leading-relaxed text-justified font-serif">
@@ -721,21 +708,21 @@
             </div>
         </section>
 
-        <!-- SECCIÓN 3: PANEL DE CONTROL (Pestaña Admin) -->
+        <!-- SECCION 3: PANEL DE CONTROL -->
         <section id="section-admin" class="hidden space-y-10 fade-in-up">
             <div class="solid-panel p-8 rounded-[2rem] shadow-premium flex flex-col lg:flex-row lg:items-center justify-between gap-8 relative overflow-hidden bg-white">
                 <div class="flex items-center gap-6 flex-col sm:flex-row text-center sm:text-left z-10">
                     <!-- Logotipo en Pestaña Panel de Control -->
-                    <div class="bg-slate-100 p-3 rounded-2xl shadow-md border-2 border-ceutGold relative z-20">
+                    <div class="bg-slate-100 p-3 rounded-2xl shadow-md border-2 border-ceutGold relative z-20 animate-float">
                         <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="Logo Administrador" class="h-20 w-20 object-contain block mx-auto">
                     </div>
                     <div>
                         <h3 class="font-bold text-2xl text-slate-800 flex items-center justify-center sm:justify-start gap-3 flex-wrap font-formal">
                             <span class="gold-shimmer-text">Buzón de Incidencias Docentes</span>
-                            <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border-2 border-emerald-300 font-sans">Sincronizado</span>
+                            <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border-2 border-emerald-300 font-sans">SINCRONIZADO</span>
                         </h3>
-                        <p class="text-xs sm:text-sm text-slate-600 font-bold mt-1 font-sans">Mtro. Carlos Aguilar Sánchez — Responsable de la Dirección Psicopedagógica CEUT</p>
-                        <p class="text-[10px] text-rose-600 font-bold uppercase tracking-widest mt-2 flex items-center gap-1.5 justify-center sm:justify-start font-sans"><i class="fa-solid fa-shield-halved text-sm"></i> Acceso Cifrado — Base de datos bajo Auditoría LFPDPPP</p>
+                        <p class="text-xs sm:text-sm text-slate-600 font-bold mt-1 font-sans uppercase">Mtro. Carlos Aguilar Sánchez — Responsable de la Dirección Psicopedagógica CEUT</p>
+                        <p class="text-[10px] text-rose-600 font-bold uppercase tracking-widest mt-2 flex items-center gap-1.5 justify-center sm:justify-start font-sans"><i class="fa-solid fa-shield-halved text-sm"></i> Acceso Cifrado — Base de Datos bajo Auditoría LFPDPPP</p>
                     </div>
                 </div>
 
@@ -744,32 +731,47 @@
                 </button>
             </div>
 
-            <!-- Métricas (Fondo Claro Elegante de Alto Contraste) -->
+            <!-- METRICAS -->
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 font-sans">
-                <div class="solid-panel text-slate-800 p-8 rounded-3xl shadow-premium bg-white">
+                <div class="solid-panel text-slate-800 p-8 rounded-3xl bg-white relative">
+                    <div class="absolute right-4 top-4">
+                        <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-6 w-6 object-contain opacity-50">
+                    </div>
                     <span class="block text-[10px] uppercase tracking-widest text-slate-500 font-bold">Total de Casos</span>
                     <span class="text-5xl font-black text-ceutBlue block mt-3 font-formal gold-shimmer-text" id="metric-total">0</span>
                 </div>
-                <div class="bg-rose-50 text-rose-950 p-8 rounded-3xl border-2 border-rose-200 shadow-sm">
+                <div class="bg-rose-50 text-rose-950 p-8 rounded-3xl border-2 border-rose-200 shadow-sm relative">
+                    <div class="absolute right-4 top-4">
+                        <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-6 w-6 object-contain opacity-30">
+                    </div>
                     <span class="block text-[10px] uppercase tracking-widest text-rose-700 font-bold">Prioridad Alta</span>
                     <span class="text-5xl font-bold text-rose-600 block mt-3 font-formal" id="metric-high">0</span>
                 </div>
-                <div class="bg-yellow-50 text-yellow-950 p-8 rounded-3xl border-2 border-yellow-200 shadow-sm">
+                <div class="bg-yellow-50 text-yellow-950 p-8 rounded-3xl border-2 border-yellow-200 shadow-sm relative">
+                    <div class="absolute right-4 top-4">
+                        <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-6 w-6 object-contain opacity-30">
+                    </div>
                     <span class="block text-[10px] uppercase tracking-widest text-yellow-700 font-bold">Prioridad Media</span>
                     <span class="text-5xl font-bold text-yellow-600 block mt-3 font-formal" id="metric-medium">0</span>
                 </div>
-                <div class="bg-emerald-50 text-emerald-950 p-8 rounded-3xl border-2 border-emerald-200 shadow-sm">
+                <div class="bg-emerald-50 text-emerald-950 p-8 rounded-3xl border-2 border-emerald-200 shadow-sm relative">
+                    <div class="absolute right-4 top-4">
+                        <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-6 w-6 object-contain opacity-30">
+                    </div>
                     <span class="block text-[10px] uppercase tracking-widest text-emerald-700 font-bold">Prioridad Baja</span>
                     <span class="text-5xl font-bold text-emerald-600 block mt-3 font-formal" id="metric-low">0</span>
                 </div>
             </div>
 
-            <!-- Panel de Búsqueda y Filtros Sólidos -->
-            <div class="solid-panel p-8 rounded-[2rem] shadow-premium space-y-5 bg-white">
+            <!-- FILTROS -->
+            <div class="solid-panel p-8 rounded-[2rem] shadow-premium space-y-5 bg-white relative">
+                <div class="absolute right-4 top-4">
+                    <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-10 w-10 object-contain">
+                </div>
                 <h4 class="font-bold text-xs uppercase tracking-widest text-ceutGold-dark flex items-center gap-2 font-sans"><i class="fa-solid fa-sliders"></i> Parámetros de Búsqueda</h4>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 font-sans">
                     <div>
-                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Búsqueda Rápida</label>
+                        <label class="block text-[10px] font-bold text-ceutGold-dark uppercase tracking-widest mb-2">Búsqueda Rápida</label>
                         <div class="relative">
                             <i class="fa-solid fa-magnifying-glass absolute left-4 top-4 text-slate-400 text-xs"></i>
                             <input type="text" id="filter-search" oninput="applyFilters()" placeholder="Buscar alumno o docente..." class="w-full rounded-xl border-2 border-slate-200 pl-11 pr-4 py-3.5 text-xs focus:ring-2 focus:ring-ceutGold focus:outline-none bg-slate-50 text-slate-800 font-medium">
@@ -777,18 +779,18 @@
                     </div>
 
                     <div>
-                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Nivel Educativo</label>
+                        <label class="block text-[10px] font-bold text-ceutGold-dark uppercase tracking-widest mb-2">Nivel Educativo</label>
                         <select id="filter-level" onchange="applyFilters()" class="w-full rounded-xl border-2 border-slate-200 px-4 py-3.5 text-xs focus:ring-2 focus:ring-ceutGold focus:outline-none bg-slate-50 text-slate-800 shadow-sm font-bold">
-                            <option value="all">Todos los Niveles</option>
-                            <option value="Preparatoria">Preparatoria / Bachillerato</option>
-                            <option value="Universidad">Universidad / Licenciatura</option>
+                            <option value="ALL">Todos los Niveles</option>
+                            <option value="PREPARATORIA">Preparatoria / Bachillerato</option>
+                            <option value="UNIVERSIDAD">Universidad / Licenciatura</option>
                         </select>
                     </div>
 
                     <div>
-                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Semáforo de Prioridad</label>
+                        <label class="block text-[10px] font-bold text-ceutGold-dark uppercase tracking-widest mb-2">Semáforo de Prioridad</label>
                         <select id="filter-priority" onchange="applyFilters()" class="w-full rounded-xl border-2 border-slate-200 px-4 py-3.5 text-xs focus:ring-2 focus:ring-ceutGold focus:outline-none bg-slate-50 text-slate-800 shadow-sm font-bold">
-                            <option value="all">Todas las Prioridades</option>
+                            <option value="ALL">Todas las Prioridades</option>
                             <option value="alta">Alta</option>
                             <option value="media">Media</option>
                             <option value="baja">Baja</option>
@@ -796,21 +798,21 @@
                     </div>
 
                     <div>
-                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Estatus de Seguimiento</label>
+                        <label class="block text-[10px] font-bold text-ceutGold-dark uppercase tracking-widest mb-2">Estatus de Seguimiento</label>
                         <select id="filter-status" onchange="applyFilters()" class="w-full rounded-xl border-2 border-slate-200 px-4 py-3.5 text-xs focus:ring-2 focus:ring-ceutGold focus:outline-none bg-slate-50 text-slate-800 shadow-sm font-bold">
-                            <option value="all">Todos los Estatus</option>
-                            <option value="Pendiente">Pendiente</option>
-                            <option value="En Proceso">En Proceso</option>
-                            <option value="Resuelto">Resuelto</option>
+                            <option value="ALL">Todos los Estatus</option>
+                            <option value="PENDIENTE">Pendiente</option>
+                            <option value="EN PROCESO">En Proceso</option>
+                            <option value="RESUELTO">Resuelto</option>
                         </select>
                     </div>
                 </div>
             </div>
 
-            <!-- Tabla de datos de expedientes -->
+            <!-- TABLA -->
             <div class="solid-panel rounded-[2rem] shadow-premium overflow-hidden font-sans bg-white">
                 <div class="px-8 py-5 bg-slate-100 border-b-2 border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                    <span class="text-xs font-bold text-slate-700 animate-pulse" id="total-filtered-label">Verificando bases de datos...</span>
+                    <span class="text-xs font-bold text-slate-700 animate-pulse uppercase" id="total-filtered-label">Verificando bases de datos...</span>
                     <span class="text-[10px] text-ceutBlue font-bold uppercase tracking-wider flex items-center gap-1.5"><i class="fa-solid fa-user-shield text-[#3B4CA8]"></i> Registro en Cumplimiento LFPDPPP</span>
                 </div>
 
@@ -834,23 +836,23 @@
 
                 <div id="empty-state" class="hidden p-20 text-center space-y-4">
                     <div class="h-16 w-16 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center text-xl mx-auto border-2 border-slate-200">
-                        <i class="fa-solid fa-folder-open"></i>
+                        <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-8 w-8 object-contain opacity-55 animate-pulse">
                     </div>
-                    <p class="text-sm font-bold text-slate-800">No se encontraron expedientes con los criterios actuales</p>
-                    <p class="text-xs text-slate-500 max-w-md mx-auto text-justified font-serif">Ajuste los filtros de búsqueda o registre una incidencia desde el portal del docente.</p>
+                    <p class="text-sm font-bold text-slate-800 uppercase">No se encontraron expedientes con los criterios actuales</p>
+                    <p class="text-xs text-slate-500 max-w-md mx-auto text-justified font-serif uppercase">Ajuste los filtros de búsqueda o registre una incidencia desde el portal del docente.</p>
                 </div>
             </div>
         </section>
 
     </main>
 
-    <!-- Modal: Aviso de Privacidad (Sólido sin difuminados de fondo) -->
+    <!-- MODAL: AVISO DE PRIVACIDAD -->
     <div id="privacyNoticeModal" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/90 hidden items-center justify-center p-4 transition-all duration-300">
         <div class="solid-panel rounded-[2rem] max-w-2xl w-full shadow-blue-glow border-2 border-ceutBlue overflow-hidden transform scale-95 transition-all duration-300 flex flex-col max-h-[85vh] bg-white">
             <div class="text-white px-8 py-6 border-b-2 border-ceutGold flex items-center justify-between flex-shrink-0 relative bg-ceutBlue">
                 <div class="flex items-center gap-4 relative z-10 font-formal">
-                    <div class="bg-white/10 p-2 rounded-xl border-2 border-ceutGold flex-shrink-0">
-                        <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="Logo Aviso Oficial" class="h-12 w-12 object-contain">
+                    <div class="bg-white p-2 rounded-xl border-2 border-ceutGold flex-shrink-0">
+                        <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="Aviso Oficial" class="h-12 w-12 object-contain">
                     </div>
                     <div>
                         <h4 class="font-bold text-base tracking-wide gold-shimmer-text">Aviso de Privacidad Integral</h4>
@@ -862,7 +864,7 @@
                 </button>
             </div>
 
-            <div class="p-8 space-y-6 overflow-y-auto text-xs sm:text-sm text-slate-700 leading-relaxed text-justified font-serif bg-white">
+            <div class="p-8 space-y-6 overflow-y-auto text-xs sm:text-sm text-slate-700 leading-relaxed text-justified font-serif">
                 <div class="p-5 bg-amber-50 border-2 border-ceutGold/55 text-slate-800 rounded-2xl">
                     <p class="font-bold text-sm text-ceutBlue font-formal mb-1.5">Identidad y Domicilio del Responsable</p>
                     <p class="text-justified font-medium">
@@ -893,7 +895,7 @@
                 <div>
                     <h5 class="font-bold text-ceutBlue uppercase tracking-widest text-xs mb-2 font-sans">3. Ejercicio de Derechos ARCO</h5>
                     <p class="text-justified text-slate-600">
-                        Los titulares de los datos o sus representantes podrán ejercer en todo momento sus derechos de **Acceso, Rectificación, Cancelación u Oposición (ARCO)** presentando una solicitud formal en las instalaciones del departamento o a través del correo oficial: <span class="font-mono text-ceutBlue font-bold bg-slate-100 px-2.5 py-1 rounded text-[11px] border border-slate-200">deptopsicopedagogico@ceut.edu.mx</span>.
+                        Los titulares de los datos o sus representantes podrán ejercer en todo momento sus derechos de **Acceso, Rectificación, Cancelación u Oposición (ARCO)** presentando una solicitud formal en las instalaciones del departamento o a través del correo oficial: deptopsicopedagogico@ceut.edu.mx.
                     </p>
                 </div>
 
@@ -903,23 +905,23 @@
             </div>
 
             <div class="bg-slate-50 px-8 py-5 flex items-center justify-end gap-3 border-t-2 border-slate-100 flex-shrink-0 font-sans">
-                <button onclick="closePrivacyNotice()" class="bg-gradient-to-r from-ceutGold to-ceutGold-dark text-ceutBlue-dark font-extrabold px-6 py-3 rounded-xl text-xs shadow-md hover:scale-105 transition-all border border-ceutGold-dark">
-                    He leído y Acepto
+                <button onclick="closePrivacyNotice()" class="bg-gradient-to-r from-ceutGold to-ceutGold-dark text-ceutBlue-dark font-extrabold px-6 py-3 rounded-xl text-xs shadow-md hover:scale-105 transition-all border border-ceutGold-dark uppercase">
+                    He leído y acepto
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Modal: Gratitud y Confirmación de Seguimiento Oficial (Sólido) -->
-    <div id="gratitudeModal" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/90 hidden items-center justify-center p-4 transition-all duration-300">
+    <!-- MODAL: GRATITUD Y CORREO -->
+    <div id="gratitudeModal" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/90 hidden items-center justify-center p-4 transition-all duration-300 bg-white">
         <div class="solid-panel rounded-[2rem] max-w-lg w-full border-2 border-ceutBlue overflow-hidden transform scale-95 transition-all duration-300 bg-white">
             <div class="text-white px-8 py-6 border-b-2 border-ceutGold flex items-center justify-between relative bg-ceutBlue">
                 <div class="flex items-center gap-4 relative z-10 font-formal">
-                    <div class="bg-white/10 p-2 rounded-xl border-2 border-ceutGold flex-shrink-0">
+                    <div class="bg-white p-2 rounded-xl border-2 border-ceutGold flex-shrink-0">
                         <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-10 w-10 object-contain">
                     </div>
                     <div>
-                        <h4 class="font-bold text-base tracking-wide gold-shimmer-text">¡Reporte Procesado con Éxito!</h4>
+                        <h4 class="font-bold text-base tracking-wide gold-shimmer-text uppercase">¡Reporte procesado con éxito!</h4>
                         <p class="text-[9px] text-slate-300 font-bold uppercase tracking-widest font-sans">Departamento Psicopedagógico CEUT</p>
                     </div>
                 </div>
@@ -934,7 +936,7 @@
                 </div>
 
                 <div class="space-y-3">
-                    <h3 class="text-2xl font-black text-ceutBlue font-formal gold-shimmer-text">¡Muchas Gracias por su Compromiso Docente!</h3>
+                    <h3 class="text-2xl font-black text-ceutBlue font-formal gold-shimmer-text">¡Muchas gracias por su compromiso docente!</h3>
                     <p class="text-xs sm:text-sm text-slate-600 leading-relaxed text-justified font-serif p-4 bg-[#FFFDF0] rounded-2xl border-2 border-ceutGold/30">
                         Su incidencia ha sido guardada de forma segura en nuestro expediente digital confidencial. Se ha abierto automáticamente su gestor de correo para que despache la plantilla de notificación formal de este caso.
                     </p>
@@ -962,28 +964,28 @@
 
                 <div class="bg-ceutBlue/5 p-4 rounded-xl border border-ceutGold/30 flex flex-col gap-2 items-center text-center">
                     <span class="text-[9px] uppercase font-bold text-slate-500 tracking-widest font-sans">Si su navegador bloqueó el correo automático, puede copiarlo aquí:</span>
-                    <button onclick="copyMailBody()" class="bg-ceutGold hover:bg-ceutGold-light text-ceutBlue-dark px-4 py-2 rounded-xl text-xs font-black transition-all shadow-sm flex items-center gap-1.5 font-sans border border-ceutGold-dark">
+                    <button onclick="copyMailBody()" class="bg-ceutGold hover:bg-ceutGold-light text-ceutBlue-dark px-4 py-2 rounded-xl text-xs font-black transition-all shadow-sm flex items-center gap-1.5 font-sans border border-ceutGold-dark uppercase">
                         <i class="fa-regular fa-copy"></i> Copiar Cuerpo del Correo
                     </button>
                 </div>
             </div>
 
             <div class="bg-slate-50 px-8 py-5 flex items-center justify-end gap-3 border-t-2 border-slate-100 flex-shrink-0 font-sans">
-                <button onclick="closeGratitudeModal()" class="w-full sm:w-auto bg-gradient-to-r from-ceutGold to-ceutGold-dark text-ceutBlue-dark font-extrabold px-8 py-3.5 rounded-xl text-xs shadow-md duration-200 hover:scale-105 border border-ceutGold-dark">
+                <button onclick="closeGratitudeModal()" class="w-full sm:w-auto bg-gradient-to-r from-ceutGold to-ceutGold-dark text-ceutBlue-dark font-extrabold px-8 py-3.5 rounded-xl text-xs shadow-md duration-200 hover:scale-105 border border-ceutGold-dark uppercase">
                     Entendido, Volver al Inicio
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Modal: Verificación de PIN de Administrador (Sólido) -->
+    <!-- MODAL: PIN ADMINISTRADOR -->
     <div id="pinModal" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/90 hidden items-center justify-center p-4 transition-all duration-300 font-sans">
         <div class="solid-panel rounded-[2rem] max-w-sm w-full shadow-blue-glow border-2 border-ceutBlue overflow-hidden transform scale-95 transition-all duration-300 bg-white p-8 space-y-6 text-center">
-            <div class="mx-auto h-20 w-20 rounded-2xl bg-slate-50 border-2 border-ceutGold flex items-center justify-center shadow-inner p-3">
+            <div class="mx-auto h-20 w-20 rounded-2xl bg-slate-50 border-2 border-ceutGold flex items-center justify-center shadow-inner p-3 animate-float">
                 <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Logo" class="h-full w-full object-contain">
             </div>
             <div class="space-y-2">
-                <h4 class="font-bold text-lg text-slate-800 font-formal gold-shimmer-text">Acceso de Dirección</h4>
+                <h4 class="font-bold text-lg text-slate-800 font-formal gold-shimmer-text uppercase">Acceso de Dirección</h4>
                 <p class="text-xs text-slate-500 font-serif leading-relaxed text-justified">
                     Este depto contiene expedientes protegidos bajo el marco legal de la LFPDPPP de los Estados Unidos Mexicanos. Ingrese el PIN de seguridad asignado para continuar.
                 </p>
@@ -994,24 +996,24 @@
             </div>
 
             <div class="flex items-center gap-3">
-                <button onclick="closePinModal()" class="w-1/2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3.5 rounded-xl text-xs transition-all border-2 border-slate-300">
+                <button onclick="closePinModal()" class="w-1/2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3.5 rounded-xl text-xs transition-all border-2 border-slate-300 uppercase">
                     Cancelar
                 </button>
-                <button onclick="submitAdminPin()" class="w-1/2 bg-gradient-to-r from-ceutGold to-ceutGold-dark text-ceutBlue-dark font-black py-3.5 rounded-xl text-xs shadow-md transition-all hover:scale-105 border border-ceutGold-dark">
+                <button onclick="submitAdminPin()" class="w-1/2 bg-gradient-to-r from-ceutGold to-ceutGold-dark text-ceutBlue-dark font-black py-3.5 rounded-xl text-xs shadow-md transition-all hover:scale-105 border border-ceutGold-dark uppercase">
                     Entrar
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Modal: Detalle del Expediente Psicopedagógico (Sólido) -->
+    <!-- MODAL: DETALLES EXPEDIENTE -->
     <div id="detailsModal" class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/90 hidden items-center justify-center p-4 transition-all duration-300">
         <div class="solid-panel rounded-[2rem] max-w-3xl w-full border-2 border-ceutBlue overflow-hidden transform scale-95 transition-all duration-300 flex flex-col max-h-[90vh] bg-white">
             <div id="details-header-bg" class="text-white px-8 py-5 flex items-center justify-between flex-shrink-0 relative border-b-2 border-ceutGold">
                 <div class="flex items-center gap-4 relative z-10">
                     <span id="details-priority-badge" class="px-3.5 py-1.5 rounded-xl text-[10px] font-bold uppercase tracking-widest border-2 font-sans"></span>
                     <div class="font-formal">
-                        <h4 class="font-bold text-lg tracking-wide gold-shimmer-text">Expediente Psicopedagógico Confidencial</h4>
+                        <h4 class="font-bold text-lg tracking-wide gold-shimmer-text uppercase">Expediente Psicopedagógico Confidencial</h4>
                         <p class="text-[9px] opacity-80 font-bold tracking-wider font-sans" id="details-id-label"></p>
                     </div>
                 </div>
@@ -1026,7 +1028,7 @@
                         <h5 class="font-bold text-xs uppercase tracking-widest text-ceutGold-dark flex items-center gap-2 border-b-2 border-slate-200 pb-2 font-sans">
                             <i class="fa-solid fa-graduation-cap text-ceutBlue"></i> Datos del Alumno
                         </h5>
-                        <div class="grid grid-cols-2 gap-3 text-xs sm:text-sm text-justified font-serif">
+                        <div class="grid grid-cols-2 gap-3 text-xs sm:text-sm text-justified font-serif uppercase">
                             <div class="col-span-2">
                                 <span class="block text-slate-500 font-bold text-[9px] uppercase tracking-wider font-sans">Nombre Completo:</span>
                                 <span class="font-bold text-slate-900" id="details-std-name"></span>
@@ -1048,7 +1050,7 @@
                                 <span class="font-medium text-slate-700" id="details-std-semester"></span>
                             </div>
                             <div class="col-span-2 hidden" id="details-std-career-container">
-                                <span class="block text-slate-500 font-bold text-[9px] uppercase tracking-wider text-ceutGold-dark">Carrera Universitaria:</span>
+                                <span class="block text-slate-500 font-bold text-[9px] uppercase tracking-wider text-ceutGold-dark font-sans">Carrera Universitaria:</span>
                                 <span class="font-bold text-slate-900" id="details-std-career"></span>
                             </div>
                         </div>
@@ -1058,7 +1060,7 @@
                         <h5 class="font-bold text-xs uppercase tracking-widest text-ceutGold-dark flex items-center gap-2 border-b-2 border-slate-200 pb-2 font-sans">
                             <i class="fa-solid fa-chalkboard-user text-ceutBlue"></i> Datos del Docente
                         </h5>
-                        <div class="grid grid-cols-2 gap-3 text-xs sm:text-sm text-justified font-serif">
+                        <div class="grid grid-cols-2 gap-3 text-xs sm:text-sm text-justified font-serif uppercase">
                             <div class="col-span-2">
                                 <span class="block text-slate-500 font-bold text-[9px] uppercase tracking-wider font-sans">Nombre del Docente:</span>
                                 <span class="font-bold text-slate-900" id="details-tchr-name"></span>
@@ -1080,7 +1082,7 @@
                         <span class="flex items-center gap-2"><i class="fa-solid fa-file-invoice text-rose-500"></i> Relatoría de la Alerta</span>
                         <span class="text-[10px] font-bold text-slate-500" id="details-timestamp"></span>
                     </h5>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs sm:text-sm text-justified font-serif">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs sm:text-sm text-justified font-serif uppercase">
                         <div>
                             <span class="block text-slate-500 font-bold text-[9px] uppercase tracking-wider font-sans">Motivo Principal Reportado:</span>
                             <span class="font-bold text-rose-700 bg-rose-50 px-3.5 py-1.5 rounded-lg inline-block mt-1 border-2 border-rose-200 font-sans" id="details-inc-reason"></span>
@@ -1091,7 +1093,7 @@
                         </div>
                         <div class="sm:col-span-2">
                             <span class="block text-slate-500 font-bold text-[9px] uppercase tracking-wider mb-2.5 font-sans">Descripción Narrativa del Incidente:</span>
-                            <div class="p-5 bg-slate-900 rounded-2xl text-slate-100 leading-relaxed text-justified whitespace-pre-wrap text-xs sm:text-sm border-2 border-slate-800" id="details-inc-situation"></div>
+                            <div class="p-5 bg-slate-900 rounded-2xl text-slate-100 leading-relaxed text-justified whitespace-pre-wrap text-xs sm:text-sm border-2 border-slate-800 font-mono" id="details-inc-situation"></div>
                         </div>
                     </div>
                 </div>
@@ -1103,15 +1105,15 @@
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
                             <label class="block text-[9px] font-bold text-slate-600 uppercase tracking-widest mb-1.5">Estatus de Seguimiento</label>
-                            <select id="details-action-status" class="w-full rounded-xl border-2 border-slate-200 px-3.5 py-3 text-xs font-bold focus:ring-2 focus:ring-ceutGold bg-white text-slate-800 shadow-sm">
-                                <option value="Pendiente">Pendiente</option>
-                                <option value="En Proceso">En Proceso</option>
-                                <option value="Resuelto">Resuelto</option>
+                            <select id="details-action-status" class="w-full rounded-xl border-2 border-slate-200 px-3.5 py-3 text-xs font-bold focus:ring-2 focus:ring-ceutGold bg-white text-slate-800 shadow-sm uppercase">
+                                <option value="PENDIENTE">PENDIENTE</option>
+                                <option value="EN PROCESO">EN PROCESO</option>
+                                <option value="RESUELTO">RESUELTO</option>
                             </select>
                         </div>
                         <div class="md:col-span-2">
                             <label class="block text-[9px] font-bold text-slate-600 uppercase tracking-widest mb-1.5">Notas de Intervención / Contención Psicológica</label>
-                            <input type="text" id="details-action-notes" placeholder="Indique la contención asignada, llamadas o tutorías..." class="w-full rounded-xl border-2 border-slate-200 px-3.5 py-3 text-xs focus:ring-2 focus:ring-ceutGold bg-white text-slate-800 shadow-sm font-medium">
+                            <input type="text" id="details-action-notes" placeholder="Indique la contención asignada, llamadas o tutorías..." class="w-full rounded-xl border-2 border-slate-200 px-3.5 py-3 text-xs focus:ring-2 focus:ring-ceutGold bg-white text-slate-800 shadow-sm font-medium uppercase">
                         </div>
                     </div>
                 </div>
@@ -1120,10 +1122,10 @@
             <div class="bg-slate-50 px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-t-2 border-slate-100 flex-shrink-0 font-sans">
                 <span class="text-xs text-slate-400 font-bold uppercase tracking-widest flex items-center gap-1.5"><i class="fa-solid fa-arrows-spin text-ceutGold animate-spin"></i> Sincronización Inmediata</span>
                 <div class="flex items-center gap-2.5 w-full sm:w-auto">
-                    <button onclick="closeDetailsModal()" class="w-full sm:w-auto bg-white hover:bg-slate-100 text-slate-700 font-bold px-6 py-3 rounded-xl text-xs border-2 border-slate-200 transition-all duration-200">
+                    <button onclick="closeDetailsModal()" class="w-full sm:w-auto bg-white hover:bg-slate-100 text-slate-700 font-bold px-6 py-3 rounded-xl text-xs border-2 border-slate-200 transition-all duration-200 uppercase">
                         Cerrar
                     </button>
-                    <button onclick="saveAdminAction()" class="w-full sm:w-auto bg-gradient-to-r from-ceutGold to-ceutGold-dark text-ceutBlue-dark font-extrabold px-8 py-3 rounded-xl text-xs shadow-md transition-all duration-200 hover:scale-105 border border-ceutGold-dark">
+                    <button onclick="saveAdminAction()" class="w-full sm:w-auto bg-gradient-to-r from-ceutGold to-ceutGold-dark text-ceutBlue-dark font-extrabold px-8 py-3 rounded-xl text-xs shadow-md transition-all duration-200 hover:scale-105 border border-ceutGold-dark uppercase">
                         Guardar Cambios
                     </button>
                 </div>
@@ -1131,6 +1133,7 @@
         </div>
     </div>
 
+    <!-- PIE DE PAGINA -->
     <footer class="bg-ceutBlue-dark text-slate-400 text-xs border-t-2 border-ceutGold mt-20 py-14 relative overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 flex flex-col lg:flex-row items-center justify-between gap-8 relative z-10">
             <div class="flex items-center gap-5 flex-col sm:flex-row text-center sm:text-left">
@@ -1139,8 +1142,8 @@
                     <img src="Gemini_Generated_Image_ob1grpob1grpob1g-removebg-preview.png" onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/1ao9olFJOvSPvgmeyLJhkD1P0Pmq_R3T2';" alt="CEUT Escudo Tigres" class="h-16 w-16 object-contain">
                 </div>
                 <div>
-                    <p class="text-slate-300 font-serif italic text-sm text-justified">&copy; 2026 Centro Universitario Tehuacán (CEUT). Todos los derechos reservados. <span class="text-ceutGold font-bold font-sans not-italic text-xs ml-1 tracking-widest">#SOMOSTIGRES</span></p>
-                    <p class="text-[11px] text-slate-400 mt-2 max-w-2xl text-justified leading-relaxed font-serif">Plataforma Digital para la Gestión de Incidencias Docentes y la Intervención Psicopedagógica Confidencial. Cumple rigurosamente con la legislación de datos personales de los Estados Unidos Mexicanos.</p>
+                    <p class="text-slate-300 font-serif italic text-sm text-justified uppercase">&copy; 2026 Centro Universitario Tehuacán (CEUT). Todos los derechos reservados. <span class="text-ceutGold font-bold font-sans not-italic text-xs ml-1 tracking-widest">#SOMOSTIGRES</span></p>
+                    <p class="text-[11px] text-slate-400 mt-2 max-w-2xl text-justified leading-relaxed font-serif uppercase font-serif">Plataforma digital para la gestión de incidencias docentes y la intervención psicopedagógica confidencial. Cumple rigurosamente con la legislación de datos personales de los Estados Unidos Mexicanos.</p>
                 </div>
             </div>
             <div class="flex flex-wrap gap-5 justify-center lg:justify-end text-[11px] font-bold tracking-widest uppercase font-sans">
@@ -1153,7 +1156,7 @@
         let activeViewReportId = null;
         let currentMailBodyText = "";
 
-        // Mostrar notificaciones flotantes elegantes
+        // Mostrar notificaciones flotantes en mayúsculas
         function showNotification(title, message, type = 'success') {
             const containerId = 'toast-container';
             let container = document.getElementById(containerId);
@@ -1174,8 +1177,8 @@
             toast.innerHTML = `
                 <i class="fa-solid ${iconClass} text-xl mt-0.5 animate-pulse"></i>
                 <div class="text-left">
-                    <h5 class="font-bold text-xs tracking-widest uppercase text-ceutGold">${title}</h5>
-                    <p class="text-[11px] font-semibold mt-1 text-white/90 text-justified leading-relaxed">${message}</p>
+                    <h5 class="font-bold text-xs tracking-widest uppercase text-ceutGold">${title.toUpperCase()}</h5>
+                    <p class="text-[11px] font-semibold mt-1 text-white/90 text-justified leading-relaxed uppercase">${message.toUpperCase()}</p>
                 </div>
             `;
             container.appendChild(toast);
@@ -1192,9 +1195,9 @@
             }, 6000);
         }
 
-        // Lógica de validación del PIN de Administrador (1015)
+        // CONTROL ACCESO PIN DE ADMINISTRADOR (1015)
         function requestAdminAccess() {
-            if (window.appState.currentRole === 'admin') {
+            if (window.appState.currentRole === 'ADMIN') {
                 return;
             }
             const modal = document.getElementById('pinModal');
@@ -1217,8 +1220,8 @@
 
             if (pinVal === '1015') {
                 closePinModal();
-                switchRole('admin');
-                showNotification("Acceso Autorizado", "Bienvenido al Panel de Control de la Dirección Psicopedagógica.", "success");
+                switchRole('ADMIN');
+                showNotification("Acceso Autorizado", "Bienvenido al panel de control de la Dirección Psicopedagógica.", "success");
             } else {
                 showNotification("Acceso Denegado", "El PIN ingresado es incorrecto. Intente nuevamente.", "error");
                 pinInput.value = '';
@@ -1249,6 +1252,7 @@
             modal.classList.remove('flex');
         }
 
+        // CAMBIAR PESTAÑAS
         function switchRole(role) {
             window.appState.currentRole = role;
             
@@ -1256,19 +1260,19 @@
             document.getElementById('section-teacher').classList.add('hidden');
             document.getElementById('section-admin').classList.add('hidden');
 
-            document.getElementById('btn-role-welcome').className = "px-6 py-3.5 rounded-xl text-xs font-bold flex items-center gap-2.5 hover:bg-[#1E2555]/10 text-slate-300 border border-transparent transition-all duration-300 font-sans";
-            document.getElementById('btn-role-teacher').className = "px-6 py-3.5 rounded-xl text-xs font-bold flex items-center gap-2.5 hover:bg-[#1E2555]/10 text-slate-300 border border-transparent transition-all duration-300 font-sans";
-            document.getElementById('btn-role-admin').className = "px-6 py-3.5 rounded-xl text-xs font-bold flex items-center gap-2.5 hover:bg-[#1E2555]/10 text-slate-300 border border-transparent transition-all duration-300 font-sans";
+            document.getElementById('btn-role-welcome').className = "px-6 py-3.5 rounded-xl text-xs font-bold flex items-center gap-2.5 hover:bg-[#1E2555]/10 text-slate-300 border border-transparent transition-all duration-300 font-sans uppercase";
+            document.getElementById('btn-role-teacher').className = "px-6 py-3.5 rounded-xl text-xs font-bold flex items-center gap-2.5 hover:bg-[#1E2555]/10 text-slate-300 border border-transparent transition-all duration-300 font-sans uppercase";
+            document.getElementById('btn-role-admin').className = "px-6 py-3.5 rounded-xl text-xs font-bold flex items-center gap-2.5 hover:bg-[#1E2555]/10 text-slate-300 border border-transparent transition-all duration-300 font-sans uppercase";
 
-            if (role === 'welcome') {
+            if (role === 'WELCOME') {
                 document.getElementById('section-welcome').classList.remove('hidden');
-                document.getElementById('btn-role-welcome').className = "px-6 py-3.5 rounded-xl text-xs font-black flex items-center gap-2.5 bg-gradient-to-r from-ceutGold to-ceutGold-dark text-ceutBlue-dark shadow-gold-glow transition-all duration-300 scale-105 font-sans border border-ceutGold-dark";
-            } else if (role === 'teacher') {
+                document.getElementById('btn-role-welcome').className = "px-6 py-3.5 rounded-xl text-xs font-black flex items-center gap-2.5 bg-gradient-to-r from-ceutGold to-ceutGold-dark text-ceutBlue-dark shadow-gold-glow transition-all duration-300 scale-105 font-sans border border-ceutGold-dark uppercase";
+            } else if (role === 'TEACHER') {
                 document.getElementById('section-teacher').classList.remove('hidden');
-                document.getElementById('btn-role-teacher').className = "px-6 py-3.5 rounded-xl text-xs font-black flex items-center gap-2.5 bg-gradient-to-r from-ceutGold to-ceutGold-dark text-ceutBlue-dark shadow-gold-glow transition-all duration-300 scale-105 font-sans border border-ceutGold-dark";
-            } else if (role === 'admin') {
+                document.getElementById('btn-role-teacher').className = "px-6 py-3.5 rounded-xl text-xs font-black flex items-center gap-2.5 bg-gradient-to-r from-ceutGold to-ceutGold-dark text-ceutBlue-dark shadow-gold-glow transition-all duration-300 scale-105 font-sans border border-ceutGold-dark uppercase";
+            } else if (role === 'ADMIN') {
                 document.getElementById('section-admin').classList.remove('hidden');
-                document.getElementById('btn-role-admin').className = "px-6 py-3.5 rounded-xl text-xs font-black flex items-center gap-2.5 bg-gradient-to-r from-ceutGold to-ceutGold-dark text-ceutBlue-dark shadow-gold-glow transition-all duration-300 scale-105 font-sans border border-ceutGold-dark";
+                document.getElementById('btn-role-admin').className = "px-6 py-3.5 rounded-xl text-xs font-black flex items-center gap-2.5 bg-gradient-to-r from-ceutGold to-ceutGold-dark text-ceutBlue-dark shadow-gold-glow transition-all duration-300 scale-105 font-sans border border-ceutGold-dark uppercase";
                 renderReports();
                 renderMetrics();
             }
@@ -1314,6 +1318,16 @@
             });
         });
 
+        // UTILIDAD PARA ELIMINAR ACENTOS Y FORZAR MAYUSCULAS (Solo para datos que se integren)
+        function formatUppercaseNoAccents(str) {
+            if (!str) return "";
+            return str
+                .toUpperCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, ""); // Remueve acentos
+        }
+
+        // ENVIO DE FORMULARIO
         async function handleFormSubmission(e) {
             e.preventDefault();
             
@@ -1327,20 +1341,21 @@
             submitBtn.disabled = true;
             submitBtn.innerHTML = `<i class="fa-solid fa-circle-notch animate-spin mr-1.5"></i> Sincronizando...`;
 
-            const teacherName = document.getElementById('teacherName').value.trim();
-            const teacherSubject = document.getElementById('teacherSubject').value.trim();
-            const teacherEmail = document.getElementById('teacherEmail').value.trim();
+            // Formatear los datos a integrar en mayúsculas y sin acentos
+            const teacherName = formatUppercaseNoAccents(document.getElementById('teacherName').value);
+            const teacherSubject = formatUppercaseNoAccents(document.getElementById('teacherSubject').value);
+            const teacherEmail = formatUppercaseNoAccents(document.getElementById('teacherEmail').value);
             
-            const studentName = document.getElementById('studentName').value.trim();
-            const eduLevel = document.getElementById('eduLevel').value;
-            const modality = document.getElementById('modality').value;
-            const grade = document.getElementById('grade').value.trim();
-            const group = document.getElementById('group').value.trim();
-            const semester = document.getElementById('semester').value.trim();
-            const career = document.getElementById('career').value.trim();
+            const studentName = formatUppercaseNoAccents(document.getElementById('studentName').value);
+            const eduLevel = formatUppercaseNoAccents(document.getElementById('eduLevel').value);
+            const modality = formatUppercaseNoAccents(document.getElementById('modality').value);
+            const grade = formatUppercaseNoAccents(document.getElementById('grade').value);
+            const group = formatUppercaseNoAccents(document.getElementById('group').value);
+            const semester = formatUppercaseNoAccents(document.getElementById('semester').value);
+            const career = formatUppercaseNoAccents(document.getElementById('career').value);
 
             const reasonEl = document.querySelector('input[name="incidentReason"]:checked');
-            const reason = reasonEl ? reasonEl.value : "No especificado";
+            const reason = reasonEl ? formatUppercaseNoAccents(reasonEl.value) : "NO ESPECIFICADO";
 
             const priorityEl = document.querySelector('input[name="priority"]:checked');
             const priority = priorityEl ? priorityEl.value : "baja";
@@ -1348,7 +1363,7 @@
             const priorInterventionEl = document.querySelector('input[name="priorIntervention"]:checked');
             const priorIntervention = priorInterventionEl ? priorInterventionEl.value : "no";
 
-            const situation = document.getElementById('situationDescription').value.trim();
+            const situation = formatUppercaseNoAccents(document.getElementById('situationDescription').value);
 
             const newReport = {
                 teacherName,
@@ -1360,15 +1375,15 @@
                 grade,
                 group,
                 semester,
-                career: eduLevel === 'Universidad' ? career : '',
+                career: eduLevel === 'UNIVERSIDAD' ? career : '',
                 reason,
                 priority,
                 priorIntervention,
                 situation,
-                status: "Pendiente",
+                status: "PENDIENTE",
                 notes: "",
                 dataConsent: true,
-                legalBasis: "LFPDPPP Art. 15 y Declaración Jurada de Docente"
+                legalBasis: "LFPDPPP ART. 15 Y DECLARACION JURADA DE DOCENTE"
             };
 
             const success = await window.submitReportToFirestore(newReport);
@@ -1384,50 +1399,51 @@
                 });
                 toggleEducationalFields();
 
-                showNotification("Registro Exitoso", "Incidencia guardada y correo despachado con éxito.", "success");
+                showNotification("Registro Exitoso", "Incidencia guardada en la nube y correo despachado con éxito.", "success");
             } else {
-                showNotification("Falla de Servidor", "Ocurrió un error al guardar la información en Firebase.", "error");
+                showNotification("Error de Guardado", "No se pudo conectar con la nube. Asegúrese de tener acceso a internet.", "error");
             }
 
             submitBtn.disabled = false;
             submitBtn.innerHTML = `<span>Registrar Reporte en Tiempo Real</span> <i class="fa-solid fa-paper-plane"></i>`;
         }
 
+        // DESPACHO DE CORREO AUTOMATICO
         function triggerAutomaticEmailDispatch(report) {
-            const to = "deptopsicopedagogico@ceut.edu.mx";
-            const cc = "luz.ortega@ceut.edu.mx, miroslava.hoyos@ceut.edu.mx, samuel.roldan@ceut.edu.mx";
+            const to = "DEPTOPSICOPEDAGOGICO@CEUT.EDU.MX";
+            const cc = "LUZ.ORTEGA@CEUT.EDU.MX, MIROSLAVA.HOYOS@CEUT.EDU.MX, SAMUEL.ROLDAN@CEUT.EDU.MX";
             const subject = `EXPEDIENTE CONFIDENCIAL: REPORTE DE INCIDENCIA - PRIORIDAD ${report.priority.toUpperCase()} - ${report.studentName} (${report.eduLevel})`;
             
-            let body = `Estimado Mtro. Carlos Aguilar Sánchez,
+            let body = `ESTIMADO MTRO. CARLOS AGUILAR SANCHEZ,
 
-Por medio de la presente, se realiza el reporte psicopedagógico oficial respecto al alumno que se menciona a continuación. Este documento se procesa de conformidad con las directrices de confidencialidad institucional del CEUT y los principios vigentes de la LFPDPPP en México.
+POR MEDIO DE LA PRESENTE, SE REALIZA EL REPORTE PSICOPEDAGOGICO OFICIAL RESPECTO AL ALUMNO QUE SE MENCIONA A CONTINUACION. ESTE DOCUMENTO SE PROCESA DE CONFORMIDAD CON LAS DIRECTRICES DE CONFIDENCIALIDAD INSTITUCIONAL DEL CEUT Y LOS PRINCIPIOS VIGENTES DE LA LFPDPPP EN MEXICO.
 
-=== 1. DATOS DE IDENTIFICACIÓN DEL ESTUDIANTE ===
-Nombre Completo: ${report.studentName}
-Nivel Educativo: ${report.eduLevel}
-Modalidad: ${report.modality}
-Grado y Grupo: ${report.grade}° "${report.group}"
-Ciclo Escolar: ${report.semester}
-${report.eduLevel === 'Universidad' ? `Carrera: ${report.career}\n` : ''}
+=== 1. DATOS DE IDENTIFICACION DEL ESTUDIANTE ===
+NOMBRE COMPLETO: ${report.studentName}
+NIVEL EDUCATIVO: ${report.eduLevel}
+MODALIDAD: ${report.modality}
+GRADO Y GRUPO: ${report.grade} GRUPO "${report.group}"
+CICLO ESCOLAR: ${report.semester}
+${report.eduLevel === 'UNIVERSIDAD' ? `CARRERA: ${report.career}\n` : ''}
 === 2. DETALLES DE LA INCIDENCIA (CONFIDENCIAL) ===
-Motivo principal: ${report.reason}
-Semáforo de prioridad determinado por docente: ${report.priority.toUpperCase()}
-¿Intervención docente previa?: ${report.priorIntervention.toUpperCase()}
+MOTIVO PRINCIPAL: ${report.reason}
+SEMAFORO DE PRIORIDAD DETERMINADO POR DOCENTE: ${report.priority.toUpperCase()}
+¿INTERVENCION DOCENTE PREVIA?: ${report.priorIntervention.toUpperCase()}
 
 NARRATIVA DESCRIPTIVA DEL CASO:
 "${report.situation}"
 
 === 3. DATOS DEL DOCENTE EMISOR ===
-Nombre: ${report.teacherName}
-Materia/Asignatura: ${report.teacherSubject}
-Email de Contacto: ${report.teacherEmail}
+NOMBRE: ${report.teacherName}
+MATERIA/ASIGNATURA: ${report.teacherSubject}
+EMAIL DE CONTACTO: ${report.teacherEmail}
 
-=== 4. CLÁUSULA DE PRIVACIDAD ===
-Se hace constar que el emisor de este reporte ha aceptado los convenios de confidencialidad y tratamiento psicopedagógico del CEUT. La información contenida tiene carácter de dato personal sensible y no debe ser divulgada sin apego a los derechos ARCO de las partes.
+=== 4. CLAUSULA DE PRIVACIDAD ===
+SE HACE CONSTAR QUE EL EMISOR DE ESTE REPORTE HA ACEPTADO LOS CONVENIOS DE CONFIDENCIALIDAD Y TRATAMIENTO PSICOPEDAGOGICO DEL CEUT. LA INFORMACION CONTENIDA TIENE CARACTER DE DATO PERSONAL SENSIBLE Y NO DEBE SER DIVULGADA SIN APEGO A LOS DERECHOS ARCO DE LAS PARTES.
 
-Atentamente,
+ATENTAMENTE,
 ${report.teacherName}
-Tigres CEUT — Psicopedagogía`;
+TIGRES CEUT — PSICOPEDAGOGIA`;
 
             currentMailBodyText = body;
 
@@ -1448,7 +1464,7 @@ Tigres CEUT — Psicopedagogía`;
             const modal = document.getElementById('gratitudeModal');
             modal.classList.add('hidden');
             modal.classList.remove('flex');
-            switchRole('welcome');
+            switchRole('WELCOME');
         }
 
         function copyMailBody() {
@@ -1468,7 +1484,7 @@ Tigres CEUT — Psicopedagogía`;
         }
 
         function applyFilters() {
-            window.appState.filters.search = document.getElementById('filter-search').value.toLowerCase().trim();
+            window.appState.filters.search = formatUppercaseNoAccents(document.getElementById('filter-search').value.trim());
             window.appState.filters.level = document.getElementById('filter-level').value;
             window.appState.filters.priority = document.getElementById('filter-priority').value;
             window.appState.filters.status = document.getElementById('filter-status').value;
@@ -1491,9 +1507,9 @@ Tigres CEUT — Psicopedagogía`;
             const reports = window.appState.reports || [];
             
             const total = reports.length;
-            const high = reports.filter(r => r.priority === 'alta').length;
-            const medium = reports.filter(r => r.priority === 'media').length;
-            const low = reports.filter(r => r.priority === 'baja').length;
+            const high = reports.filter(r => r.priority.toUpperCase() === 'ALTA').length;
+            const medium = reports.filter(r => r.priority.toUpperCase() === 'MEDIA').length;
+            const low = reports.filter(r => r.priority.toUpperCase() === 'BAJA').length;
 
             document.getElementById('metric-total').innerText = total;
             document.getElementById('metric-high').innerText = high;
@@ -1510,11 +1526,11 @@ Tigres CEUT — Psicopedagogía`;
             const reports = window.appState.reports || [];
 
             const filteredReports = reports.filter(report => {
-                const searchStr = `${report.studentName} ${report.teacherName} ${report.subject || report.teacherSubject || ''} ${report.career || ''}`.toLowerCase();
-                const matchesSearch = searchStr.includes(filters.search);
-                const matchesLevel = filters.level === 'all' || report.eduLevel === filters.level;
-                const matchesPriority = filters.priority === 'all' || report.priority === filters.priority;
-                const matchesStatus = filters.status === 'all' || report.status === filters.status;
+                const searchStr = `${report.studentName} ${report.teacherName} ${report.subject || report.teacherSubject || ''} ${report.career || ''}`.toUpperCase();
+                const matchesSearch = searchStr.includes(filters.search.toUpperCase());
+                const matchesLevel = filters.level === 'ALL' || report.eduLevel.toUpperCase() === filters.level.toUpperCase();
+                const matchesPriority = filters.priority === 'ALL' || report.priority.toUpperCase() === filters.priority.toUpperCase();
+                const matchesStatus = filters.status === 'ALL' || report.status.toUpperCase() === filters.status.toUpperCase();
 
                 return matchesSearch && matchesLevel && matchesPriority && matchesStatus;
             });
@@ -1533,38 +1549,38 @@ Tigres CEUT — Psicopedagogía`;
                 tr.className = "hover:bg-slate-50 transition-all border-b border-slate-100 font-sans";
 
                 let priorityCell = '';
-                if (report.priority === 'alta') {
-                    priorityCell = `<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold bg-rose-100 text-rose-700 border border-rose-200"><i class="fa-solid fa-circle text-[6px] animate-pulse"></i> Alta</span>`;
-                } else if (report.priority === 'media') {
-                    priorityCell = `<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold bg-yellow-100 text-yellow-700 border border-yellow-200"><i class="fa-solid fa-circle text-[6px]"></i> Media</span>`;
+                if (report.priority.toUpperCase() === 'ALTA') {
+                    priorityCell = `<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold bg-rose-100 text-rose-700 border border-rose-200"><i class="fa-solid fa-circle text-[6px] animate-pulse"></i> ALTA</span>`;
+                } else if (report.priority.toUpperCase() === 'MEDIA') {
+                    priorityCell = `<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold bg-yellow-100 text-yellow-700 border border-yellow-200"><i class="fa-solid fa-circle text-[6px]"></i> MEDIA</span>`;
                 } else {
-                    priorityCell = `<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700 border border-emerald-200"><i class="fa-solid fa-circle text-[6px]"></i> Baja</span>`;
+                    priorityCell = `<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700 border border-emerald-200"><i class="fa-solid fa-circle text-[6px]"></i> BAJA</span>`;
                 }
 
                 let statusBadge = '';
-                if (report.status === 'Pendiente') {
-                    statusBadge = `<span class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-slate-200 text-slate-700 border border-slate-300">Pendiente</span>`;
-                } else if (report.status === 'En Proceso') {
-                    statusBadge = `<span class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-yellow-100 text-yellow-700 border border-yellow-200">En Proceso</span>`;
+                if (report.status.toUpperCase() === 'PENDIENTE') {
+                    statusBadge = `<span class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-slate-200 text-slate-700 border border-slate-300">PENDIENTE</span>`;
+                } else if (report.status.toUpperCase() === 'EN PROCESO') {
+                    statusBadge = `<span class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-yellow-100 text-yellow-700 border border-yellow-200">EN PROCESO</span>`;
                 } else {
-                    statusBadge = `<span class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-700 border border-emerald-200">Resuelto</span>`;
+                    statusBadge = `<span class="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-emerald-100 text-emerald-700 border border-emerald-200">RESUELTO</span>`;
                 }
 
-                let dateStr = 'Reciente';
+                let dateStr = 'RECIENTE';
                 if (report.timestamp) {
                     if (typeof report.timestamp === 'object' && report.timestamp !== null && 'seconds' in report.timestamp) {
                         const dateObj = new Date(report.timestamp.seconds * 1000);
                         if (!isNaN(dateObj.getTime())) {
                             dateStr = dateObj.toLocaleDateString('es-MX', {
                                 day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'
-                            });
+                            }).toUpperCase();
                         }
                     } else {
                         const dateObj = new Date(report.timestamp);
                         if (!isNaN(dateObj.getTime())) {
                             dateStr = dateObj.toLocaleDateString('es-MX', {
                                 day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'
-                            });
+                            }).toUpperCase();
                         }
                     }
                 }
@@ -1573,28 +1589,28 @@ Tigres CEUT — Psicopedagogía`;
 
                 tr.innerHTML = `
                     <td class="px-8 py-4.5">
-                        <p class="font-bold text-slate-950 text-xs">${report.studentName}</p>
-                        <p class="text-[10px] text-ceutGold-dark font-bold uppercase tracking-wider mt-0.5">${report.eduLevel} | ${report.modality}</p>
+                        <p class="font-bold text-slate-950 text-xs">${report.studentName.toUpperCase()}</p>
+                        <p class="text-[10px] text-ceutGold-dark font-bold uppercase tracking-wider mt-0.5">${report.eduLevel.toUpperCase()} | ${report.modality.toUpperCase()}</p>
                     </td>
-                    <td class="px-8 py-4.5 text-[11px] font-semibold text-slate-500 whitespace-nowrap">
+                    <td class="px-8 py-4.5 text-[11px] font-semibold text-slate-500 whitespace-nowrap uppercase">
                         ${dateStr}
                     </td>
                     <td class="px-8 py-4.5">
                         ${priorityCell}
                     </td>
                     <td class="px-8 py-4.5 max-w-[200px] truncate">
-                        <span class="font-bold text-slate-800 text-xs text-justified font-serif">${report.reason}</span>
+                        <span class="font-bold text-slate-800 text-xs text-justified font-serif uppercase">${report.reason.toUpperCase()}</span>
                     </td>
                     <td class="px-8 py-4.5">
-                        <p class="font-bold text-slate-950 text-xs">${report.teacherName}</p>
-                        <p class="text-[10px] text-slate-500 font-semibold mt-0.5">${report.subject || report.teacherSubject}</p>
+                        <p class="font-bold text-slate-950 text-xs">${report.teacherName.toUpperCase()}</p>
+                        <p class="text-[10px] text-slate-500 font-semibold mt-0.5">${(report.subject || report.teacherSubject).toUpperCase()}</p>
                         ${consentBadge}
                     </td>
                     <td class="px-8 py-4.5">
                         ${statusBadge}
                     </td>
                     <td class="px-8 py-4.5 text-right whitespace-nowrap">
-                        <button onclick="viewReportDetails('${report.id}')" class="bg-gradient-to-r from-ceutGold to-ceutGold-dark text-ceutBlue-dark hover:scale-105 transition-all font-black px-3.5 py-2.5 rounded-xl text-xs flex items-center gap-1.5 ml-auto shadow-sm border border-ceutGold-dark">
+                        <button onclick="viewReportDetails('${report.id}')" class="bg-gradient-to-r from-ceutGold to-ceutGold-dark text-ceutBlue-dark hover:scale-105 transition-all font-black px-3.5 py-2.5 rounded-xl text-xs flex items-center gap-1.5 ml-auto shadow-sm border border-ceutGold-dark uppercase">
                             <span>Gestionar</span> <i class="fa-solid fa-chevron-right text-xs"></i>
                         </button>
                     </td>
@@ -1610,31 +1626,31 @@ Tigres CEUT — Psicopedagogía`;
 
             activeViewReportId = report.id;
 
-            document.getElementById('details-id-label').innerText = `ID: ${report.id} - Registrado bajo protección LFPDPPP`;
-            document.getElementById('details-std-name').innerText = report.studentName;
-            document.getElementById('details-std-level').innerText = report.eduLevel;
-            document.getElementById('details-std-modality').innerText = report.modality;
-            document.getElementById('details-std-gradegroup').innerText = `${report.grade} Grupo "${report.group}"`;
-            document.getElementById('details-std-semester').innerText = report.semester;
+            document.getElementById('details-id-label').innerText = `ID: ${report.id} - REGISTRADO BAJO PROTECCION LFPDPPP`;
+            document.getElementById('details-std-name').innerText = report.studentName.toUpperCase();
+            document.getElementById('details-std-level').innerText = report.eduLevel.toUpperCase();
+            document.getElementById('details-std-modality').innerText = report.modality.toUpperCase();
+            document.getElementById('details-std-gradegroup').innerText = `${report.grade.toUpperCase()} GRUPO "${report.group.toUpperCase()}"`;
+            document.getElementById('details-std-semester').innerText = report.semester.toUpperCase();
 
             const careerContainer = document.getElementById('details-std-career-container');
-            if (report.eduLevel === 'Universidad' && report.career) {
+            if (report.eduLevel.toUpperCase() === 'UNIVERSIDAD' && report.career) {
                 careerContainer.classList.remove('hidden');
-                document.getElementById('details-std-career').innerText = report.career;
+                document.getElementById('details-std-career').innerText = report.career.toUpperCase();
             } else {
                 careerContainer.classList.add('hidden');
             }
 
-            document.getElementById('details-tchr-name').innerText = report.teacherName;
-            document.getElementById('details-tchr-subject').innerText = report.subject || report.teacherSubject;
+            document.getElementById('details-tchr-name').innerText = report.teacherName.toUpperCase();
+            document.getElementById('details-tchr-subject').innerText = (report.subject || report.teacherSubject).toUpperCase();
             
             const emailLink = document.getElementById('details-tchr-email');
-            emailLink.innerText = report.teacherEmail;
+            emailLink.innerText = report.teacherEmail.toUpperCase();
             emailLink.href = `mailto:${report.teacherEmail}`;
 
-            document.getElementById('details-inc-reason').innerText = report.reason;
-            document.getElementById('details-inc-prior').innerText = report.priorIntervention === 'si' ? 'Sí, existió diálogo previo' : 'No se dialogó previamente';
-            document.getElementById('details-inc-situation').innerText = report.situation;
+            document.getElementById('details-inc-reason').innerText = report.reason.toUpperCase();
+            document.getElementById('details-inc-prior').innerText = report.priorIntervention === 'si' ? 'SI, EXISTIO DIALOGO PREVIO' : 'NO SE DIALOGO PREVIAMENTE';
+            document.getElementById('details-inc-situation').innerText = report.situation.toUpperCase();
 
             const header = document.getElementById('details-header-bg');
             const badge = document.getElementById('details-priority-badge');
@@ -1642,35 +1658,35 @@ Tigres CEUT — Psicopedagogía`;
             header.className = "px-8 py-5 flex items-center justify-between relative";
             badge.innerText = `${report.priority.toUpperCase()} PRIORIDAD`;
 
-            if (report.priority === 'alta') {
+            if (report.priority.toUpperCase() === 'ALTA') {
                 header.classList.add('bg-rose-950');
                 badge.className = "px-3.5 py-1.5 rounded-xl text-[10px] font-bold uppercase tracking-widest border-2 border-rose-500 bg-rose-900 text-white relative z-10 font-sans";
-            } else if (report.priority === 'media') {
-                header.classList.add('bg-amber-950');
+            } else if (report.priority.toUpperCase() === 'MEDIA') {
+                header.classList.add('bg-[#5d4400]');
                 badge.className = "px-3.5 py-1.5 rounded-xl text-[10px] font-bold uppercase tracking-widest border-2 border-ceutGold bg-ceutGold text-ceutBlue-dark relative z-10 font-sans";
             } else {
                 header.classList.add('bg-emerald-950');
                 badge.className = "px-3.5 py-1.5 rounded-xl text-[10px] font-bold uppercase tracking-widest border-2 border-emerald-500 bg-emerald-900 text-white relative z-10 font-sans";
             }
 
-            let timestampText = 'Recibido recientemente';
+            let timestampText = 'RECIBIDO RECIENTEMENTE';
             if (report.timestamp) {
                 if (typeof report.timestamp === 'object' && report.timestamp !== null && 'seconds' in report.timestamp) {
                     const dateObj = new Date(report.timestamp.seconds * 1000);
                     if (!isNaN(dateObj.getTime())) {
-                        timestampText = `Recibido: ${dateObj.toLocaleString('es-MX')}`;
+                        timestampText = `RECIBIDO: ${dateObj.toLocaleString('es-MX')}`.toUpperCase();
                     }
                 } else {
                     const dateObj = new Date(report.timestamp);
                     if (!isNaN(dateObj.getTime())) {
-                        timestampText = `Recibido: ${dateObj.toLocaleString('es-MX')}`;
+                        timestampText = `RECIBIDO: ${dateObj.toLocaleString('es-MX')}`.toUpperCase();
                     }
                 }
             }
             document.getElementById('details-timestamp').innerText = timestampText;
 
-            document.getElementById('details-action-status').value = report.status || 'Pendiente';
-            document.getElementById('details-action-notes').value = report.notes || '';
+            document.getElementById('details-action-status').value = (report.status || 'PENDIENTE').toUpperCase();
+            document.getElementById('details-action-notes').value = (report.notes || '').toUpperCase();
 
             const modal = document.getElementById('detailsModal');
             modal.classList.remove('hidden');
@@ -1687,8 +1703,8 @@ Tigres CEUT — Psicopedagogía`;
         async function saveAdminAction() {
             if (!activeViewReportId) return;
 
-            const newStatus = document.getElementById('details-action-status').value;
-            const followUpNotes = document.getElementById('details-action-notes').value.trim();
+            const newStatus = formatUppercaseNoAccents(document.getElementById('details-action-status').value);
+            const followUpNotes = formatUppercaseNoAccents(document.getElementById('details-action-notes').value.trim());
 
             const success = await window.updateReportStatusInFirestore(activeViewReportId, newStatus, followUpNotes);
 
@@ -1696,12 +1712,12 @@ Tigres CEUT — Psicopedagogía`;
                 showNotification("Guardado", "Expediente psicopedagógico actualizado con éxito.", "success");
                 closeDetailsModal();
             } else {
-                showNotification("Falla de Guardado", "No se pudo actualizar el expediente en base de datos.", "error");
+                showNotification("Falla de Guardado", "No se pudo actualizar el expediente en base de datos. Requiere conexión activa.", "error");
             }
         }
 
         window.onload = function() {
-            switchRole('welcome');
+            switchRole('WELCOME');
         };
     </script>
 </body>
